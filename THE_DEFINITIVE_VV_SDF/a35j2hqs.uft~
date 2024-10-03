@@ -1,0 +1,43 @@
+#include "SDF_SequenceSuite.h"
+
+void SDF_SequenceSuite::LoadSequenceNames()
+{
+	sf.FindFiles(mesh_sequence_folder, "");
+}
+
+void SDF_SequenceSuite::SaveWholeSequence()
+{
+	gds.dim_x = width_voxels;
+	gds.dim_y = 2 * width_voxels;
+	gds.dim_z = width_voxels;
+
+	gds.unit_length = width_meters / (width_voxels - 1);
+
+	gds.center_y = center_meters;
+
+
+	sdf.InitializeGrid(gds);
+
+
+	buffer.OpenWriteBuffer(save_file);
+
+	for (int i = 0; i < sf.mesh_files.size(); ++i)
+	{
+		//rle.
+
+		input_mesh.ReadOBJ(sf.mesh_files[i]);
+
+		sdf.CastMeshUnsignedDistance(input_mesh, unsigned_buffer_distance);
+
+		//auto watertight_mesh = sdf.ExtractMesh();
+
+		rle.GetRunLength();
+	}
+}
+
+void SDF_SequenceSuite::run(int argc, char** argv)
+{
+	LoadSequenceNames();
+
+	SaveWholeSequence();
+}

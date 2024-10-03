@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{d075042e-7ebe-4e71-a64b-f6421b9855a4}</ProjectGuid>
+    <RootNamespace>THEDEFINITIVEVVSDF</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>dxva2.lib;evr.lib;mf.lib;mfplat.lib;mfplay.lib;mfreadwrite.lib;mfuuid.lib;bcrypt.lib;ws2_32.lib;Secur32.lib;Strmiids.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="AbstractAttribute.cpp" />
+    <ClCompile Include="ArtifactCullingSuite.cpp" />
+    <ClCompile Include="AttributeMapSuite.cpp" />
+    <ClCompile Include="BarycentricInterpolationSuite.cpp" />
+    <ClCompile Include="CGAL_Marshalling_Suite.cpp" />
+    <ClCompile Include="CGAL_RepairSuite.cpp" />
+    <ClCompile Include="CImgSuite.cpp" />
+    <ClCompile Include="ConvexHullCreator.cpp" />
+    <ClCompile Include="ConvexHullSuite.cpp" />
+    <ClCompile Include="DisplacementWaveletSuite.cpp" />
+    <ClCompile Include="MeshEvaluationMetrics.cpp" />
+    <ClCompile Include="MeshToPointCloudSuite.cpp" />
+    <ClCompile Include="PerfectJPEG_Suite.cpp" />
+    <ClCompile Include="PointCloudGenerator.cpp" />
+    <ClCompile Include="PushPullSuite.cpp" />
+    <ClCompile Include="DracoCompressor.cpp" />
+    <ClCompile Include="DracoSuite.cpp" />
+    <ClCompile Include="EigenFileSavingSuite.cpp" />
+    <ClCompile Include="EigenSuite.cpp" />
+    <ClCompile Include="FFMPEG_Suite.cpp" />
+    <ClCompile Include="FFMPEG_Wrapper.cpp" />
+    <ClCompile Include="ImageEvalWrapper.cpp" />
+    <ClCompile Include="LZ_Compression_Suite.cpp" />
+    <ClCompile Include="LZ_Encoder.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MarchingTables.cpp" />
+    <ClCompile Include="MC_TestSuite.cpp" />
+    <ClCompile Include="MeshPartition.cpp" />
+    <ClCompile Include="MinMaxSuite.cpp" />
+    <ClCompile Include="MortonOrderer.cpp" />
+    <ClCompile Include="MortonOrderSuite.cpp" />
+    <ClCompile Include="PCA_Encoder.cpp" />
+    <ClCompile Include="PCA_Suite.cpp" />
+    <ClCompile Include="RandomWrapper.cpp" />
+    <ClCompile Include="RaycastSuite.cpp" />
+    <ClCompile Include="RectanglePackingSuite.cpp" />
+    <ClCompile Include="ShellSeparationSuite.cpp" />
+    <ClCompile Include="SubdivisionSuite.cpp" />
+    <ClCompile Include="TextureDuplicatorSuite.cpp" />
+    <ClCompile Include="TexturePaddingSuite.cpp" />
+    <ClCompile Include="VectorCompressionSuite.cpp" />
+    <ClCompile Include="RawFFMPEG_Suite.cpp" />
+    <ClCompile Include="RFind_Suite.cpp" />
+    <ClCompile Include="RotationCaliperSuite.cpp" />
+    <ClCompile Include="RunLengthEncoder.cpp" />
+    <ClCompile Include="RunLengthSuite.cpp" />
+    <ClCompile Include="SDF_PCA_Compressor.cpp" />
+    <ClCompile Include="SDF_RotationCaliper.cpp" />
+    <ClCompile Include="SDF_SequenceSuite.cpp" />
+    <ClCompile Include="SDF_Suite.cpp" />
+    <ClCompile Include="SemiSplitSuite.cpp" />
+    <ClCompile Include="SequenceFinder.cpp" />
+    <ClCompile Include="SequenceFinderSuite.cpp" />
+    <ClCompile Include="SignCalculationsSuite.cpp" />
+    <ClCompile Include="SparseMarchingCubesSolver.cpp" />
+    <ClCompile Include="StaticDCT_3D.cpp" />
+    <ClCompile Include="SVD_Suite.cpp" />
+    <ClCompile Include="TemporalPCA_Suite.cpp" />
+    <ClCompile Include="TextureRemapper.cpp" />
+    <ClCompile Include="TriangleDistanceSuite.cpp" />
+    <ClCompile Include="UnionFindSuite.cpp" />
+    <ClCompile Include="UnsignedFieldSuite.cpp" />
+    <ClCompile Include="UVAtlasSuite.cpp" />
+    <ClCompile Include="VSMC_Compressor.cpp" />
+    <ClCompile Include="VSMC_TestSuite.cpp" />
+    <ClCompile Include="VV_Mesh.cpp" />
+    <ClCompile Include="VV_MeshNormalSeparator.cpp" />
+    <ClCompile Include="VV_Mesh_Suite.cpp" />
+    <ClCompile Include="VV_SaveFileBuffer.cpp" />
+    <ClCompile Include="VV_SDF_PCA_CompressionSuite.cpp" />
+    <ClCompile Include="VV_SparseTSDF.cpp" />
+    <ClCompile Include="VV_SVD_TemporalCompressor.cpp" />
+    <ClCompile Include="VV_SVD_TemporalSuite.cpp" />
+    <ClCompile Include="VV_TSDF.cpp" />
+    <ClCompile Include="WaveletTransformer.cpp" />
+    <ClCompile Include="WaveletTransformSuite.cpp" />
+    <ClCompile Include="WavelibSuite.cpp" />
+    <ClCompile Include="XOR_Mask_Suite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AbstractAttribute.h" />
+    <ClInclude Include="ArtifactCullingSuite.h" />
+    <ClInclude Include="BarycentricInterpolationSuite.h" />
+    <ClInclude Include="BasicGeometry.h" />
+    <ClInclude Include="CGAL_Marshalling_Suite.h" />
+    <ClInclude Include="CGAL_RepairSuite.h" />
+    <ClInclude Include="CImgAdditionalDrawingFunctionality.h" />
+    <ClInclude Include="ConvexHullCreator.h" />
+    <ClInclude Include="ConvexHullSuite.h" />
+    <ClInclude Include="DisplacementWaveletSuite.h" />
+    <ClInclude Include="MeshEvaluationMetrics.h" />
+    <ClInclude Include="MeshToPointCloudSuite.h" />
+    <ClInclude Include="PerfectJPEG_Suite.h" />
+    <ClInclude Include="PointCloudGenerator.h" />
+    <ClInclude Include="PushPullSuite.h" />
+    <ClInclude Include="DecimationVisitor.h" />
+    <ClInclude Include="DisplacementPacker.h" />
+    <ClInclude Include="DracoCompressor.h" />
+    <ClInclude Include="EigenFileSavingSuite.h" />
+    <ClInclude Include="EigenSuite.h" />
+    <ClInclude Include="FFMPEG_Suite.h" />
+    <ClInclude Include="AdditionalUtilities.h" />
+    <ClInclude Include="CImgSuite.h" />
+    <ClInclude Include="DracoSuite.h" />
+    <ClInclude Include="FFMPEG_Wrapper.h" />
+    <ClInclude Include="GridDataStruct.h" />
+    <ClInclude Include="AttributeMapSuite.h" />
+    <ClInclude Include="ImageEvaluationSuite.h" />
+    <ClInclude Include="ImageEvalWrapper.h" />
+    <ClInclude Include="LZ_Compression_Suite.h" />
+    <ClInclude Include="LZ_Encoder.h" />
+    <ClInclude Include="MarchingCubesSolver.h" />
+    <ClInclude Include="MarchingTables.h" />
+    <ClInclude Include="MC_TestSuite.h" />
+    <ClInclude Include="RangeEncoder.h" />
+    <ClInclude Include="RaycastSuite.h" />
+    <ClInclude Include="RectanglePacker.h" />
+    <ClInclude Include="RectanglePackingSuite.h" />
+    <ClInclude Include="ShellSeparationSuite.h" />
+    <ClInclude Include="SubdivisionSuite.h" />
+    <ClInclude Include="TextureDuplicatorSuite.h" />
+    <ClInclude Include="TexturePaddingSuite.h" />
+    <ClInclude Include="VectorCompressionSuite.h" />
+    <ClInclude Include="RotationCaliperSuite.h" />
+    <ClInclude Include="SDF_RotationCaliper.h" />
+    <ClInclude Include="SignCalculationsSuite.h" />
+    <ClInclude Include="StaticDCT_3D.h" />
+    <ClInclude Include="TemporalPCA_Suite.h" />
+    <ClInclude Include="VV_MeshNormalSeparator.h" />
+    <ClInclude Include="MortonOrderer.h" />
+    <ClInclude Include="MortonOrderSuite.h" />
+    <ClInclude Include="PCA_Encoder.h" />
+    <ClInclude Include="PCA_Suite.h" />
+    <ClInclude Include="RandomWrapper.h" />
+    <ClInclude Include="RawFFMPEG_Suite.h" />
+    <ClInclude Include="RFind_Suite.h" />
+    <ClInclude Include="SDF_PCA_Compressor.h" />
+    <ClInclude Include="SDF_SequenceSuite.h" />
+    <ClInclude Include="SDF_TextureSuite.h" />
+    <ClInclude Include="SequenceFinder.h" />
+    <ClInclude Include="MinMaxSuite.h" />
+    <ClInclude Include="RunLengthEncoder.h" />
+    <ClInclude Include="RunLengthSuite.h" />
+    <ClInclude Include="SDF_Suite.h" />
+    <ClInclude Include="SemiSplitSuite.h" />
+    <ClInclude Include="SequenceFinderSuite.h" />
+    <ClInclude Include="SparseMarchingCubesSolver.h" />
+    <ClInclude Include="SuiteMaster.h" />
+    <ClInclude Include="SVD_Suite.h" />
+    <ClInclude Include="TestSuite.h" />
+    <ClInclude Include="MeshPartition.h" />
+    <ClInclude Include="TextureRemapper.h" />
+    <ClInclude Include="TriangleDistanceSuite.h" />
+    <ClInclude Include="UnionFindNode.h" />
+    <ClInclude Include="UnionFindSuite.h" />
+    <ClInclude Include="UnsignedFieldSuite.h" />
+    <ClInclude Include="UVAtlasSuite.h" />
+    <ClInclude Include="VSMC_Compressor.h" />
+    <ClInclude Include="VSMC_TestSuite.h" />
+    <ClInclude Include="VV_CGAL_Marshaller.h" />
+    <ClInclude Include="VV_Mesh.h" />
+    <ClInclude Include="VV_Mesh_Attribute.h" />
+    <ClInclude Include="VV_Mesh_Suite.h" />
+    <ClInclude Include="VV_SaveFileBuffer.h" />
+    <ClInclude Include="VV_SDF_PCA_CompressionSuite.h" />
+    <ClInclude Include="VV_SparseTSDF.h" />
+    <ClInclude Include="VV_SparseTSDF_Stats.h" />
+    <ClInclude Include="VV_SVD_TemporalCompressor.h" />
+    <ClInclude Include="VV_SVD_TemporalSuite.h" />
+    <ClInclude Include="VV_TSDF.h" />
+    <ClInclude Include="WaveletEncoder.h" />
+    <ClInclude Include="WaveletTransformer.h" />
+    <ClInclude Include="WaveletTransformSuite.h" />
+    <ClInclude Include="WavelibSuite.h" />
+    <ClInclude Include="XOR_Mask_Suite.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

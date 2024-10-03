@@ -1,0 +1,16 @@
+*.mkv
+.vs/
+*.obj
+*.ply
+x64/
+*.abc
+*.vgff
+*.vgzf
+*.vgfi
+*.vgzi
+THE_DEFINITIVE_VV_SDF/_ImageDump
+THE_DEFINITIVE_VV_SDF/_MeshInterop
+THE_DEFINITIVE_VV_SDF/_RenderedSequences
+THE_DEFINITIVE_VV_SDF/_TempFilesToDebugFeatures
+THE_DEFINITIVE_VV_SDF/_VideoDump
+THE_DEFINITIVE_VV_SDF/_VV_DATASETS_TRIMMED

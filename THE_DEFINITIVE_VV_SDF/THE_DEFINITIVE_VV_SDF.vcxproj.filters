@@ -1,0 +1,543 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\TestSuites">
+      <UniqueIdentifier>{51fe1ad7-47c4-42a0-a21e-83b4f9febf00}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UVAtlasSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="DracoSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SDF_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_TSDF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_SaveFileBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UnsignedFieldSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="AbstractAttribute.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshPartition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_Mesh_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="RunLengthEncoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RunLengthSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveletTransformSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SemiSplitSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="MC_TestSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="TriangleDistanceSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="MinMaxSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="CImgSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="LZ_Encoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LZ_Compression_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="XOR_Mask_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="WavelibSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SequenceFinder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RFind_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SequenceFinderSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="UnionFindSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="PCA_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="PCA_Encoder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SDF_SequenceSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="AttributeMapSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="DracoCompressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VSMC_TestSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="VSMC_Compressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureRemapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BarycentricInterpolationSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SDF_PCA_Compressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SVD_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="CGAL_Marshalling_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FFMPEG_Wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="FFMPEG_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="RawFFMPEG_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="MortonOrderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MortonOrderSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_SDF_PCA_CompressionSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="EigenSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="MarchingTables.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_SparseTSDF.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SparseMarchingCubesSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_MeshNormalSeparator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SignCalculationsSuite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ImageEvalWrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RotationCaliperSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SDF_RotationCaliper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TemporalPCA_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="StaticDCT_3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EigenFileSavingSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="VectorCompressionSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="TexturePaddingSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="RectanglePackingSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="ShellSeparationSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="ArtifactCullingSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="RaycastSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="CGAL_RepairSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvexHullCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConvexHullSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveletTransformer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="PushPullSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="PerfectJPEG_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_SVD_TemporalCompressor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VV_SVD_TemporalSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="SubdivisionSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureDuplicatorSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplacementWaveletSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="PointCloudGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshToPointCloudSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshEvaluationMetrics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="VV_Mesh.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AdditionalUtilities.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TestSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SuiteMaster.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="UVAtlasSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="DracoSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SDF_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_TSDF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridDataStruct.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_SaveFileBuffer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnsignedFieldSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_Mesh_Attribute.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractAttribute.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_Mesh_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshPartition.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RunLengthEncoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RunLengthSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveletTransformSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SemiSplitSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="MC_TestSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="TriangleDistanceSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="MinMaxSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="CImgSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="LZ_Compression_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="LZ_Encoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarchingCubesSolver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="XOR_Mask_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="WavelibSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveletEncoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VSMC_TestSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VSMC_Compressor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DracoCompressor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SequenceFinder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RFind_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SequenceFinderSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="FFMPEG_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="UnionFindNode.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UnionFindSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="PCA_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="PCA_Encoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SDF_SequenceSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="AttributeMapSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="DecimationVisitor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BasicGeometry.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureRemapper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BarycentricInterpolationSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SDF_PCA_Compressor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_SDF_PCA_CompressionSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SVD_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomWrapper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGAL_Marshalling_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_CGAL_Marshaller.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FFMPEG_Wrapper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RawFFMPEG_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplacementPacker.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MortonOrderer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MortonOrderSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SDF_TextureSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="EigenSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_SparseTSDF.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SparseMarchingCubesSolver.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MarchingTables.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_SparseTSDF_Stats.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_MeshNormalSeparator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TemporalPCA_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SignCalculationsSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageEvaluationSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="ImageEvalWrapper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RotationCaliperSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SDF_RotationCaliper.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="StaticDCT_3D.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EigenFileSavingSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VectorCompressionSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="RangeEncoder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TexturePaddingSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="RectanglePackingSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="RectanglePacker.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ShellSeparationSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="ArtifactCullingSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="RaycastSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="CGAL_RepairSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvexHullCreator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConvexHullSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="CImgAdditionalDrawingFunctionality.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveletTransformer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="PushPullSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="PerfectJPEG_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_SVD_TemporalCompressor.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VV_SVD_TemporalSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="SubdivisionSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureDuplicatorSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="DisplacementWaveletSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="PointCloudGenerator.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshToPointCloudSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshEvaluationMetrics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
