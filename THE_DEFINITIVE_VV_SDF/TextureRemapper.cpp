@@ -299,14 +299,16 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
     cimg_library::CImg<double> unclamped_occupancy;
     cimg_library::CImg<double> occupancy_stream(img_w, img_h, 1, 1);
 
+    rgb_stream = tex / 255.0;
+
 #pragma omp parallel for
     for (int w = 0; w < img_w; ++w)
     {
         for (int h = 0; h < img_h; ++h)
         {
-            rgb_stream(w, h, 0, 0) = tex(w, h, 0, 0) / 255.0;
-            rgb_stream(w, h, 0, 1) = tex(w, h, 0, 1) / 255.0;
-            rgb_stream(w, h, 0, 2) = tex(w, h, 0, 2) / 255.0;
+            //rgb_stream(w, h, 0, 0) = tex(w, h, 0, 0) / 255.0;
+            //rgb_stream(w, h, 0, 1) = tex(w, h, 0, 1) / 255.0;
+            //rgb_stream(w, h, 0, 2) = tex(w, h, 0, 2) / 255.0;
             occupancy_stream(w, h, 0, 0) = std::min((double)(occupancy[w * img_h + h]), 1.0);
         }
     }
