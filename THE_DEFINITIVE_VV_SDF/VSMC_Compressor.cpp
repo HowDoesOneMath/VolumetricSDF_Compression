@@ -30,7 +30,6 @@ void VSMC_Compressor::SetTimeLogFile(std::string time_log_name)
 
     tl.CreateNewLogger(total_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(frame_time_logger_name, new TimeLogger::IndependentLogger("\t"));
-    tl.CreateNewLogger(compression_time_logger_name, new TimeLogger::IndependentLogger("\t\t"));
 }
 
 
@@ -475,6 +474,8 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
         tl.GetLogger(total_time_logger_name)->MarkTime();
         tl.PrintLogger(frame_time_logger_name, "Time to save displacement/albedo textures: ");
         tl.PrintLoggerTotalTime(frame_time_logger_name, "Total time to save frame: ");
+        tl.PrintLoggerTotalTime(total_time_logger_name, "Total time thus far: ");
+        tl.PrintEmptyLine();
 #endif
     }
 
@@ -568,7 +569,7 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
     }
 
 #if VSMC_TIME_LOGGING
-    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to save file: ");
+    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to reconstruct: ");
     tl.PrintLoggerAverageTime(total_time_logger_name, "Average time per frame: ");
 
     tl.PrintEmptyLine();

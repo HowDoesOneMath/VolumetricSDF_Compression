@@ -440,10 +440,6 @@ bool TextureRemapper::Remap(
     vcm_uv.CleanMeshCGAL(*cgal_mesh_uv);
     auto aabb_tree_uv = vcm_uv.CreateAABB(*cgal_mesh_uv);
 
-    std::chrono::high_resolution_clock::time_point tp_now;
-
-    tp_now = std::chrono::high_resolution_clock::now();
-
 #pragma omp parallel for
     for (int w = 0; w < remapped_texture.width(); ++w)
     {
@@ -487,22 +483,11 @@ bool TextureRemapper::Remap(
         }
     }
     
-    auto time_to_copy = (std::chrono::high_resolution_clock::now() - tp_now).count() * 0.000000001;
-
-    std::cout << "Time to copy points: " << time_to_copy << std::endl;
-
-
-    tp_now = std::chrono::high_resolution_clock::now();
-
     PadTexture(remapped_texture, filled_map, extra_pad_loops);
 
     PadTextureWithPushPull(remapped_texture, filled_map, 
         GetGaussianKernel(pad_kernel_size, pad_kernel_scale, false), 
         GetGaussianKernel(pad_kernel_size, pad_kernel_scale, true));
-
-    auto time_to_pad = (std::chrono::high_resolution_clock::now() - tp_now).count() * 0.000000001;
-
-    std::cout << "Time to pad points: " << time_to_pad << std::endl;
 
     remapped_texture.mirror('y');
 

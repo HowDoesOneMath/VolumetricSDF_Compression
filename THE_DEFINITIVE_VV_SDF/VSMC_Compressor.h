@@ -91,7 +91,7 @@ class VSMC_Compressor
 
 	std::string total_time_logger_name;
 	std::string frame_time_logger_name;
-	std::string compression_time_logger_name;
+	std::string uvs_time_logger_name;
 #endif
 
 public:
