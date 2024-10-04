@@ -254,6 +254,7 @@
     <ClInclude Include="RaycastSuite.h" />
     <ClInclude Include="RectanglePacker.h" />
     <ClInclude Include="RectanglePackingSuite.h" />
+    <ClInclude Include="SequenceFilePathUniversal.h" />
     <ClInclude Include="ShellSeparationSuite.h" />
     <ClInclude Include="SubdivisionSuite.h" />
     <ClInclude Include="TextureDuplicatorSuite.h" />

@@ -42,6 +42,12 @@ void TimeLogger::PrintLoggerTotalTime(std::string key, std::string message)
 	main_file.write(to_print.c_str(), to_print.length());
 }
 
+void TimeLogger::PrintLoggerGreatestTime(std::string key, std::string message)
+{
+	std::string to_print = loggers[key]->GetName() + message + std::to_string(loggers[key]->GetGreatestTime() * nanoseconds_to_seconds) + "\n";
+	main_file.write(to_print.c_str(), to_print.length());
+}
+
 void TimeLogger::PrintLoggerAverageTime(std::string key, std::string message)
 {
 	std::string to_print = loggers[key]->GetName() + message + std::to_string((loggers[key]->GetTotalTime() * nanoseconds_to_seconds) / loggers[key]->GetTotalStamps()) + "\n";

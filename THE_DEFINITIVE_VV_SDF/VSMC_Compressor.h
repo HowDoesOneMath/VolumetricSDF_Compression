@@ -57,6 +57,8 @@ class VSMC_Compressor
 
 	double mesh_maximum_artifact_size = 0.05;
 
+	double overly_displaced_threshold = 0.2;
+
 #if USE_DOUBLE_DISPLACEMENTS
 	double displacement_max = 255.0;
 #else
@@ -89,9 +91,20 @@ class VSMC_Compressor
 #if VSMC_TIME_LOGGING
 	TimeLogger tl;
 
-	std::string total_time_logger_name;
-	std::string frame_time_logger_name;
-	std::string uvs_time_logger_name;
+	std::string total_time_logger_name = "TOTAL_TIME_LOG";
+	std::string frame_time_logger_name = "FRAME_TIME_LOG";
+
+	std::string cleaning_time_logger_name				= "CLEAN_TIME_LOG";
+	std::string uvs_time_logger_name					= "UV_TIME_LOG";
+	std::string decimation_time_logger_name				= "DECIM_TIME_LOG";
+	std::string cull_time_logger_name					= "CULL_TIME_LOG";
+	std::string normals_time_logger_name				= "NORMALS_TIME_LOG";
+	std::string draco_compression_time_logger_name		= "DRACO_COMPRESS_TIME_LOG";
+	std::string draco_decompression_time_logger_name	= "DRACO_DECOMPRESS_TIME_LOG";
+	std::string remap_time_logger_name					= "REMAP_TIME_LOG";
+	std::string subdiv_time_logger_name					= "SUBDIV_TIME_LOG";
+	std::string displacement_time_logger_name			= "DISPLACE_TIME_LOG";
+	std::string wavelet_time_logger_name				= "WAVELET_TIME_LOG";
 #endif
 
 public:

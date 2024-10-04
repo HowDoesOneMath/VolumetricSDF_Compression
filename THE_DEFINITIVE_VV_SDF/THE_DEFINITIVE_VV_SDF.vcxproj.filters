@@ -545,5 +545,8 @@
     <ClInclude Include="TimeLogger.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SequenceFilePathUniversal.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

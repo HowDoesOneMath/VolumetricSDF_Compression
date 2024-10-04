@@ -20,6 +20,8 @@ public:
 		size_t total_nanoseconds = 0;
 		size_t total_stamps = 0;
 
+		size_t maximum_nanoseconds = 0;
+
 	public:
 		IndependentLogger(std::string name) {
 			logger_name = name;
@@ -32,6 +34,10 @@ public:
 		void MarkTime() {
 			nanosecond_count = (std::chrono::high_resolution_clock::now() - tp_now).count();
 			total_nanoseconds += nanosecond_count;
+
+			bool is_greater = nanosecond_count > maximum_nanoseconds;
+			maximum_nanoseconds = maximum_nanoseconds * !is_greater + nanosecond_count * is_greater;
+
 			++total_stamps;
 		}
 
@@ -41,12 +47,17 @@ public:
 
 		void ResetTotalTime() {
 			total_nanoseconds = 0;
+			maximum_nanoseconds = 0;
 			total_stamps = 0;
 		}
 
 		void AddTime(size_t to_add) {
 			nanosecond_count += to_add;
 			total_nanoseconds += to_add;
+
+			bool is_greater = to_add > maximum_nanoseconds;
+			maximum_nanoseconds = maximum_nanoseconds * !is_greater + to_add * is_greater;
+
 			++total_stamps;
 		}
 
@@ -56,6 +67,10 @@ public:
 
 		size_t GetTotalTime() {
 			return total_nanoseconds;
+		}
+
+		size_t GetGreatestTime() {
+			return maximum_nanoseconds;
 		}
 
 		size_t GetTotalStamps() {
@@ -91,6 +106,7 @@ public:
 	void PrintLogger(std::string key, std::string message);
 
 	void PrintLoggerTotalTime(std::string key, std::string message);
+	void PrintLoggerGreatestTime(std::string key, std::string message);
 	void PrintLoggerAverageTime(std::string key, std::string message);
 
 	void PrintEmptyLine();
