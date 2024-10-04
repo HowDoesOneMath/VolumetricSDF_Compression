@@ -65,7 +65,7 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPoint(VV_Mesh &v1,
 
     to_return.second /= pv1.size();
 
-    to_return.first = max_dist_sqr;
+    to_return.first = sqrt(max_dist_sqr);
 
     return to_return;
 }
@@ -75,6 +75,11 @@ std::pair<double, double> MeshEvaluationMetrics::GetPointToPointMetric(VV_Mesh& 
 {
     auto to_return = std::make_pair<double, double>(0, 0);
 
+    auto v1_to_v2 = OneWayPointToPoint(v1, v2, pv1, pv2);
+    auto v2_to_v1 = OneWayPointToPoint(v2, v1, pv2, pv1);
+
+    to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
 
     return to_return;
 }

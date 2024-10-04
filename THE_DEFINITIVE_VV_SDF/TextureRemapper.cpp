@@ -522,6 +522,111 @@ bool TextureRemapper::Remap(
     return true;
 }
 
+bool TextureRemapper::FastRemap(VV_Mesh& original_mesh, VV_Mesh& reparameterized_mesh, 
+    cimg_library::CImg<unsigned char>& original_texture, cimg_library::CImg<unsigned char>& remapped_texture, double uv_epsilon, 
+    int pad_kernel_size, double pad_kernel_scale, int extra_pad_loops)
+{
+    std::vector<bool> filled_map(remapped_texture.width() * remapped_texture.height(), false);
+
+    Eigen::Vector2d inverse_scaling(1.0 / remapped_texture.width(), 1.0 / remapped_texture.height());
+    double uv_epsilon_sqr = uv_epsilon * uv_epsilon;
+
+    auto cgal_mesh = vcm.GenerateCGAL_MeshFromAttribute(original_mesh.vertices);
+    auto index_remap = vcm.CGAL_To_VV_IndexMap(*cgal_mesh, original_mesh.vertices);
+    vcm.CleanMeshCGAL(*cgal_mesh);
+    auto aabb_tree = vcm.CreateAABB(*cgal_mesh);
+
+    Eigen::Vector2i tex_bound_max = Eigen::Vector2i(remapped_texture.width(), remapped_texture.height());
+
+    std::chrono::high_resolution_clock::time_point tp_now;
+
+    tp_now = std::chrono::high_resolution_clock::now();
+
+    for (size_t i = 0; i < reparameterized_mesh.uvs.indices.size(); ++i)
+    {
+        Eigen::Vector3i* tri = &(reparameterized_mesh.uvs.indices[i]);
+
+        Eigen::Vector2d* p0 = &(reparameterized_mesh.uvs.elements[tri->x()]);
+        Eigen::Vector2d* p1 = &(reparameterized_mesh.uvs.elements[tri->y()]);
+        Eigen::Vector2d* p2 = &(reparameterized_mesh.uvs.elements[tri->z()]);
+
+        Eigen::Vector2d max = p0->cwiseMax(p1->cwiseMax(*p2));
+        Eigen::Vector2d min = p0->cwiseMin(p1->cwiseMin(*p2));
+
+        Eigen::Vector2i t_max = Eigen::Vector2i(
+            ceil(max.x() * remapped_texture.width() + 1), 
+            ceil(max.y() * remapped_texture.height() + 1)).cwiseMin(tex_bound_max);
+        Eigen::Vector2i t_min = Eigen::Vector2i(
+            floor(min.x() * remapped_texture.width() - 1), 
+            floor(min.y() * remapped_texture.height() - 1)).cwiseMax(Eigen::Vector2i::Zero());
+
+        for (size_t w = t_min.x(); w < t_max.x(); ++w)
+        {
+            for (size_t h = t_min.y(); h < t_max.y(); ++h)
+            {
+                Eigen::Vector2d remap_uv_pos = Eigen::Vector2d(((double)w + 0.5) * inverse_scaling.x(), ((double)h + 0.5) * inverse_scaling.y());
+
+                Eigen::Vector3d barycentric_coords;
+
+                GetBarycentricCoordinatesOfTriangle(remap_uv_pos, *p0, *p1, *p2, barycentric_coords);
+
+                Eigen::Vector3d clamped_barycentric_coords = barycentric_coords.cwiseMax(Eigen::Vector3d::Zero()).cwiseMin(Eigen::Vector3d::Ones());
+
+                Eigen::Vector3i* tri_uvs = &(reparameterized_mesh.uvs.indices[i]);
+                Eigen::Vector2d recreated_uv = reparameterized_mesh.uvs.elements[tri_uvs->x()] * clamped_barycentric_coords.x()
+                    + reparameterized_mesh.uvs.elements[tri_uvs->y()] * clamped_barycentric_coords.y()
+                    + reparameterized_mesh.uvs.elements[tri_uvs->z()] * clamped_barycentric_coords.z();
+
+                if ((recreated_uv - remap_uv_pos).squaredNorm() > uv_epsilon_sqr)
+                {
+                    continue;
+                }
+
+                Eigen::Vector3i* tri_verts = &(reparameterized_mesh.vertices.indices[i]);
+                Eigen::Vector3d interpolated_position = reparameterized_mesh.vertices.elements[tri_verts->x()] * barycentric_coords.x()
+                    + reparameterized_mesh.vertices.elements[tri_verts->y()] * barycentric_coords.y()
+                    + reparameterized_mesh.vertices.elements[tri_verts->z()] * barycentric_coords.z();
+
+                size_t triangle_index_original;
+                Eigen::Vector3d barycentric_coords_original;
+
+                vcm.FindClosestPointCGAL(*cgal_mesh, *aabb_tree, interpolated_position, triangle_index_original, barycentric_coords_original);
+
+                Eigen::Vector3i* closest_triangle_original = &(original_mesh.uvs.indices[(*index_remap)[triangle_index_original]]);
+                Eigen::Vector2d original_uv_pos = original_mesh.uvs.elements[closest_triangle_original->x()] * barycentric_coords_original.x()
+                    + original_mesh.uvs.elements[closest_triangle_original->y()] * barycentric_coords_original.y()
+                    + original_mesh.uvs.elements[closest_triangle_original->z()] * barycentric_coords_original.z();
+
+                CopyPoint(original_texture, remapped_texture, original_uv_pos, w, h);
+
+                size_t pixel_array_loc = h + (size_t)remapped_texture.height() * w;
+                filled_map[pixel_array_loc] = true;
+            }
+        }
+    }
+
+    auto time_to_copy = (std::chrono::high_resolution_clock::now() - tp_now).count() * 0.000000001;
+
+    std::cout << "Time to copy points: " << time_to_copy << std::endl;
+
+
+    tp_now = std::chrono::high_resolution_clock::now();
+
+    PadTexture(remapped_texture, filled_map, extra_pad_loops);
+
+    PadTextureWithPushPull(remapped_texture, filled_map,
+        GetGaussianKernel(pad_kernel_size, pad_kernel_scale, false),
+        GetGaussianKernel(pad_kernel_size, pad_kernel_scale, true));
+
+    auto time_to_pad = (std::chrono::high_resolution_clock::now() - tp_now).count() * 0.000000001;
+
+    std::cout << "Time to pad points: " << time_to_pad << std::endl;
+
+    remapped_texture.mirror('y');
+
+    return true;
+}
+
 bool TextureRemapper::RemapWithPartitions(VV_Mesh& original_mesh, VV_Mesh& reparameterized_mesh, 
     cimg_library::CImg<unsigned char>& original_texture, cimg_library::CImg<unsigned char>& remapped_texture, 
     Eigen::Vector2i partition_count, double partition_buffer, int padding_loops)

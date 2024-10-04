@@ -31,7 +31,7 @@ class VSMC_TestSuite : public TestSuite
 	//std::string test_sequence = "D:/_VV_DATASETS_TRIMMED/AB-2punch";
 	//std::string test_sequence = "D:/_VV_DATASETS_TRIMMED/AB-dodgeleft";
 	//std::string test_sequence = "D:/_VV_DATASETS_TRIMMED/AB-death";
-	std::string test_sequence = "D:/_VV_DATASETS_TRIMMED/SIR_FREDRICK";
+	std::string test_sequence = "E:/_VV_DATA/_VV_DATASETS_TRIMMED/SIR_FREDRICK";
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string sequence_file_identifier = "/AB-DEATH";
@@ -67,9 +67,7 @@ class VSMC_TestSuite : public TestSuite
 	std::string draco_level = "/DRACO_COMPRESSION_" + std::to_string(draco_compression_level);
 	std::string compression_details = "/DECIM" + std::to_string(decim_int) + "LOOP" + std::to_string(subdiv_loops);
 
-	std::string compressed_sequence_folder = 
-		"D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_CompressedSequences/_VSMC" 
-		+ draco_level + compression_details + sequence_file_identifier;
+	std::string compressed_sequence_folder = "E:/_VV_DATA/_COMPRESSIONS/_VSMC" + draco_level + compression_details + sequence_file_identifier;
 	std::string reconstructed_sequence_folder = "E:/_VV_DATA/_RECONSTRUCTIONS/_VSMC" + draco_level + compression_details + sequence_file_identifier;
 
 	std::string compress_file_output = compressed_sequence_folder + "/CompressedSequence.vsmc";

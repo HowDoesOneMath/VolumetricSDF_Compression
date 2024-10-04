@@ -181,7 +181,8 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
 
     std::cout << "Remapping... ";
     to_return->first.assign(width, height, 1, 3, 0);
-    tr.Remap(input_mesh, *last_intra, input_texture, to_return->first, uv_epsilon, ppk_size, ppk_scale);
+    //tr.Remap(input_mesh, *last_intra, input_texture, to_return->first, uv_epsilon, ppk_size, ppk_scale);
+    tr.FastRemap(input_mesh, *last_intra, input_texture, to_return->first, uv_epsilon, ppk_size, ppk_scale);
 
     std::cout << "Displacing... ";
 

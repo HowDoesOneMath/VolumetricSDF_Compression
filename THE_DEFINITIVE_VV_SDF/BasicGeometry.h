@@ -263,6 +263,15 @@ inline bool PointInsideTriangle(Eigen::Vector3d &barycentric_coords)
 	//return true;
 }
 
+inline bool RelaxedPointInsideTriangle(Eigen::Vector3d& barycentric_coords, double flex)
+{
+	return (
+		barycentric_coords.x() >= (-flex) && barycentric_coords.x() <= (1.0 + flex) &&
+		barycentric_coords.y() >= (-flex) && barycentric_coords.y() <= (1.0 + flex) &&
+		barycentric_coords.z() >= (-flex) && barycentric_coords.z() <= (1.0 + flex)
+		);
+}
+
 template<typename T>
 inline void SwizzleRasterizedBlock(Eigen::Vector3i &dimensions, T* data, Eigen::Vector3i swizzled_axes)
 {

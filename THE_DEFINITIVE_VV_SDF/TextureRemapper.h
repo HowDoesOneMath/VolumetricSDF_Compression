@@ -40,6 +40,10 @@ public:
 		cimg_library::CImg<unsigned char> &original_texture, cimg_library::CImg<unsigned char>& remapped_texture, double uv_epsilon,
 		int pad_kernel_size = 5, double pad_kernel_scale = 2.0, int extra_pad_loops = 0);
 
+	bool FastRemap(VV_Mesh& original_mesh, VV_Mesh& reparameterized_mesh,
+		cimg_library::CImg<unsigned char>& original_texture, cimg_library::CImg<unsigned char>& remapped_texture, double uv_epsilon,
+		int pad_kernel_size = 5, double pad_kernel_scale = 2.0, int extra_pad_loops = 0);
+
 	bool RemapWithPartitions(
 		VV_Mesh& original_mesh, VV_Mesh& reparameterized_mesh,
 		cimg_library::CImg<unsigned char>& original_texture, cimg_library::CImg<unsigned char>& remapped_texture, 
