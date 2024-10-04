@@ -58,10 +58,10 @@ class VSMC_TestSuite : public TestSuite
 	//std::string drive_name = "C:";
 
 	// For use with GarlandHeckbert_triangle_policies - see VV_CGAL_Marshaller
-	//std::string test_sequence = drive_name + "_VV_DATA/_VV_DATASETS_TRIMMED/AB-2punch";
-	//std::string test_sequence = drive_name + "_VV_DATA/_VV_DATASETS_TRIMMED/AB-dodgeleft";
-	//std::string test_sequence = drive_name + "_VV_DATA/_VV_DATASETS_TRIMMED/AB-death";
-	std::string test_sequence = drive_name + "_VV_DATA/_VV_DATASETS_TRIMMED/SIR_FREDRICK";
+	//std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/AB-2punch";
+	//std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/AB-dodgeleft";
+	//std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/AB-death";
+	std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/SIR_FREDRICK";
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string sequence_file_identifier = "/AB-DEATH";
