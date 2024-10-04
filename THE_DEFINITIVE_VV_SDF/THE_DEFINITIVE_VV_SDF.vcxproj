@@ -175,6 +175,7 @@
     <ClCompile Include="SubdivisionSuite.cpp" />
     <ClCompile Include="TextureDuplicatorSuite.cpp" />
     <ClCompile Include="TexturePaddingSuite.cpp" />
+    <ClCompile Include="TimeLogger.cpp" />
     <ClCompile Include="VectorCompressionSuite.cpp" />
     <ClCompile Include="RawFFMPEG_Suite.cpp" />
     <ClCompile Include="RFind_Suite.cpp" />
@@ -257,6 +258,7 @@
     <ClInclude Include="SubdivisionSuite.h" />
     <ClInclude Include="TextureDuplicatorSuite.h" />
     <ClInclude Include="TexturePaddingSuite.h" />
+    <ClInclude Include="TimeLogger.h" />
     <ClInclude Include="VectorCompressionSuite.h" />
     <ClInclude Include="RotationCaliperSuite.h" />
     <ClInclude Include="SDF_RotationCaliper.h" />

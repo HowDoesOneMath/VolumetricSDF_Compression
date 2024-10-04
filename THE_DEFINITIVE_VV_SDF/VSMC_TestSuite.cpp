@@ -135,6 +135,10 @@ void VSMC_TestSuite::CompressSequence(std::string root_folder, std::string save_
 		std::cout << "Decompression failed!" << std::endl;
 		return;
 	}
+
+#if VSMC_TIME_LOGGING
+	vsmc_comp.CloseTimeLogFile();
+#endif
 }
 
 void VSMC_TestSuite::run(int argc, char** argv)

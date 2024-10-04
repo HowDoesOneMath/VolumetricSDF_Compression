@@ -26,16 +26,17 @@ void VSMC_Compressor::InitializeCompressor(double decimation_ratio, size_t outpu
 #if VSMC_TIME_LOGGING
 void VSMC_Compressor::SetTimeLogFile(std::string time_log_name)
 {
-    time_log.open(time_log_name);
+    tl.StartLogging(time_log_name);
+
+    tl.CreateNewLogger(total_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(frame_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+    tl.CreateNewLogger(compression_time_logger_name, new TimeLogger::IndependentLogger("\t\t"));
 }
 
 
 void VSMC_Compressor::CloseTimeLogFile()
 {
-    if (time_log.is_open())
-    {
-        time_log.close();
-    }
+    tl.CloseLoggers();
 }
 
 #endif
@@ -48,12 +49,10 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     VV_Mesh& input_mesh, cimg_library::CImg<unsigned char>& input_texture, VV_SaveFileBuffer& sfb)
 #endif
 {
-    std::string time_message;
-    size_t tp_nanoseconds;
-    size_t total_nanoseconds = 0;
-    std::chrono::high_resolution_clock::time_point tp_now;
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->ResetTotalTime();
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     mp.CreateUnionFindPartitions(input_mesh);
     mp.NegateInsignificantPartitions(input_mesh, mesh_maximum_artifact_size);
@@ -76,29 +75,19 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     auto i_map = vcm.CGAL_To_VV_IndexMap(*cgal_mesh, input_mesh.vertices);
 
 
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to clean mesh: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
-
-    std::cout << "Decimating... ";
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to clean mesh: ");
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     auto cgal_decimated = vcm.DecimateCGAL_Mesh(*cgal_mesh, dec_ratio);
 
-    //std::cout << "Cleaning..." << std::endl;
-
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to decimate mesh: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to decimate mesh: ");
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     vcm.CleanMeshCGAL(*cgal_mesh);
     auto aabb_tree = vcm.CreateAABB(*cgal_mesh);
@@ -108,24 +97,11 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
 
     auto displacements = vcm.GetMeshDisplacements(*last_intra, input_mesh, *cgal_mesh, *i_map, *aabb_tree);
 
-    //for (size_t i = 0; i < last_intra->vertices.elements.size(); ++i)
-    //{
-    //    last_intra->vertices.elements[i] += (*displacements)[i];
-    //}
-    last_intra->vertices.CullMassivelyDisplacedElements(*displacements, 0.1);
-
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to cull bad triangles: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
-
-    //last_intra->WriteOBJ("D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ArbitraryTestMeshes/AB-Punch_0000001_BAD_BASE.obj");
-
-    std::cout << "Generating UVs... ";
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to remove bad vertices: ");
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     if (!last_intra->GenerateNewUVsWithUVAtlas(width, height, gutter))
     {
@@ -133,16 +109,16 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
         return to_return;
     }
 
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to generate UVs: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to create UVs: ");
+//#endif
 
     if (input_mesh.normals.indices.size() > 0)
     {
-        tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//        tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
         last_intra->normals.Clear();
 
@@ -216,72 +192,48 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
             last_intra->normals.elements[i] /= last_intra->normals.elements[i].norm();
         }
 
-
-        tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-        total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-        time_message = "\tTime to recompute normals: " + std::to_string(tp_nanoseconds) + "\n";
-        time_log.write(time_message.c_str(), time_message.size());
-#endif
+//#if VSMC_TIME_LOGGING
+//        tl.GetLogger(compression_time_logger_name)->MarkTime();
+//        tl.PrintLogger(compression_time_logger_name, "Time to create normals: ");
+//#endif
     }
 
     std::vector<char> compression_buffer;
 
-    //last_intra->WriteOBJ("D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_CompressedSequences/_AB-2PUNCH_VSMC/TestOutput.obj");
-
-    //std::cout << "VERTS: (" << last_intra->vertices.elements.size() << ", " << last_intra->vertices.indices.size()
-    //    << ") --- UVS: (" << last_intra->uvs.elements.size() << ", " << last_intra->uvs.indices.size()
-    //    << ") --- NORMALS: (" << last_intra->normals.elements.size() << ", " << last_intra->normals.indices.size() << ")" << std::endl;
-
-    std::cout << "Draco compression... ";
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     dc->CompressMeshToVector(*last_intra, compression_buffer);
 
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to compress (DRACO): " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to compress with Draco: ");
+//#endif
 
     sfb.WriteVectorToBuffer(compression_buffer);
 
-    tp_now = std::chrono::high_resolution_clock::now();
-
-    //last_intra->Clear();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
+    
     dc->DecompressMeshFromVector(compression_buffer, *last_intra);
 
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to decompress (DRACO): " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
-
-    //std::cout << "VERTS: (" << last_intra->vertices.elements.size() << ", " << last_intra->vertices.indices.size()
-    //    << ") --- UVS: (" << last_intra->uvs.elements.size() << ", " << last_intra->uvs.indices.size()
-    //    << ") --- NORMALS: (" << last_intra->normals.elements.size() << ", " << last_intra->normals.indices.size() << ")" << std::endl;
-
-    std::cout << "Remapping... ";
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to decompress with Draco: ");
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     to_return->first.assign(width, height, 1, 3, 0);
     tr.Remap(input_mesh, *last_intra, input_texture, to_return->first, uv_epsilon, ppk_size, ppk_scale);
     //tr.FastRemap(input_mesh, *last_intra, input_texture, to_return->first, uv_epsilon, ppk_size, ppk_scale);
 
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to remap texture: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
-
-    std::cout << "Displacing... ";
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to remap texture: ");
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     auto adjacencies = last_intra->SubdivideMeshAndGetAdjacencies(subdivision_count);
     displacements = vcm.GetMeshDisplacements(*last_intra, input_mesh, *cgal_mesh, *i_map, *aabb_tree);
@@ -289,13 +241,10 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     Eigen::Vector3d max_data_val = Eigen::Vector3d::Ones() * -DBL_MAX;
     Eigen::Vector3d min_data_val = Eigen::Vector3d::Ones() * DBL_MAX;
 
-
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to get displacements: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to displace mesh: ");
+//#endif
 
     size_t header_loc = sfb.GetWriterLocation();
     sfb.WriteObjectToBuffer(max_data_val[0]);
@@ -315,9 +264,9 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
 
     std::vector<Eigen::Vector3d> midpoint_buffer;
 
-    std::cout << "Wavelets... ";
-
-    tp_now = std::chrono::high_resolution_clock::now();
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->StartTimer();
+//#endif
 
     for (int i = adjacencies->size() - 1; i >= 0; --i)
     {
@@ -331,15 +280,12 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     }
 
     to_return->second.assign(disp_width, disp_width, 1, 3, 0);
-    //FillImageBlocksRaster<unsigned char>(to_return->second, b_size, *displacements, 0, displacement_max, min_data_val, max_data_val);
     dp.FillImageBlocksRaster(to_return->second, b_size, *displacements, 0, displacement_max, min_data_val, max_data_val);
 
-    tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-    total_nanoseconds += tp_nanoseconds;
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime to apply wavelet transform: " + std::to_string(tp_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
+//#if VSMC_TIME_LOGGING
+//    tl.GetLogger(compression_time_logger_name)->MarkTime();
+//    tl.PrintLogger(compression_time_logger_name, "Time to create wavelets: ");
+//#endif
 
     size_t end_loc = sfb.GetWriterLocation();
     sfb.SetWriterLocation(header_loc);
@@ -351,12 +297,9 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     sfb.WriteObjectToBuffer(min_data_val[2]);
     sfb.SetWriterLocation(end_loc);
 
-    std::cout << "DONE!" << std::endl;
-
-#if VSMC_TIME_LOGGING
-    time_message = "\tTime overall to compress (minus file writing): " + std::to_string(total_nanoseconds) + "\n";
-    time_log.write(time_message.c_str(), time_message.size());
-#endif
+//#if VSMC_TIME_LOGGING
+//    tl.PrintLoggerTotalTime(compression_time_logger_name, "Total time for frame (MINUS FILE WRITING): ");
+//#endif
 
     return to_return;
 }
@@ -458,10 +401,9 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 
     size_t relative_ind = 0;
 
-    std::string time_message;
-    size_t tp_nanoseconds;
-    size_t total_nanoseconds = 0;
-    std::chrono::high_resolution_clock::time_point tp_now;
+#if VSMC_TIME_LOGGING
+    tl.GetLogger(total_time_logger_name)->ResetTotalTime();
+#endif
 
     sfb.WriteObjectToBuffer(subdivision_count);
     sfb.WriteObjectToBuffer(b_size);
@@ -477,7 +419,11 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
     {
         std::cout << "\tDEBUG frame " << i << " (" << relative_ind << ") \"" << sf.files[mesh_sf.key][i] << "\"..." << std::endl;
 
-        tp_now = std::chrono::high_resolution_clock::now();
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->ResetTotalTime();
+        tl.GetLogger(total_time_logger_name)->StartTimer();
+        tl.GetLogger(frame_time_logger_name)->StartTimer();
+#endif
 
         if (!to_compress_mesh.ReadOBJ(sf.files[mesh_sf.key][i]))
         {
@@ -487,27 +433,26 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 
         to_compress_texture.assign(sf.files[texture_sf.key][i].c_str());
 
-        tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-        total_nanoseconds += tp_nanoseconds;
 #if VSMC_TIME_LOGGING
-        time_message = "Time to read obj and tex files: " + std::to_string(tp_nanoseconds) + "\n";
-        time_log.write(time_message.c_str(), time_message.size());
+        tl.GetLogger(frame_time_logger_name)->MarkTime();
+        tl.PrintLogger(frame_time_logger_name, "Time to read files (FRAME " + std::to_string(i) + "): ");
 #endif
 
         file_locs[relative_ind] = sfb.GetWriterLocation();
 
         std::cout << "Doing Compression..." << std::endl;
 
-        tp_now = std::chrono::high_resolution_clock::now();
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->StartTimer();
+#endif
 
         auto imgs = CompressIntra(to_compress_mesh, to_compress_texture, sfb);
 
-        tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-        total_nanoseconds += tp_nanoseconds;
 #if VSMC_TIME_LOGGING
-        time_message = "Time to compress file (including file writing): " + std::to_string(tp_nanoseconds) + "\n";
-        time_log.write(time_message.c_str(), time_message.size());
+        tl.GetLogger(frame_time_logger_name)->MarkTime();
+        tl.PrintLogger(frame_time_logger_name, "Time to compress (including file writing): ");
 #endif
+
         if (imgs->first.width() == 0)
         {
             //continue;
@@ -516,18 +461,20 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 
         std::cout << "Saving tex... " << std::endl;
 
-        tp_now = std::chrono::high_resolution_clock::now();
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->StartTimer();
+#endif
 
         tex_file_name = output_texture_tag + "_" + GetNumberFixedLength(i, digits_per_number) + ".jpg";
         disp_file_name = displacement_texture_tag + "_" + GetNumberFixedLength(i, digits_per_number) + ".jpg";
         imgs->first.save_jpeg(tex_file_name.c_str(), jpg_q);
         imgs->second.save_jpeg(disp_file_name.c_str(), jpg_q);
 
-        tp_nanoseconds = (std::chrono::high_resolution_clock::now() - tp_now).count();
-        total_nanoseconds += tp_nanoseconds;
 #if VSMC_TIME_LOGGING
-        time_message = "Time to save textures: " + std::to_string(tp_nanoseconds) + "\n";
-        time_log.write(time_message.c_str(), time_message.size());
+        tl.GetLogger(frame_time_logger_name)->MarkTime();
+        tl.GetLogger(total_time_logger_name)->MarkTime();
+        tl.PrintLogger(frame_time_logger_name, "Time to save displacement/albedo textures: ");
+        tl.PrintLoggerTotalTime(frame_time_logger_name, "Total time to save frame: ");
 #endif
     }
 
@@ -538,8 +485,12 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
     sfb.CloseWriteBuffer();
 
 #if VSMC_TIME_LOGGING
-    time_message = "Time TOTAL: " + std::to_string(total_nanoseconds) + "\n\n\n";
-    time_log.write(time_message.c_str(), time_message.size());
+    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to save file: ");
+    tl.PrintLoggerAverageTime(total_time_logger_name, "Average time per frame: ");
+
+    tl.PrintEmptyLine();
+    tl.PrintEmptyLine();
+    tl.PrintEmptyLine();
 #endif
 
     return true;
@@ -569,6 +520,10 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
     int expected_subdiv_count;
     size_t expected_block_size;
 
+#if VSMC_TIME_LOGGING
+    tl.GetLogger(total_time_logger_name)->ResetTotalTime();
+#endif
+
     sfb.ReadObjectFromBuffer(expected_subdiv_count);
     sfb.ReadObjectFromBuffer(expected_block_size);
 
@@ -579,14 +534,47 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
     {
         std::cout << "Decompressing frame " << i << "..." << std::endl;
 
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->ResetTotalTime();
+        tl.GetLogger(total_time_logger_name)->StartTimer();
+        tl.GetLogger(frame_time_logger_name)->StartTimer();
+#endif
+
         displacement_tex.assign(sf.files[displacement_texture_sf.key][i].c_str());
 
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->MarkTime();
+        tl.PrintLogger(frame_time_logger_name, "Time to read displacements: ");
+        tl.GetLogger(frame_time_logger_name)->StartTimer();
+#endif
+
         auto new_mesh = DecompressIntra(i, file_locs, expected_subdiv_count, displacement_tex, expected_block_size, sfb);
+
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->MarkTime();
+        tl.PrintLogger(frame_time_logger_name, "Time to decompress: ");
+        tl.GetLogger(frame_time_logger_name)->StartTimer();
+#endif
 
         std::string save_name = output_mesh_tag + "_" + GetNumberFixedLength(i, digits_per_number) + ".obj";
         
         new_mesh->WriteOBJ(save_name);
+
+#if VSMC_TIME_LOGGING
+        tl.GetLogger(frame_time_logger_name)->MarkTime();
+        tl.GetLogger(total_time_logger_name)->MarkTime();
+        tl.PrintLogger(frame_time_logger_name, "Time to write obj: ");
+#endif
     }
+
+#if VSMC_TIME_LOGGING
+    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to save file: ");
+    tl.PrintLoggerAverageTime(total_time_logger_name, "Average time per frame: ");
+
+    tl.PrintEmptyLine();
+    tl.PrintEmptyLine();
+    tl.PrintEmptyLine();
+#endif
 
     return true;
 }

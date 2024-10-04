@@ -16,6 +16,8 @@
 
 #include "DisplacementPacker.h"
 
+#include "TimeLogger.h"
+
 #define USE_DOUBLE_DISPLACEMENTS 0
 //#define USE_DOUBLE_DISPLACEMENTS 1
 
@@ -85,7 +87,11 @@ class VSMC_Compressor
 	bool initialized = false;
 
 #if VSMC_TIME_LOGGING
-	std::ofstream time_log;
+	TimeLogger tl;
+
+	std::string total_time_logger_name;
+	std::string frame_time_logger_name;
+	std::string compression_time_logger_name;
 #endif
 
 public:

@@ -252,6 +252,9 @@
     <ClCompile Include="MeshEvaluationMetrics.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="TimeLogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VV_Mesh.h">
@@ -537,6 +540,9 @@
       <Filter>Source Files\TestSuites</Filter>
     </ClInclude>
     <ClInclude Include="MeshEvaluationMetrics.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TimeLogger.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
