@@ -2,6 +2,8 @@
 
 #include "TestSuite.h"
 
+#include "SequenceFilePathUniversal.h"
+
 #include "VV_Mesh.h"
 #include "VV_CGAL_Marshaller.h"
 #include "MortonOrderer.h"
@@ -54,14 +56,11 @@ class VSMC_TestSuite : public TestSuite
 
 	double decimation_ratio = 1.0 / decim_int;
 
-	std::string drive_name = "E:";
-	//std::string drive_name = "C:";
-
 	// For use with GarlandHeckbert_triangle_policies - see VV_CGAL_Marshaller
-	//std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/AB-2punch";
-	//std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/AB-dodgeleft";
-	//std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/AB-death";
-	std::string test_sequence = drive_name + "/_VV_DATA/_VV_DATASETS_TRIMMED/SIR_FREDRICK";
+	//std::string test_sequence = GetDatasetsPath() + "/AB-2punch";
+	//std::string test_sequence = GetDatasetsPath() + "/AB-dodgeleft";
+	//std::string test_sequence = GetDatasetsPath() + "/AB-death";
+	std::string test_sequence = GetDatasetsPath() + "/SIR_FREDRICK";
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string sequence_file_identifier = "/AB-DEATH";
@@ -72,8 +71,8 @@ class VSMC_TestSuite : public TestSuite
 	std::string draco_level = "/DRACO_COMPRESSION_" + std::to_string(draco_compression_level);
 	std::string compression_details = "/DECIM" + std::to_string(decim_int) + "LOOP" + std::to_string(subdiv_loops);
 
-	std::string compressed_sequence_folder = drive_name + "/_VV_DATA/_COMPRESSIONS/_VSMC" + draco_level + compression_details + sequence_file_identifier;
-	std::string reconstructed_sequence_folder = drive_name + "/_VV_DATA/_RECONSTRUCTIONS/_VSMC" + draco_level + compression_details + sequence_file_identifier;
+	std::string compressed_sequence_folder = GetCompressionPath() + "/_VSMC" + draco_level + compression_details + sequence_file_identifier;
+	std::string reconstructed_sequence_folder = GetReconstructionPath() + "/_VSMC" + draco_level + compression_details + sequence_file_identifier;
 
 	std::string compress_file_output = compressed_sequence_folder + "/CompressedSequence.vsmc";
 	std::string displacement_tag = compressed_sequence_folder + "/Displacement";
