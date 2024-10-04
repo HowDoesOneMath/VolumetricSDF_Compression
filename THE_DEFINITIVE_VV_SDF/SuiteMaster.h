@@ -2,6 +2,8 @@
 
 #include "TestSuite.h"
 
+#include <CImg.h>
+
 #include "ArtifactCullingSuite.h"
 #include "AttributeMapSuite.h"
 #include "BarycentricInterpolationSuite.h"
@@ -52,6 +54,8 @@ class SuiteMaster
 public:
     void run(int argc, char** argv)
     {
+        cimg_library::cimg::openmp_mode(1);
+
         TestSuite* suite = nullptr;
 
         //suite = new ArtifactCullingSuite();

@@ -447,7 +447,7 @@ void FFMPEG_Wrapper::CloseReadingStreams()
 
     if (codec_ctx) 
     {
-        avcodec_close(codec_ctx);
+        //avcodec_close(codec_ctx);
         avcodec_free_context(&codec_ctx);
     }
 }
@@ -486,7 +486,7 @@ void FFMPEG_Wrapper::CloseWritingStream()
 {
     if (codec_ctx)
     {
-        avcodec_close(codec_ctx);
+        //avcodec_close(codec_ctx);
         avcodec_free_context(&codec_ctx);
     }
 }

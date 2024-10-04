@@ -299,9 +299,10 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
     cimg_library::CImg<double> unclamped_occupancy;
     cimg_library::CImg<double> occupancy_stream(img_w, img_h, 1, 1);
 
-    for (size_t w = 0; w < img_w; ++w)
+#pragma omp parallel for
+    for (int w = 0; w < img_w; ++w)
     {
-        for (size_t h = 0; h < img_h; ++h)
+        for (int h = 0; h < img_h; ++h)
         {
             rgb_stream(w, h, 0, 0) = tex(w, h, 0, 0) / 255.0;
             rgb_stream(w, h, 0, 1) = tex(w, h, 0, 1) / 255.0;
@@ -338,9 +339,10 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
 
         //CreateCImgDebugWindow(rgb_stream, "Convolve size " + std::to_string(img_w) + ", " + std::to_string(img_h));
 
-        for (size_t w = 0; w < img_w; ++w)
+#pragma omp parallel for
+        for (int w = 0; w < img_w; ++w)
         {
-            for (size_t h = 0; h < img_h; ++h)
+            for (int h = 0; h < img_h; ++h)
             {
                 if (unclamped_occupancy(w, h, 0, 0) > 0)
                 {
@@ -402,15 +404,17 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
     img_w = tex.width();
     img_h = tex.height();
 
-    for (size_t w = 0; w < img_w; ++w)
-    {
-        for (size_t h = 0; h < img_h; ++h)
-        {
-            tex(w, h, 0, 0) = image_pyramid[0].first(w, h, 0, 0) * 255.0;
-            tex(w, h, 0, 1) = image_pyramid[0].first(w, h, 0, 1) * 255.0;
-            tex(w, h, 0, 2) = image_pyramid[0].first(w, h, 0, 2) * 255.0;
-        }
-    }
+    tex = image_pyramid[0].first * 255.0;
+
+    //for (size_t w = 0; w < img_w; ++w)
+    //{
+    //    for (size_t h = 0; h < img_h; ++h)
+    //    {
+    //        tex(w, h, 0, 0) = image_pyramid[0].first(w, h, 0, 0) * 255.0;
+    //        tex(w, h, 0, 1) = image_pyramid[0].first(w, h, 0, 1) * 255.0;
+    //        tex(w, h, 0, 2) = image_pyramid[0].first(w, h, 0, 2) * 255.0;
+    //    }
+    //}
 }
 
 bool TextureRemapper::Remap(
