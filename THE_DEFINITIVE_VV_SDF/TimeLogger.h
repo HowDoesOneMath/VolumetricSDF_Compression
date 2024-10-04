@@ -109,5 +109,8 @@ public:
 	void PrintLoggerGreatestTime(std::string key, std::string message);
 	void PrintLoggerAverageTime(std::string key, std::string message);
 
+	void PrintTotalAndAverageAndGreatestTime(std::string key, 
+		std::string total_piece, std::string average_piece, std::string greatest_piece, std::string rest_of_messge);
+
 	void PrintEmptyLine();
 };

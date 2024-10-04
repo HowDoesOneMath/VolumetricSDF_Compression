@@ -527,20 +527,19 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 
 #if VSMC_TIME_LOGGING
 
-    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to save file: ");
-    tl.PrintLoggerAverageTime(total_time_logger_name, "Average time per frame: ");
+    tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of compression: ");
 
-    tl.PrintLoggerAverageTime(cleaning_time_logger_name, "Average Time Cleaning Mesh: ");
-    tl.PrintLoggerAverageTime(uvs_time_logger_name, "Average Time Making UVs: ");
-    tl.PrintLoggerAverageTime(decimation_time_logger_name, "Average Time Decimating Mesh: ");
-    tl.PrintLoggerAverageTime(cull_time_logger_name, "Average Time Culling Mesh: ");
-    tl.PrintLoggerAverageTime(normals_time_logger_name, "Average Time Making Normals: ");
-    tl.PrintLoggerAverageTime(draco_compression_time_logger_name, "Average Time Compressing w/Draco: ");
-    tl.PrintLoggerAverageTime(draco_decompression_time_logger_name, "Average Time Decompressing w/Draco: ");
-    tl.PrintLoggerAverageTime(remap_time_logger_name, "Average Time Remapping Texture: ");
-    tl.PrintLoggerAverageTime(subdiv_time_logger_name, "Average Time Subdividing Mesh: ");
-    tl.PrintLoggerAverageTime(displacement_time_logger_name, "Average Time Getting Displacements: ");
-    tl.PrintLoggerAverageTime(wavelet_time_logger_name, "Average Time Calculating Wavelets: ");
+    tl.PrintTotalAndAverageAndGreatestTime(cleaning_time_logger_name, "Total time", "Average time", "Greatest time", " Cleaning Mesh: ");
+    tl.PrintTotalAndAverageAndGreatestTime(uvs_time_logger_name, "Total time", "Average time", "Greatest time", " Making UVs: ");
+    tl.PrintTotalAndAverageAndGreatestTime(decimation_time_logger_name, "Total time", "Average time", "Greatest time", " Decimating Mesh: ");
+    tl.PrintTotalAndAverageAndGreatestTime(cull_time_logger_name, "Total time", "Average time", "Greatest time", " Culling Mesh: ");
+    tl.PrintTotalAndAverageAndGreatestTime(normals_time_logger_name, "Total time", "Average time", "Greatest time", " Making Normals: ");
+    tl.PrintTotalAndAverageAndGreatestTime(draco_compression_time_logger_name, "Total time", "Average time", "Greatest time", " Compressing w/Draco: ");
+    tl.PrintTotalAndAverageAndGreatestTime(draco_decompression_time_logger_name, "Total time", "Average time", "Greatest time", " Decompressing w/Draco: ");
+    tl.PrintTotalAndAverageAndGreatestTime(remap_time_logger_name, "Total time", "Average time", "Greatest time", " Remapping Texture: ");
+    tl.PrintTotalAndAverageAndGreatestTime(subdiv_time_logger_name, "Total time", "Average time", "Greatest time", " Subdividing Mesh: ");
+    tl.PrintTotalAndAverageAndGreatestTime(displacement_time_logger_name, "Total time", "Average time", "Greatest time", " Getting Displacements: ");
+    tl.PrintTotalAndAverageAndGreatestTime(wavelet_time_logger_name, "Total time", "Average time", "Greatest time", " Calculating Wavelets: ");
 
     tl.PrintEmptyLine();
     tl.PrintEmptyLine();
@@ -624,17 +623,17 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
         tl.GetLogger(total_time_logger_name)->MarkTime();
         tl.PrintLogger(frame_time_logger_name, "Time to write obj: ");
         tl.PrintLoggerTotalTime(frame_time_logger_name, "Total time to decompress frame: ");
+        tl.PrintEmptyLine();
 #endif
     }
 
 #if VSMC_TIME_LOGGING
-    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to reconstruct: ");
-    tl.PrintLoggerAverageTime(total_time_logger_name, "Average time per frame: ");
+    tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of decompression: ");
 
-    tl.PrintLoggerAverageTime(draco_decompression_time_logger_name, "Average time for Draco decompression: ");
-    tl.PrintLoggerAverageTime(subdiv_time_logger_name, "Average time for Subdivision: ");
-    tl.PrintLoggerAverageTime(wavelet_time_logger_name, "Average time for Wavelets: ");
-    tl.PrintLoggerAverageTime(displacement_time_logger_name, "Average time for Displacement: ");
+    tl.PrintTotalAndAverageAndGreatestTime(draco_decompression_time_logger_name, "Total time", "Average time", "Greatest time", " for Draco Decompression: ");
+    tl.PrintTotalAndAverageAndGreatestTime(subdiv_time_logger_name, "Total time", "Average time", "Greatest time", " for Subdivision: ");
+    tl.PrintTotalAndAverageAndGreatestTime(wavelet_time_logger_name, "Total time", "Average time", "Greatest time", " for Wavelets: ");
+    tl.PrintTotalAndAverageAndGreatestTime(displacement_time_logger_name, "Total time", "Average time", "Greatest time", " for Displacement: ");
 
     tl.PrintEmptyLine();
     tl.PrintEmptyLine();
