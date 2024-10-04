@@ -8,6 +8,8 @@
 #include <unordered_set>
 
 #define _DEBUG
+#define _OPENMP
+
 #include <UVAtlas.h>
 #include <DirectXMesh.h>
 #include <draco/mesh/mesh.h>
