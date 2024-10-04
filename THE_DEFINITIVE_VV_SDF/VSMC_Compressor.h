@@ -19,6 +19,9 @@
 #define USE_DOUBLE_DISPLACEMENTS 0
 //#define USE_DOUBLE_DISPLACEMENTS 1
 
+//#define VSMC_TIME_LOGGING 0
+#define VSMC_TIME_LOGGING 1
+
 class VSMC_Compressor
 {
 	std::shared_ptr<VV_Mesh> last_intra;
@@ -81,6 +84,10 @@ class VSMC_Compressor
 
 	bool initialized = false;
 
+#if VSMC_TIME_LOGGING
+	std::ofstream time_log;
+#endif
+
 public:
 	~VSMC_Compressor() {
 		if (dc != nullptr)
@@ -93,6 +100,12 @@ public:
 	void InitializeCompressor(double decimation_ratio, size_t output_attribute_width, size_t output_attribute_height, double gutter_amount, 
 		int subdiv_count, size_t displacement_map_width, size_t displacement_block_size, int push_pull_kernel_size, double push_pull_kernel_scale,
 		int draco_compression_speed, unsigned int jpg_quality = 100U);
+
+#if VSMC_TIME_LOGGING
+	void SetTimeLogFile(std::string time_log_name);
+
+	void CloseTimeLogFile();
+#endif
 
 private:
 #if USE_DOUBLE_DISPLACEMENTS

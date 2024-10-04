@@ -119,6 +119,10 @@ void VSMC_TestSuite::CompressSequence(std::string root_folder, std::string save_
 		displacement_texture_size, displacement_block_size, push_pull_kernel_size, push_pull_kernel_scale, 
 		draco_compression_level);
 
+#if VSMC_TIME_LOGGING
+	vsmc_comp.SetTimeLogFile(time_log_path);
+#endif
+
 	//if (!vsmc_comp.CompressSequence(root_folder, mesh_sf, texture_sf, save_name, texture_tag, displacement_tag))
 	if (!vsmc_comp.CompressSequence(root_folder, mesh_sf, texture_sf, save_name, texture_tag, displacement_tag, beginning_frame, end_frame))
 	{
