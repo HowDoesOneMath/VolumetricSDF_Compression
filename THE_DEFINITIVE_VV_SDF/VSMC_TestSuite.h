@@ -55,7 +55,7 @@ class VSMC_TestSuite : public TestSuite
 	double decimation_ratio = 1.0 / decim_int;
 
 	std::string drive_name = "E:";
-	//std::string drive_name = "D:";
+	//std::string drive_name = "C:";
 
 	// For use with GarlandHeckbert_triangle_policies - see VV_CGAL_Marshaller
 	//std::string test_sequence = drive_name + "_VV_DATA/_VV_DATASETS_TRIMMED/AB-2punch";
