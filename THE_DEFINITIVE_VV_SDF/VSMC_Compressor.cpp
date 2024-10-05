@@ -66,6 +66,8 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     tl.GetLogger(cleaning_time_logger_name)->StartTimer();
 #endif
 
+    input_mesh.ClearUnreferencedElements();
+
     mp.CreateUnionFindPartitions(input_mesh);
     mp.NegateInsignificantPartitions(input_mesh, mesh_maximum_artifact_size);
     input_mesh.ClearNegativeTriangles();
