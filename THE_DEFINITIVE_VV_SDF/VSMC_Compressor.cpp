@@ -518,6 +518,8 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
         tl.PrintLogger(frame_time_logger_name, "Time to save displacement/albedo textures: ");
         tl.PrintLoggerTotalTime(frame_time_logger_name, "Total time to save frame: ");
         tl.PrintEmptyLine();
+
+        std::cout << "Frame Time: " << (tl.GetLogger(total_time_logger_name)->GetTime() * 0.000000001) << " seconds" << std::endl;
 #endif
     }
 
