@@ -331,6 +331,8 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
             (int)(~0U >> 1), (int)(~0U >> 1), (int)(~0U >> 1),
             2, 2, 1).crop(0, 0, img_w - 1, img_h - 1, 0);
 
+        //unclamped_occupancy = occupancy_stream.get_resize(img_w, img_h, 1, 1, 3);
+
         occupancy_stream = unclamped_occupancy.get_min(1.0);
 
         rgb_stream.convolve(pull_kernel, 0, false, 1, 
@@ -338,6 +340,8 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
             0, 0, 0,
             (int)(~0U >> 1), (int)(~0U >> 1), (int)(~0U >> 1),
             2, 2, 1).crop(0, 0, img_w - 1, img_h - 1, 0);
+
+        //rgb_stream.resize(img_w, img_h, 1, 3, 3);
 
         //CreateCImgDebugWindow(rgb_stream, "Convolve size " + std::to_string(img_w) + ", " + std::to_string(img_h));
 
@@ -369,7 +373,7 @@ void TextureRemapper::PadTextureWithPushPull(cimg_library::CImg<unsigned char>& 
     //Iterate backwards through the pyramid to fill empty space
     for (int i = image_pyramid.size() - 2; i >= 0; --i)
     {
-        rgb_stream = image_pyramid[i + 1].first.get_resize(image_pyramid[i].second.width(), image_pyramid[i].second.height(), 1, 3, 1);
+        rgb_stream = image_pyramid[i + 1].first.get_resize(image_pyramid[i].second.width(), image_pyramid[i].second.height(), 1, 3, 3);
         
         rgb_stream.convolve(push_kernel, 0, false, 1,
             (int)(~0U >> 1), (int)(~0U >> 1), (int)(~0U >> 1),
