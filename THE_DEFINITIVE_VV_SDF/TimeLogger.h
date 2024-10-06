@@ -113,4 +113,6 @@ public:
 		std::string total_piece, std::string average_piece, std::string greatest_piece, std::string rest_of_messge);
 
 	void PrintEmptyLine();
+	
+	void PrintSolidLine(int length, char character);
 };

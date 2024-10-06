@@ -210,7 +210,8 @@ bool VV_Mesh::GenerateNewUVsWithUVAtlas(size_t width, size_t height, float gutte
 
 	//std::cout << "Creating Atlas..." << std::endl;
 
-	float stretch_amnt = 0.f;
+	//float stretch_amnt = 0.f;
+	float stretch_amnt = 0.1f;
 
 	DXGI_FORMAT fmt = DXGI_FORMAT_R32_UINT;
 	//DXGI_FORMAT fmt = DXGI_FORMAT_R32_SINT;
@@ -219,7 +220,8 @@ bool VV_Mesh::GenerateNewUVsWithUVAtlas(size_t width, size_t height, float gutte
 		vertices.indices.data(), fmt, nFaces,
 		0, stretch_amnt, width, height, gutter, adj.get(), nullptr, nullptr, nullptr,
 		DirectX::UVATLAS_DEFAULT_CALLBACK_FREQUENCY,
-		DirectX::UVATLAS_DEFAULT, vb, ib, nullptr, &remap);
+		//DirectX::UVATLAS_DEFAULT, vb, ib, nullptr, &remap);
+		DirectX::UVATLAS_GEODESIC_FAST, vb, ib, nullptr, &remap);
 
 	if (FAILED(result))
 	{

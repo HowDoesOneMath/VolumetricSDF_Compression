@@ -42,6 +42,8 @@ void VSMC_Compressor::SetTimeLogFile(std::string time_log_name)
     tl.CreateNewLogger(subdiv_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(displacement_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(wavelet_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(image_saving_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(obj_saving_time_logger_name, new TimeLogger::IndependentLogger(""));
 
 }
 
@@ -444,6 +446,7 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
     tl.GetLogger(subdiv_time_logger_name)->ResetTotalTime();
     tl.GetLogger(displacement_time_logger_name)->ResetTotalTime();
     tl.GetLogger(wavelet_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(image_saving_time_logger_name)->ResetTotalTime();
 
 #endif
 
@@ -505,6 +508,7 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 
 #if VSMC_TIME_LOGGING
         tl.GetLogger(frame_time_logger_name)->StartTimer();
+        tl.GetLogger(image_saving_time_logger_name)->StartTimer();
 #endif
 
         tex_file_name = output_texture_tag + "_" + GetNumberFixedLength(i, digits_per_number) + ".jpg";
@@ -513,6 +517,7 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
         imgs->second.save_jpeg(disp_file_name.c_str(), jpg_q);
 
 #if VSMC_TIME_LOGGING
+        tl.GetLogger(image_saving_time_logger_name)->MarkTime();
         tl.GetLogger(frame_time_logger_name)->MarkTime();
         tl.GetLogger(total_time_logger_name)->MarkTime();
         tl.PrintLogger(frame_time_logger_name, "Time to save displacement/albedo textures: ");
@@ -555,10 +560,12 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
     tl.PrintTotalAndAverageAndGreatestTime(displacement_time_logger_name, "Total time", "Average time", "Greatest time", " Getting Displacements: ");
     tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(wavelet_time_logger_name, "Total time", "Average time", "Greatest time", " Calculating Wavelets: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(image_saving_time_logger_name, "Total time", "Average time", "Greatest time", " Saving Images: ");
 
     tl.PrintEmptyLine();
     tl.PrintEmptyLine();
-    tl.PrintEmptyLine();
+    tl.PrintSolidLine(40, '=');
 #endif
 
     return true;
@@ -595,6 +602,7 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
     tl.GetLogger(subdiv_time_logger_name)->ResetTotalTime();
     tl.GetLogger(displacement_time_logger_name)->ResetTotalTime();
     tl.GetLogger(wavelet_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(obj_saving_time_logger_name)->ResetTotalTime();
 #endif
 
     sfb.ReadObjectFromBuffer(expected_subdiv_count);
@@ -625,8 +633,9 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
 
 #if VSMC_TIME_LOGGING
         tl.GetLogger(frame_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to decompress: ");
+        tl.PrintLogger(frame_time_logger_name, "Time to decompress frame " + std::to_string(i) + ": ");
         tl.GetLogger(frame_time_logger_name)->StartTimer();
+        tl.GetLogger(obj_saving_time_logger_name)->StartTimer();
 #endif
 
         std::string save_name = output_mesh_tag + "_" + GetNumberFixedLength(i, digits_per_number) + ".obj";
@@ -634,6 +643,7 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
         new_mesh->WriteOBJ(save_name);
 
 #if VSMC_TIME_LOGGING
+        tl.GetLogger(obj_saving_time_logger_name)->MarkTime();
         tl.GetLogger(frame_time_logger_name)->MarkTime();
         tl.GetLogger(total_time_logger_name)->MarkTime();
         tl.PrintLogger(frame_time_logger_name, "Time to write obj: ");
@@ -654,6 +664,7 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
     tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(displacement_time_logger_name, "Total time", "Average time", "Greatest time", " for Displacement: ");
     tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(obj_saving_time_logger_name, "Total time", "Average time", "Greatest time", " for OBJ saving: ");
 
     tl.PrintEmptyLine();
     tl.PrintEmptyLine();

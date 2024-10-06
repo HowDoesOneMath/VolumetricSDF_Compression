@@ -105,6 +105,8 @@ class VSMC_Compressor
 	std::string subdiv_time_logger_name					= "SUBDIV_TIME_LOG";
 	std::string displacement_time_logger_name			= "DISPLACE_TIME_LOG";
 	std::string wavelet_time_logger_name				= "WAVELET_TIME_LOG";
+	std::string image_saving_time_logger_name			= "IMAGE_SAVING_TIME_LOG";
+	std::string obj_saving_time_logger_name				= "OBJ_SAVING_TIME_LOG";
 #endif
 
 public:

@@ -67,3 +67,13 @@ void TimeLogger::PrintEmptyLine()
 	main_file.write(to_print.c_str(), to_print.length());
 }
 
+void TimeLogger::PrintSolidLine(int length, char character)
+{
+	std::string to_print;
+
+	to_print.resize(length, character);
+	to_print += "\n";
+
+	main_file.write(to_print.c_str(), to_print.length());
+}
+
