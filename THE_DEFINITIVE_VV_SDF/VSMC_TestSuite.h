@@ -66,8 +66,6 @@ class VSMC_TestSuite : public TestSuite
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
 
-	std::string time_log_identifier = "/TimeLog.txt";
-
 	std::string draco_level = "/DRACO_COMPRESSION_" + std::to_string(draco_compression_level);
 	std::string compression_details = "/DECIM" + std::to_string(decim_int) + "LOOP" + std::to_string(subdiv_loops);
 
@@ -80,6 +78,7 @@ class VSMC_TestSuite : public TestSuite
 	std::string reconstructed_mesh_tag = reconstructed_sequence_folder + "/FRAME";
 	std::string texture_tag = reconstructed_mesh_tag;
 
+	std::string time_log_identifier = "/TimeLog.txt";
 	std::string time_log_path = compressed_sequence_folder + time_log_identifier;
 
 	VSMC_Compressor vsmc_comp;

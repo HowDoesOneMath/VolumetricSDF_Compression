@@ -2,6 +2,10 @@
 
 void VV_SVD_TemporalSuite::TestSingleSequence()
 {
+#if TSVD_TIME_LOGGING
+	vv_svd_tc.SetTimeLogFile(time_log_path);
+#endif
+
 	gds.dim_x = grid_width_voxels;
 	gds.dim_y = 2 * grid_width_voxels;
 	gds.dim_z = grid_width_voxels;
@@ -51,6 +55,10 @@ void VV_SVD_TemporalSuite::TestSingleSequence()
 		std::cout << "PROBLEM RECONSTRUCTING MESHES!" << std::endl;
 		return;
 	}
+
+#if TSVD_TIME_LOGGING
+	vv_svd_tc.CloseTimeLogFile();
+#endif
 }
 
 void VV_SVD_TemporalSuite::run(int argc, char** argv)

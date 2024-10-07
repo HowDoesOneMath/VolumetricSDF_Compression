@@ -51,15 +51,17 @@ class VV_SVD_TemporalSuite : public TestSuite
 	std::string grid_voxel_identifier = "/VOXELS_" + std::to_string(grid_width_voxels);
 	std::string frames_per_batch_identifier = "/BATCH_" + std::to_string(max_frames_per_svd);
 
-	std::string compressed_sequence_folder = GetCompressionPath() + tsvd_code + grid_voxel_identifier + frames_per_batch_identifier + significance_identifier;
-	std::string reconstructed_sequence_folder = GetReconstructionPath() + tsvd_code + grid_voxel_identifier + frames_per_batch_identifier + significance_identifier;
+	std::string compressed_sequence_folder = GetCompressionPath() + tsvd_code + grid_voxel_identifier + frames_per_batch_identifier + significance_identifier + sequence_file_identifier;
+	std::string reconstructed_sequence_folder = GetReconstructionPath() + tsvd_code + grid_voxel_identifier + frames_per_batch_identifier + significance_identifier + sequence_file_identifier;
 
-	std::string intermediary_file = compressed_sequence_folder + sequence_file_identifier + "/INTERMEDIARY_FILE.sif";
-	std::string final_file = compressed_sequence_folder + sequence_file_identifier + "/FINAL_FILE.tsvd";
-	std::string output_mesh_tag = reconstructed_sequence_folder + sequence_file_identifier + "/FRAME";
+	std::string intermediary_file = compressed_sequence_folder + "/INTERMEDIARY_FILE.sif";
+	std::string final_file = compressed_sequence_folder + "/FINAL_FILE.tsvd";
+	std::string output_mesh_tag = reconstructed_sequence_folder + "/FRAME";
 
 	std::string output_texture_tag = output_mesh_tag;
 
+	std::string time_log_identifier = "/TimeLog.txt";
+	std::string time_log_path = compressed_sequence_folder + time_log_identifier;
 
 
 	SequenceFinderDetails mesh_sf = SequenceFinderDetails("Mesh", ".obj");
