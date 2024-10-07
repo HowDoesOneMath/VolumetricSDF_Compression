@@ -231,7 +231,7 @@ double VV_TSDF::FindNearestTrianglePointOnTemporaryGrid(VV_Mesh &mesh, Eigen::Ve
 	Eigen::Vector3i bound_spans = upper_bound - lower_bound;
 	distances.resize(bound_spans.x() * bound_spans.y() * bound_spans.z(), DBL_MAX);
 
-#pragma omp parallel for
+//#pragma omp parallel for
 	for (int x = lower_bound.x(); x < upper_bound.x(); ++x)
 	{
 		for (int y = lower_bound.y(); y < upper_bound.y(); ++y)
@@ -403,33 +403,19 @@ void VV_TSDF::CullInteriorShellsInTemporaryGrid(VV_Mesh& mesh)
 
 void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buffer_distance)
 {
+	std::vector<bool> to_recalculate;
+	to_recalculate.resize(double_grid.size(), false);
+
 	size_t grid_loc = 0;
 	size_t previous_loc;
 
 	size_t test_loc;
 	int test_axis = 2;
 
-	int y_start;
-	int y_target;
-	int y_step;
-
-	int z_start;
-	int z_target;
-	int z_step;
-
 	int y_direction = 0;
 	int z_direction = 0;
 
-	Eigen::Vector3i lower_bound;
-	Eigen::Vector3i upper_bound;
-
-	Eigen::Vector3i center;
-
 	bool is_interior = false;
-
-	double nearest;
-
-	//bool current_lesser;
 
 	double default_exterior = buffer_distance + gds.unit_length;
 
@@ -443,17 +429,17 @@ void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buff
 	for (int x = 0; x != gds.dim_x; ++x)
 	{
 		//modulo determined forward or backward traversal
-		y_start = y_direction * (gds.dim_y - 1); //Either 0 or size_y - 1
-		y_target = (int)gds.dim_y - y_direction * (int)(gds.dim_y + 1); //Either size_y or -1;
-		y_step = -2 * y_direction + 1; //Either +1 or -1
+		int y_start = y_direction * (gds.dim_y - 1); //Either 0 or size_y - 1
+		int y_target = (int)gds.dim_y - y_direction * (int)(gds.dim_y + 1); //Either size_y or -1;
+		int y_step = -2 * y_direction + 1; //Either +1 or -1
 
 		//Iterate over range
 		for (int y = y_start; y != y_target; y += y_step)
 		{
 			//Similar logic as the outer loop
-			z_start = z_direction * (gds.dim_z - 1); 
-			z_target = (int)gds.dim_z - z_direction * (int)(gds.dim_z + 1);
-			z_step = -2 * z_direction + 1;
+			int z_start = z_direction * (gds.dim_z - 1); 
+			int z_target = (int)gds.dim_z - z_direction * (int)(gds.dim_z + 1);
+			int z_step = -2 * z_direction + 1;
 
 			for (int z = z_start; z != z_target; z += z_step)
 			{
@@ -483,33 +469,7 @@ void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buff
 				}
 
 				++interior_count;
-
-				center.x() = x;
-				center.y() = y;
-				center.z() = z;
-
-				lower_bound.x() = std::max(0, center.x() - reach);
-				lower_bound.y() = std::max(0, center.y() - reach);
-				lower_bound.z() = std::max(0, center.z() - reach);
-
-				upper_bound.x() = std::min((int)gds.dim_x - 1, center.x() + reach);
-				upper_bound.y() = std::min((int)gds.dim_y - 1, center.y() + reach);
-				upper_bound.z() = std::min((int)gds.dim_z - 1, center.z() + reach);
-
-				//Calculate nearest point on shell
-				nearest = FindNearestTrianglePointOnTemporaryGrid(mesh, lower_bound, upper_bound, center);
-				double_grid[grid_loc] = std::max(buffer_distance - nearest, -gds.unit_length);
-
 			}
-
-			//if (is_interior)
-			//{
-			//	std::cout << "OOPSIE! x: " << x << ", y: " << y << std::endl;
-			//}
-			//else
-			//{
-			//	std::cout << ":)" << std::endl;
-			//}
 
 			z_direction = (z_direction == 0);
 
@@ -519,6 +479,40 @@ void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buff
 		y_direction = (y_direction == 0);
 
 		test_axis = 0;
+	}
+
+#pragma omp parallel for
+	for (int x = 0; x < gds.dim_x; ++x)
+	{
+		for (int y = 0; y < gds.dim_y; ++y)
+		{
+			for (int z = 0; z < gds.dim_z; ++z)
+			{
+				size_t calc_loc = (size_t)z + (size_t)y * span_y + (size_t)x * span_x;
+
+				if (to_recalculate[calc_loc])
+				{
+					Eigen::Vector3i center;
+					center.x() = x;
+					center.y() = y;
+					center.z() = z;
+
+					Eigen::Vector3i lower_bound;
+					lower_bound.x() = std::max(0, center.x() - reach);
+					lower_bound.y() = std::max(0, center.y() - reach);
+					lower_bound.z() = std::max(0, center.z() - reach);
+
+					Eigen::Vector3i upper_bound;
+					upper_bound.x() = std::min((int)gds.dim_x - 1, center.x() + reach);
+					upper_bound.y() = std::min((int)gds.dim_y - 1, center.y() + reach);
+					upper_bound.z() = std::min((int)gds.dim_z - 1, center.z() + reach);
+
+					//Calculate nearest point on shell
+					double nearest = FindNearestTrianglePointOnTemporaryGrid(mesh, lower_bound, upper_bound, center);
+					double_grid[grid_loc] = std::max(buffer_distance - nearest, -gds.unit_length);
+				}
+			}
+		}
 	}
 
 	std::cout << "EXT: " << exterior_count << ", INT: " << interior_count << std::endl;
@@ -957,7 +951,7 @@ std::shared_ptr<std::vector<std::vector<size_t>>> VV_TSDF::ExtractTriangleGroups
 	size_t blocks_y = gds.dim_y / block_size.y();
 	size_t blocks_z = gds.dim_z / block_size.z();
 
-#pragma omp parallel for
+//#pragma omp parallel for
 	for (int x = 0; x < gds.dim_x; x += block_size.x())
 	{
 		for (int y = 0; y < gds.dim_y; y += block_size.y())
