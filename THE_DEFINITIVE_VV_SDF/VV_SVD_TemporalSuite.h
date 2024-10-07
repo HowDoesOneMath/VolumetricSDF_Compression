@@ -75,7 +75,9 @@ class VV_SVD_TemporalSuite : public TestSuite
 	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 
 	const int jpg_quality = 100;
-	const size_t tex_size = 1024;
+	const size_t tex_size = 4096;
+	//const size_t tex_size = 2048;
+	//const size_t tex_size = 1024;
 
 	const double patch_padding = 0.05;
 	const double island_padding = 0.001;
