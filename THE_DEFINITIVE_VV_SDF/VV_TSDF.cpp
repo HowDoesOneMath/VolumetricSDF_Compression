@@ -128,30 +128,24 @@ void VV_TSDF::GetGridDistancesCGAL(VV_Mesh& mesh)
 	vcm.CleanMeshCGAL(*cgal_mesh);
 	auto aabb_tree = vcm.CreateAABB(*cgal_mesh);
 
-	size_t loc = 0;
-	Eigen::Vector3d position;
-
-	size_t t_index;
-	Eigen::Vector3d b_coords;
-
-	Eigen::Vector3i* original_triangle;
-
-	Eigen::Vector3d mesh_position;
-
-	for (size_t x = 0; x < gds.dim_x; ++x)
+#pragma omp parallel for
+	for (int x = 0; x < gds.dim_x; ++x)
 	{
-		for (size_t y = 0; y < gds.dim_y; ++y)
+		for (int y = 0; y < gds.dim_y; ++y)
 		{
-			for (size_t z = 0; z < gds.dim_z; ++z)
+			for (int z = 0; z < gds.dim_z; ++z)
 			{
-				loc = z + y * span_y + x * span_x;
-				position = grid_lower_bound + Eigen::Vector3d(x, y, z) * gds.unit_length;
+				size_t t_index;
+				Eigen::Vector3d b_coords;
+
+				size_t loc = (size_t)z + (size_t)y * span_y + (size_t)x * span_x;
+				Eigen::Vector3d position = grid_lower_bound + Eigen::Vector3d(x, y, z) * gds.unit_length;
 
 				vcm.FindClosestPointCGAL(*cgal_mesh, *aabb_tree, position, t_index, b_coords);
 
-				original_triangle = &mesh.vertices.indices[(*index_remap)[t_index]];
+				Eigen::Vector3i* original_triangle = &mesh.vertices.indices[(*index_remap)[t_index]];
 
-				mesh_position
+				Eigen::Vector3d mesh_position
 					= mesh.vertices.elements[original_triangle->x()] * b_coords.x()
 					+ mesh.vertices.elements[original_triangle->y()] * b_coords.y()
 					+ mesh.vertices.elements[original_triangle->z()] * b_coords.z();
@@ -536,6 +530,113 @@ void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buff
 	//PrintCrossSectionOfDoubleGrid(79);
 }
 
+void VV_TSDF::S_TraversalFillTemporaryGridCGAL(VV_Mesh& mesh, double buffer_distance)
+{
+	size_t grid_loc = 0;
+	size_t previous_loc;
+
+	size_t test_loc;
+	int test_axis = 2;
+
+	int y_direction = 0;
+	int z_direction = 0;
+
+	std::vector<bool> to_recalculate;
+	to_recalculate.resize(double_grid.size(), false);
+
+	//S-shaped traveral over grid.
+	for (int x = 0; x < gds.dim_x; ++x)
+	{
+		//modulo determined forward or backward traversal
+		int y_start = y_direction * (gds.dim_y - 1); //Either 0 or size_y - 1
+		int y_target = (int)gds.dim_y - y_direction * (int)(gds.dim_y + 1); //Either size_y or -1;
+		int y_step = -2 * y_direction + 1; //Either +1 or -1
+
+		//Iterate over range
+		//We choose != instead of < or > in these for loops as the direction is constantly changing
+		for (int y = y_start; y != y_target; y += y_step)
+		{
+			//Similar logic as the outer loop
+			int z_start = z_direction * (gds.dim_z - 1);
+			int z_target = (int)gds.dim_z - z_direction * (int)(gds.dim_z + 1);
+			int z_step = -2 * z_direction + 1;
+
+			for (int z = z_start; z != z_target; z += z_step)
+			{
+				//Get the index of the grid, as well as the previous index
+				previous_loc = grid_loc;
+				grid_loc = (size_t)z + (size_t)y * span_y + (size_t)x * span_x;
+
+				//The only instance in which this will happen is on the first voxel
+				if (previous_loc == grid_loc)
+				{
+					continue;
+				}
+
+				//Determine if the current point is interior or exterior. The first point in the grid is assumed to always be exterior.
+				//is_interior = CheckIfInterior(test_loc, test_axis, is_interior, current_lesser);// , Eigen::Vector3i(x, y, z));
+				bool is_interior = CheckIfInterior(grid_loc, previous_loc, test_axis, is_interior);
+
+				test_axis = 2;
+
+				if (!is_interior)
+				{
+					//Exterior points are given a default value - if they are outside the shell, they are outside the final representation as well.
+					double_grid[grid_loc] = DBL_MAX;
+					continue;
+				}
+
+				to_recalculate[grid_loc] = true;
+			}
+
+			z_direction = (z_direction == 0);
+
+			test_axis = 1;
+		}
+
+		y_direction = (y_direction == 0);
+
+		test_axis = 0;
+	}
+
+	auto cgal_mesh = vcm.GenerateCGAL_MeshFromAttribute(mesh.vertices);
+	auto index_remap = vcm.CGAL_To_VV_IndexMap(*cgal_mesh, mesh.vertices);
+	vcm.CleanMeshCGAL(*cgal_mesh);
+	auto aabb_tree = vcm.CreateAABB(*cgal_mesh);
+
+#pragma omp parallel for
+	for (int x = 0; x < gds.dim_x; ++x)
+	{
+		for (int y = 0; y < gds.dim_y; ++y)
+		{
+			for (int z = 0; z < gds.dim_z; ++z)
+			{
+				size_t calc_loc = (size_t)z + (size_t)y * span_y + (size_t)x * span_x;
+
+				if (to_recalculate[calc_loc])
+				{
+					size_t t_index;
+					Eigen::Vector3d b_coords;
+
+					Eigen::Vector3d position = grid_lower_bound + Eigen::Vector3d(x, y, z) * gds.unit_length;
+
+					vcm.FindClosestPointCGAL(*cgal_mesh, *aabb_tree, position, t_index, b_coords);
+
+					Eigen::Vector3i* original_triangle = &mesh.vertices.indices[(*index_remap)[t_index]];
+
+					Eigen::Vector3d mesh_position
+						= mesh.vertices.elements[original_triangle->x()] * b_coords.x()
+						+ mesh.vertices.elements[original_triangle->y()] * b_coords.y()
+						+ mesh.vertices.elements[original_triangle->z()] * b_coords.z();
+
+					double dist = (mesh_position - position).norm();
+					double_grid[calc_loc] = std::max(buffer_distance - dist, -gds.unit_length);
+				}
+			}
+		}
+	}
+}
+
 bool VV_TSDF::CheckIfInterior(size_t test_loc, size_t previous_loc, int axis, bool currently_interior) //, bool evaluating_self)//, Eigen::Vector3i grid_coords)
 {
 	size_t min_loc = (test_loc < previous_loc) ? test_loc : previous_loc;
@@ -722,15 +823,6 @@ std::shared_ptr<VV_Mesh> VV_TSDF::CastMeshUnsignedDistance(VV_Mesh* mesh, double
 
 	double_grid.resize(quantized_grid.size(), buffer_plus_relaxation * buffer_plus_relaxation);
 
-	//std::cout << "Grid stats: " << std::endl;
-	//std::cout << "\tDims: " << gds.dim_x << ", " << gds.dim_y << ", " << gds.dim_z << std::endl;
-	//std::cout << "\tUnit length: " << gds.unit_length << std::endl;
-	//std::cout << "\tCenter: " << gds.center_x << ", " << gds.center_y << ", " << gds.center_z << std::endl;
-	//
-	//std::cout << "Fitting triangles... " << mesh->vertices.indices.size() << ", " << buffer_distance << std::endl;
-	
-	//GetGridDistancesCGAL(*mesh);
-
 	for (size_t i = 0; i < mesh->vertices.indices.size(); ++i)
 	{
 		FitUnsignedTriangle(mesh, i, buffer_distance);
@@ -738,25 +830,11 @@ std::shared_ptr<VV_Mesh> VV_TSDF::CastMeshUnsignedDistance(VV_Mesh* mesh, double
 
 	auto expanded_mesh = mc_solver->ExtractIsosurfaceMeshFromGridWithSquaredValues(double_grid.data(), buffer_distance);
 
-	//std::cout << "Mesh triangle count: " << expanded_mesh->vertices.indices.size() << std::endl;
-
-	//for (size_t i = 0; i < grid_temporary.size(); ++i)
-	//{
-	//	if (mc_solver->inds[i] < SIZE_MAX)
-	//	{
-	//		auto vox = mc_solver->mc_data[mc_solver->inds[i]];
-	//
-	//		std::cout << i << ":\t\t" << vox.triangle_indices_start << "; " << vox.triangle_count << std::endl;
-	//	}
-	//}
-
 	mp.CreateUnionFindPartitions((*expanded_mesh));
 
 	CullInteriorShellsInTemporaryGrid(*expanded_mesh);
 
 	S_TraversalFillTemporaryGrid(*expanded_mesh, buffer_plus_relaxation / gds.unit_length, buffer_distance);
-
-	//SmoothUnquantizedGrid();
 
 	update_quantized = true;
 
@@ -791,7 +869,8 @@ std::shared_ptr<VV_Mesh> VV_TSDF::CastMeshUnsignedDistanceSampleAll(VV_Mesh* mes
 
 	CullInteriorShellsInTemporaryGrid(*expanded_mesh);
 
-	S_TraversalFillTemporaryGrid(*expanded_mesh, buffer_plus_relaxation / gds.unit_length, buffer_distance);
+	//S_TraversalFillTemporaryGrid(*expanded_mesh, buffer_plus_relaxation / gds.unit_length, buffer_distance);
+	S_TraversalFillTemporaryGridCGAL(*expanded_mesh, buffer_distance);
 
 	update_quantized = true;
 	QuantizeGrid();
@@ -873,23 +952,25 @@ std::shared_ptr<std::vector<std::vector<size_t>>> VV_TSDF::ExtractTriangleGroups
 {
 	auto to_return = std::make_shared<std::vector<std::vector<size_t>>>();
 
-	Eigen::Vector3i block_start;
-	Eigen::Vector3i block_end;
-
 	size_t total_block_size = block_size.x() * block_size.y() * block_size.z();
 	size_t block_count = quantized_grid.size() / total_block_size;
 
 	to_return->resize(block_count);
+	size_t blocks_x = gds.dim_x / block_size.x();
+	size_t blocks_y = gds.dim_y / block_size.y();
+	size_t blocks_z = gds.dim_z / block_size.z();
 
-	size_t current_triangle_block = 0;
-
-	for (block_start.x() = 0; block_start.x() < gds.dim_x; block_start.x() += block_size.x())
+#pragma omp parallel for
+	for (int x = 0; x < gds.dim_x; x += block_size.x())
 	{
-		for (block_start.y() = 0; block_start.y() < gds.dim_y; block_start.y() += block_size.y())
+		for (int y = 0; y < gds.dim_y; y += block_size.y())
 		{
-			for (block_start.z() = 0; block_start.z() < gds.dim_z; block_start.z() += block_size.z(), ++current_triangle_block)
+			for (int z = 0; z < gds.dim_z; z += block_size.z())//, ++current_triangle_block)
 			{
-				block_end = block_start + block_size;
+				size_t current_triangle_block = ((size_t)x * blocks_y + (size_t)y) * blocks_z + (size_t)z;
+
+				Eigen::Vector3i block_start = Eigen::Vector3i(x, y, z);
+				Eigen::Vector3i block_end = block_start + block_size;
 
 				auto new_groups = ExtractTriangleGroupsFromBlock(block_start, block_end);
 
@@ -1182,7 +1263,8 @@ void VV_TSDF::ExtractBlock(size_t x, size_t y, size_t z, size_t len_x, size_t le
 	{
 		for (size_t loc_y = 0, p_y = y * span_y; loc_y < len_y; ++loc_y, p_y += span_y, array_loc += len_z)
 		{
-			grid_loc = p_x + p_y + z;
+			size_t grid_loc = p_x + p_y + z;
+			size_t array_loc = (loc_x * len_y + loc_y) * len_z;
 
 			memcpy(&(presized_block_array[array_loc]), &(quantized_grid[grid_loc]), len_z);
 		}
@@ -1191,26 +1273,37 @@ void VV_TSDF::ExtractBlock(size_t x, size_t y, size_t z, size_t len_x, size_t le
 
 void VV_TSDF::InsertBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len_y, size_t len_z, Eigen::MatrixXd& mat, double average)
 {
-	size_t grid_loc;
-	size_t array_loc = 0;
+	//size_t grid_loc;
+	//size_t array_loc = 0;
 
-	size_t r = 0;
-	size_t c = 0;
+	//size_t r = 0;
+	//size_t c = 0;
 
-	for (size_t loc_x = 0, p_x = x * span_x; loc_x < len_x; ++loc_x, p_x += span_x)
+#pragma omp parallel for
+	for (int loc_x = 0; loc_x < len_x; ++loc_x)
 	{
-		for (size_t loc_y = 0, p_y = y * span_y; loc_y < len_y; ++loc_y, p_y += span_y)
+		size_t p_x = (x + (size_t)loc_x) * span_x;
+
+		for (int loc_y = 0; loc_y < len_y; ++loc_y)
 		{
-			for (size_t loc_z = 0, p_z = z; loc_z < len_z; ++loc_z, ++p_z)
+			size_t p_y = (y + (size_t)loc_y) * span_y;
+
+			for (int loc_z = 0; loc_z < len_z; ++loc_z)
 			{
-				grid_loc = p_x + p_y + p_z;
+				size_t grid_loc = p_x + p_y + z;
+				//size_t array_loc = (loc_x * len_y + loc_y) * len_z + loc_z;
+
+				size_t r = (((size_t)loc_x * len_y + (size_t)loc_y) * len_z + (size_t)loc_z);
+				size_t c = r % mat.rows();
+				r = r / mat.rows();
 
 				quantized_grid[grid_loc] = std::clamp(mat(r, c) + average, (double)min_c, (double)max_c) + 0.1;
 
-				++r;
 
-				c += (r >= mat.rows());
-				r -= r * (r >= mat.rows());
+				//++r;
+				//
+				//c += (r >= mat.rows());
+				//r -= r * (r >= mat.rows());
 			}
 		}
 	}
@@ -1218,14 +1311,20 @@ void VV_TSDF::InsertBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len
 
 void VV_TSDF::InsertBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len_y, size_t len_z, unsigned char* presized_block_array)
 {
-	size_t grid_loc;
-	size_t array_loc = 0;
-
-	for (size_t loc_x = 0, p_x = x * span_x; loc_x < len_x; ++loc_x, p_x += span_x)
+	//size_t grid_loc;
+	//size_t array_loc = 0;
+ 
+#pragma omp parallel for
+	for (int loc_x = 0; loc_x < len_x; ++loc_x)
 	{
-		for (size_t loc_y = 0, p_y = y * span_y; loc_y < len_y; ++loc_y, p_y += span_y, array_loc += len_z)
+		size_t p_x = (x + (size_t)loc_x) * span_x;
+
+		for (int loc_y = 0; loc_y < len_y; ++loc_y)//, array_loc += len_z)
 		{
-			grid_loc = p_x + p_y + z;
+			size_t p_y = (y + (size_t)loc_y) * span_y;
+
+			size_t grid_loc = p_x + p_y + z;
+			size_t array_loc = (loc_x * len_y + loc_y) * len_z;
 
 			memcpy(&(quantized_grid[grid_loc]), &(presized_block_array[array_loc]), len_z);
 		}
@@ -1490,12 +1589,16 @@ void VV_TSDF::InsertBlockUnquantizedS_Traversal(size_t x, size_t y, size_t z, si
 
 void VV_TSDF::SetQuantizedBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len_y, size_t len_z, unsigned char value)
 {
-	size_t grid_loc;
-	for (size_t loc_x = 0, p_x = x * span_x; loc_x < len_x; ++loc_x, p_x += span_x)
+#pragma omp parallel for
+	for (int loc_x = 0; loc_x < len_x; ++loc_x)
 	{
-		for (size_t loc_y = 0, p_y = y * span_y; loc_y < len_y; ++loc_y, p_y += span_y)
+		size_t p_x = (x + (size_t)loc_x) * span_x;
+
+		for (int loc_y = 0; loc_y < len_y; ++loc_y)
 		{
-			grid_loc = p_x + p_y + z;
+			size_t p_y = (y + (size_t)loc_y) * span_y;
+
+			size_t grid_loc = p_x + p_y + z;
 
 			memset(&(quantized_grid[grid_loc]), value, len_z);
 		}
@@ -1514,6 +1617,7 @@ void VV_TSDF::HarvestSigns(std::vector<unsigned char>& sign_vector)
 
 	size_t byte = 0;
 	size_t byte_mask = 7;
+
 	for (size_t i = 0; i < quantized_grid.size(); ++i)
 	{
 		byte = i >> 3;

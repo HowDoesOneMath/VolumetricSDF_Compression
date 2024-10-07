@@ -95,10 +95,10 @@ public:
         //suite = new UnsignedFieldSuite();
         //suite = new UVAtlasSuite();
         //suite = new VectorCompressionSuite();
-        suite = new VSMC_TestSuite(); // <- Current VSMC Compression
+        //suite = new VSMC_TestSuite(); // <- Current VSMC Compression
         //suite = new VV_Mesh_Suite();
         //suite = new VV_SDF_PCA_CompressionSuite();
-        //suite = new VV_SVD_TemporalSuite(); // <- Current SVD Compression
+        suite = new VV_SVD_TemporalSuite(); // <- Current SVD Compression
         //suite = new WaveletTransformSuite();
         //suite = new WavelibSuite();
         //suite = new XOR_Mask_Suite();

@@ -545,7 +545,8 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
         tl.GetLogger(mesh_to_SDF_time_logger_name)->StartTimer();
 #endif
 
-        if (!sdf.CastMeshUnsignedDistance(&mesh, shell_buffer))
+        //if (!sdf.CastMeshUnsignedDistance(&mesh, shell_buffer))
+        if (!sdf.CastMeshUnsignedDistanceSampleAll(&mesh, shell_buffer))
         {
             std::cout << "ERROR: mesh could not be cast into SDF: " << sf.files[mesh_sf.key][t] << std::endl;
             return false;
@@ -553,6 +554,7 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(mesh_to_SDF_time_logger_name)->MarkTime();
+        std::cout << "Time converting mesh to SDF: " << (tl.GetLogger(mesh_to_SDF_time_logger_name)->GetTime() * 0.000000001) << " seconds." << std::endl;
         tl.GetLogger(block_extraction_logger_name)->SetTime(0);
         tl.GetLogger(lz_encoding_logger_name)->SetTime(0);
 #endif

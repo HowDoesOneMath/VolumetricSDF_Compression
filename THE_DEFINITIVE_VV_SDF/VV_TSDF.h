@@ -77,6 +77,8 @@ private:
 
 	void S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buffer_distance);
 
+	void S_TraversalFillTemporaryGridCGAL(VV_Mesh& mesh, double buffer_distance);
+
 	bool CheckIfInterior(size_t test_loc, size_t previous_loc, int axis, bool currently_interior); //, bool evaluating_self);//, Eigen::Vector3i grid_coords);
 
     void RecalculateBounds();

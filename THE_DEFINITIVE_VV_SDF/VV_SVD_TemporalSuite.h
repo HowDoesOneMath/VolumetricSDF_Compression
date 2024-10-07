@@ -13,8 +13,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//const size_t grid_width_voxels = 256;
 	const size_t grid_width_voxels = 128;
 	//const size_t grid_width_voxels = 64;
-	const double grid_width_meters = 1.6;
-	const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
+	//const double grid_width_meters = 1.6;
+	const double grid_width_meters = 1.1;
+	//const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
+	const Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	GridDataStruct gds;
 
 	const Eigen::Vector3i block_size = Eigen::Vector3i(8, 8, 8);
