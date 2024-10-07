@@ -2,6 +2,9 @@
 
 void VV_SVD_TemporalSuite::TestSingleSequence()
 {
+	std::filesystem::create_directories(compressed_sequence_folder);
+	std::filesystem::create_directories(reconstructed_sequence_folder);
+
 #if TSVD_TIME_LOGGING
 	vv_svd_tc.SetTimeLogFile(time_log_path);
 #endif

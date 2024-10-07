@@ -95,15 +95,37 @@ bool DracoSuite::MassDecompress(std::string input_file, std::string output_folde
 
 void DracoSuite::run(int argc, char** argv)
 {
-	if (!MassCompress(mesh_sequence_root, compressed_sequence, "", 7))
-	{
-		return;
-	}
-	
-	vv_mesh.Clear();
+	//if (!MassCompress(mesh_sequence_root, compressed_sequence, "", 7))
+	//{
+	//	return;
+	//}
+	//
+	//vv_mesh.Clear();
+	//
+	//if (!MassDecompress(compressed_sequence, mesh_sequence_output, output_mesh_signature))
+	//{
+	//	return;
+	//}
+	std::filesystem::create_directories(compressed_sequence_folder);
+	std::filesystem::create_directories(reconstructed_sequence_folder);
 
-	if (!MassDecompress(compressed_sequence, mesh_sequence_output, output_mesh_signature))
+#if DRACO_TIME_LOGGING
+	dc.CreateTimeLog(time_log_path);
+#endif
+
+	if (!dc.CompressSequence(input_folder, compressed_file, mesh_sf, texture_sf, output_texture_tag))
 	{
+		std::cout << "Error compressing sequence!" << std::endl;
 		return;
 	}
+
+	if (!dc.DecompressSequence(compressed_file, output_mesh_tag))
+	{
+		std::cout << "Error decompressing sequence!" << std::endl;
+		return;
+	}
+
+#if DRACO_TIME_LOGGING
+	dc.CloseTimeLog();
+#endif
 }

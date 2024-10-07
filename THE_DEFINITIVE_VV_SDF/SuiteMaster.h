@@ -66,7 +66,7 @@ public:
         //suite = new CImgSuite();
         //suite = new ConvexHullSuite();
         //suite = new DisplacementWaveletSuite();
-        //suite = new DracoSuite();
+        //suite = new DracoSuite(); // <- Current Draco Compression
         //suite = new EigenFileSavingSuite();
         //suite = new FFMPEG_Suite();
         //suite = new LZ_Compression_Suite();
