@@ -59,6 +59,10 @@ void VV_SVD_TemporalCompressor::ConstructBlock(std::vector<size_t>& block_locati
     size_t pca_entry = 0;
     size_t significant_values;
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(block_loading_time_logger_name)->StartTimer();
+#endif
+
     for (size_t ind = start_ind; ind < end_ind; ind += sad.total_partitions, ++pca_entry)
     {
         sfb.SetReaderLocation(block_locations[ind]);
@@ -68,10 +72,20 @@ void VV_SVD_TemporalCompressor::ConstructBlock(std::vector<size_t>& block_locati
         pca_enc.AddData(pca_entry, block_buffer.data());
     }
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(block_loading_time_logger_name)->MarkTime();
+    tl.GetLogger(SVD_time_logger_name)->StartTimer();
+#endif
+
     double mat_avg = pca_enc.GetCenterOfData();
     pca_enc.AddValueToData(-mat_avg);
 
     pca_enc.ConductSVD();
+
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(SVD_time_logger_name)->MarkTime();
+    tl.GetLogger(matrix_writing_time_logger_name)->StartTimer();
+#endif
 
     significant_values = GetSignificantValueCount(significant_value_ratio, max_allowed_components);
 
@@ -89,6 +103,9 @@ void VV_SVD_TemporalCompressor::ConstructBlock(std::vector<size_t>& block_locati
 
     if (significant_values <= 0)
     {
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(matrix_writing_time_logger_name)->MarkTime();
+#endif
         return;
     }
 
@@ -119,6 +136,10 @@ void VV_SVD_TemporalCompressor::ConstructBlock(std::vector<size_t>& block_locati
     sfb.WriteObjectToBuffer(v_mat_max_val);
     sfb.WriteObjectToBuffer(v_mat_min_val);
     sfb.WriteMatrixToBuffer(trunc_v_mat, 0, 0, significant_values, v_mat_cols);
+
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(matrix_writing_time_logger_name)->MarkTime();
+#endif
 }
 
 std::shared_ptr<VV_Mesh> VV_SVD_TemporalCompressor::ExtractSingleMesh(std::vector<size_t>& block_locations, std::vector<size_t>& sign_locations, size_t mesh_index_in_SVD)
@@ -241,6 +262,9 @@ void VV_SVD_TemporalCompressor::EncodeImportantBlocks(size_t start_t, size_t end
 
     for (size_t t = start_t; t < end_t; ++t)
     {
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(important_blocks_logger_name)->StartTimer();
+#endif
         auto new_mesh = ExtractSingleMesh(block_locations, sign_locations, t);
 
         auto tri_groups = sdf.ExtractTriangleGroupsByBlock(*new_mesh, sad.block_size);
@@ -251,6 +275,10 @@ void VV_SVD_TemporalCompressor::EncodeImportantBlocks(size_t start_t, size_t end
 
             block_locations[loc_index] |= (((*tri_groups)[i].size() > 0) * important_geometry_flag);
         }
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(important_blocks_logger_name)->MarkTime();
+#endif
     }
 }
 
@@ -351,6 +379,50 @@ void VV_SVD_TemporalCompressor::DebugLocationsVector(std::vector<size_t>& to_deb
     }
 }
 
+#if TSVD_TIME_LOGGING
+void VV_SVD_TemporalCompressor::SetTimeLogFile(std::string time_log_name)
+{
+    tl.StartLogging(time_log_name);
+
+    tl.CreateNewLogger(total_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(dummy_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+
+    tl.CreateNewLogger(header_intermediary_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_reading_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_cleaning_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_to_SDF_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(block_extraction_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(lz_encoding_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(sign_encoding_logger_name, new TimeLogger::IndependentLogger(""));
+
+    tl.CreateNewLogger(header_TSVD_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(sign_copy_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(batch_TSVD_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(block_loading_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+    tl.CreateNewLogger(SVD_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+    tl.CreateNewLogger(matrix_writing_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+
+    tl.CreateNewLogger(header_textures_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(important_blocks_logger_name, new TimeLogger::IndependentLogger("\t"));
+    tl.CreateNewLogger(patch_creation_texturing_logger_name, new TimeLogger::IndependentLogger("\t"));
+    tl.CreateNewLogger(texture_batch_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_uv_creating_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(texture_remapping_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(texture_saving_logger_name, new TimeLogger::IndependentLogger(""));
+
+    tl.CreateNewLogger(header_reconstruction_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_reconstruction_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(patch_creation_reconstruction_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_uv_reconstruction_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(mesh_obj_writing_logger_name, new TimeLogger::IndependentLogger(""));
+}
+
+void VV_SVD_TemporalCompressor::CloseTimeLogFile()
+{
+    tl.CloseLoggers();
+}
+#endif
+
 bool VV_SVD_TemporalCompressor::Initialize(GridDataStruct& gds, Eigen::Vector3i block_size, size_t frames_per_batch, 
     double patch_padding, double island_padding, double minimum_normal_similarity)
 {
@@ -367,6 +439,19 @@ bool VV_SVD_TemporalCompressor::Initialize(GridDataStruct& gds, Eigen::Vector3i 
 bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, std::string intermediary_file_name, SequenceFinderDetails mesh_sf,
     double shell_buffer, double mesh_maximum_artifact_size)
 {
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(total_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(dummy_time_logger_name)->ResetTotalTime();
+
+    tl.GetLogger(header_intermediary_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_reading_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_cleaning_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_to_SDF_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(block_extraction_logger_name)->ResetTotalTime();
+    tl.GetLogger(lz_encoding_logger_name)->ResetTotalTime();
+    tl.GetLogger(sign_encoding_logger_name)->ResetTotalTime();
+#endif
+
     if (!sf.FindFiles(root_folder, mesh_sf))
     {
         std::cout << "Couldn't open input folder to read!" << std::endl;
@@ -390,6 +475,9 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
         return false;
     }
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_intermediary_time_logger_name)->StartTimer();
+#endif
 
     sad.WriteToBuffer(sfb);
 
@@ -409,6 +497,11 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
     sfb.WriteArrayToBuffer(file_locations_signs.data(), file_locations_signs.size());
 #endif
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_intermediary_time_logger_name)->MarkTime();
+    std::cout << "Header time: " << tl.GetLogger(header_intermediary_time_logger_name)->GetTime() << std::endl;
+#endif
+
     size_t current_block_location = 0;
 
     block_buffer.resize(sad.total_block_size);
@@ -419,6 +512,10 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 
     for (size_t t = 0; t < sad.total_frames; ++t)
     {
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(total_time_logger_name)->StartTimer();
+#endif
+
         std::cout << "Frame " << t << "..." << std::endl;
 
         if (!mesh.ReadOBJ(sf.files[mesh_sf.key][t]))
@@ -427,10 +524,24 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
             return false;
         }
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_reading_time_logger_name)->MarkTime();
+        tl.GetLogger(mesh_cleaning_time_logger_name)->StartTimer();
+#endif
+
         mp.CreateUnionFindPartitions(mesh);
         mp.NegateInsignificantPartitions(mesh, mesh_maximum_artifact_size);
         mesh.ClearNegativeTriangles();
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_cleaning_time_logger_name)->MarkTime();
+#endif
+
         std::cout << "\tBounding Box: " << mp.absolute_lower_bound.transpose() << " --- " << mp.absolute_upper_bound.transpose() << std::endl;
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_to_SDF_time_logger_name)->StartTimer();
+#endif
 
         if (!sdf.CastMeshUnsignedDistance(&mesh, shell_buffer))
         {
@@ -438,29 +549,69 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
             return false;
         }
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_to_SDF_time_logger_name)->MarkTime();
+        tl.GetLogger(block_extraction_logger_name)->SetTime(0);
+        tl.GetLogger(lz_encoding_logger_name)->SetTime(0);
+#endif
+
         for (size_t x = 0; x < sdf.GetDimX(); x += sad.block_size.x())
         {
             for (size_t y = 0; y < sdf.GetDimY(); y += sad.block_size.y())
             {
                 for (size_t z = 0; z < sdf.GetDimZ(); z += sad.block_size.z())
                 {
+#if TSVD_TIME_LOGGING
+                    tl.GetLogger(dummy_time_logger_name)->StartTimer();
+#endif
+
                     sdf.ExtractBlock(x, y, z, sad.block_size.x(), sad.block_size.y(), sad.block_size.z(), block_buffer.data());
+
+#if TSVD_TIME_LOGGING
+                    tl.GetLogger(dummy_time_logger_name)->MarkTime();
+                    tl.GetLogger(block_extraction_logger_name)->AddTime(tl.GetLogger(dummy_time_logger_name)->GetTime());
+                    tl.GetLogger(dummy_time_logger_name)->StartTimer();
+#endif
 
                     file_locations_blocks[current_block_location] = sfb.GetWriterLocation();
                     ++current_block_location;
 
                     lz_enc.SaveToBuffer(sfb, block_buffer.data(), block_buffer.size());
+#if TSVD_TIME_LOGGING
+                    tl.GetLogger(dummy_time_logger_name)->MarkTime();
+                    tl.GetLogger(lz_encoding_logger_name)->AddTime(tl.GetLogger(dummy_time_logger_name)->GetTime());
+#endif
                 }
             }
         }
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(block_extraction_logger_name)->MarkCustomTime(tl.GetLogger(block_extraction_logger_name)->GetTime());
+        tl.GetLogger(lz_encoding_logger_name)->MarkCustomTime(tl.GetLogger(lz_encoding_logger_name)->GetTime());
+#endif
+
 #if ENCODE_SIGN_DATA
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(sign_encoding_logger_name)->StartTimer();
+#endif
         file_locations_signs[t] = sfb.GetWriterLocation();
 
         sdf.HarvestSigns(signs);
         lz_enc.SaveToBuffer(sfb, signs.data(), signs.size());
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(sign_encoding_logger_name)->MarkTime();
+#endif
+#endif
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(total_time_logger_name)->MarkTime();
 #endif
     }
+
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_intermediary_time_logger_name)->StartTimer();
+#endif
 
     size_t writer_eof = sfb.GetWriterLocation();
 
@@ -472,8 +623,39 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
     sfb.WriteArrayToBuffer(file_locations_signs.data(), file_locations_signs.size());
 #endif
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_intermediary_time_logger_name)->MarkTime();
+#endif
+
     sfb.SetWriterLocation(writer_eof);
     sfb.CloseWriteBuffer();
+
+#if TSVD_TIME_LOGGING
+    tl.PrintLoggerTotalTime(header_intermediary_time_logger_name, "Total header writing time: ");
+    tl.PrintEmptyLine();
+    
+    tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of intermediary compression (minus header): ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_reading_time_logger_name, "Total time", "Average time", "Greatest time", " of mesh reading: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_cleaning_time_logger_name, "Total time", "Average time", "Greatest time", " of mesh cleaning: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_to_SDF_time_logger_name, "Total time", "Average time", "Greatest time", " of Mesh to SDF conversion: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(block_extraction_logger_name, "Total time", "Average time", "Greatest time", " of block extraction: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(lz_encoding_logger_name, "Total time", "Average time", "Greatest time", " of lz4 encoding/writing to file: ");
+    tl.PrintEmptyLine();
+
+#if ENCODE_SIGN_DATA
+    tl.PrintTotalAndAverageAndGreatestTime(sign_encoding_logger_name, "Total time", "Average time", "Greatest time", " of Sign encoding/writing to file: ");
+    tl.PrintEmptyLine();
+#endif
+
+    tl.PrintEmptyLine();
+    tl.PrintSolidLine(40, '=');
+
+#endif
 
     return true;
 }
@@ -481,6 +663,15 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name, std::string final_file_name, 
     double significant_value_ratio, size_t max_allowed_components)
 {
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(total_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(dummy_time_logger_name)->ResetTotalTime();
+
+    tl.GetLogger(header_TSVD_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(sign_copy_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(batch_TSVD_time_logger_name)->ResetTotalTime();
+#endif
+
     if (!sfb.OpenReadBuffer(intermediary_file_name))
     {
         std::cout << "Couldn't read intermediary file storage!" << std::endl;
@@ -499,6 +690,10 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
     sdf.ClearGrid();
     sdf.InitializeGrid(sad.gds);
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_TSVD_time_logger_name)->StartTimer();
+#endif
+
     block_buffer.resize(sad.total_block_size);
 
     std::vector<size_t> file_locations_blocks;
@@ -510,8 +705,18 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
     size_t svd_block_locations_start = sfb.GetWriterLocation();
     sfb.WriteArrayToBuffer(svd_block_locations.data(), svd_block_locations.size());
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_TSVD_time_logger_name)->MarkTime();
+#endif
+
 #if ENCODE_SIGN_DATA
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(sign_copy_time_logger_name)->StartTimer();
+#endif
     CopySignsOver();
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(sign_copy_time_logger_name)->MarkTime();
+#endif
 #endif
 
     pca_enc.Initialize(std::min(sad.frames_per_input_matrix, sad.total_frames), sad.total_block_size);
@@ -524,6 +729,14 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
         target_frame = std::min(t + sad.frames_per_input_matrix, sad.total_frames);
 
         std::cout << "Batch " << t << " to " << target_frame << "..." << std::endl;
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(batch_TSVD_time_logger_name)->StartTimer();
+
+        tl.GetLogger(block_loading_time_logger_name)->ResetTotalTime();
+        tl.GetLogger(SVD_time_logger_name)->ResetTotalTime();
+        tl.GetLogger(matrix_writing_time_logger_name)->ResetTotalTime();
+#endif
 
         for (size_t x = 0; x < sad.partitions.x(); ++x)
         {
@@ -543,16 +756,50 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
         }
 
         pca_enc.RefreshMatrix();
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(batch_TSVD_time_logger_name)->MarkTime();
+        tl.PrintLogger(batch_TSVD_time_logger_name, "SVD batch time (" + std::to_string(t) + " to " + std::to_string(target_frame) + "): ");
+        tl.PrintEmptyLine();
+        tl.PrintTotalAndAverageAndGreatestTime(block_loading_time_logger_name, "Total time", "Average time", "Greatest time", " of Block Loading: ");
+        tl.PrintEmptyLine();
+        tl.PrintTotalAndAverageAndGreatestTime(SVD_time_logger_name, "Total time", "Average time", "Greatest time", " of SVD: ");
+        tl.PrintEmptyLine();
+        tl.PrintTotalAndAverageAndGreatestTime(matrix_writing_time_logger_name, "Total time", "Average time", "Greatest time", " of UDV^T Writing: ");
+        tl.PrintEmptyLine();
+        tl.PrintEmptyLine();
+#endif
     }
 
     size_t writer_eof = sfb.GetWriterLocation();
+
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_TSVD_time_logger_name)->StartTimer();
+#endif
 
     sfb.SetWriterLocation(svd_block_locations_start);
     sfb.WriteArrayToBuffer(svd_block_locations.data(), svd_block_locations.size());
     sfb.SetWriterLocation(writer_eof);
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_TSVD_time_logger_name)->MarkTime();
+#endif
+
     sfb.CloseWriteBuffer();
     sfb.CloseReadBuffer();
+
+#if TSVD_TIME_LOGGING
+    tl.PrintTotalAndAverageAndGreatestTime(batch_TSVD_time_logger_name, "Total time", "Average time", "Greatest time", " of Compression: ");
+    tl.PrintEmptyLine();
+    tl.PrintLoggerTotalTime(header_TSVD_time_logger_name, "Total time writing header: "); 
+    tl.PrintEmptyLine();
+#if ENCODE_SIGN_DATA
+    tl.PrintLoggerTotalTime(sign_copy_time_logger_name, " Total time copying signs: ");
+    tl.PrintEmptyLine();
+#endif
+    tl.PrintEmptyLine();
+    tl.PrintSolidLine(40, '=');
+#endif
 
     return true;
 }
@@ -561,6 +808,18 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
     std::string final_file_name, std::string texture_tag, int digit_count, Eigen::Vector2i texture_dims, 
     double uv_epsilon, int kernel_size, double kernel_scale, int jpg_quality)
 {
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(total_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(dummy_time_logger_name)->ResetTotalTime();
+
+    tl.GetLogger(header_textures_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(patch_creation_texturing_logger_name)->ResetTotalTime();
+    tl.GetLogger(texture_batch_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_uv_creating_logger_name)->ResetTotalTime();
+    tl.GetLogger(texture_remapping_logger_name)->ResetTotalTime();
+    tl.GetLogger(texture_saving_logger_name)->ResetTotalTime();
+#endif
+
     int pad_loops_hardcoded = 0;
 
     std::vector<SequenceFinderDetails> all_details;
@@ -590,6 +849,11 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
         return false;
     }
 
+
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_textures_time_logger_name)->StartTimer();
+#endif
+
     //block_locations_offset = (size_t)sfb.GetReaderLocation() - block_locations_offset;
     size_t block_locations_offset = sfb.GetReaderLocation();
 
@@ -604,34 +868,70 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
 
     std::vector<size_t> augmented_block_locations = svd_block_locations;
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_textures_time_logger_name)->MarkTime();
+#endif
+
     std::string save_name;
     cimg_library::CImg<unsigned char> output_tex;
 
     Eigen::Vector2d patch_spacing;
     size_t total_important_blocks;
     size_t target_frame;
+
+
     for (size_t svd_group = 0; svd_group < sad.total_frames; svd_group += sad.frames_per_input_matrix)
     {
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(total_time_logger_name)->StartTimer();
+#endif
         target_frame = std::min(svd_group + sad.frames_per_input_matrix, sad.total_frames);
 
         std::cout << "Pre-processing texture data for batch " << svd_group << " to " << target_frame << "..." << std::endl;
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(important_blocks_logger_name)->ResetTotalTime();
+#endif
+
         EncodeImportantBlocks(svd_group, target_frame, augmented_block_locations, sign_locations);
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(patch_creation_texturing_logger_name)->StartTimer();
+#endif
+
         auto patch_info = GetPatchInfo(augmented_block_locations);
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(patch_creation_texturing_logger_name)->MarkTime();
+#endif
+
         patch_spacing = Eigen::Vector2d(1.0 / patch_info->second.x(), 1.0 / patch_info->second.y());
 
         std::cout << "Patch count: " << patch_info->first.size() << "/" << sad.total_partitions << std::endl;
 
         std::cout << "Texturing batch " << svd_group << " to " << target_frame << "..." << std::endl;
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(texture_batch_time_logger_name)->StartTimer();
+#endif
+
         for (size_t t = svd_group; t < target_frame; ++t)
         {
             std::cout << "\tFrame " << t << "..." << std::endl;
+
+#if TSVD_TIME_LOGGING
+            tl.GetLogger(mesh_uv_creating_logger_name)->StartTimer();
+#endif
 
             auto new_mesh = ExtractSingleMesh(svd_block_locations, sign_locations, t);
             mesh.ReadOBJ(sf.files[mesh_sf.key][t]);
 
             CreateUVs(*new_mesh, patch_info->first, patch_spacing);
+
+#if TSVD_TIME_LOGGING
+            tl.GetLogger(mesh_uv_creating_logger_name)->MarkTime();
+            tl.GetLogger(texture_remapping_logger_name)->StartTimer();
+#endif
 
             output_tex.assign(texture_dims.x(), texture_dims.y(), 1, 3, 0);
             tex.assign(sf.files[texture_sf.key][t].c_str());
@@ -641,10 +941,30 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
                 std::cout << "Could not remap " << t << "!" << std::endl;
             }
 
+#if TSVD_TIME_LOGGING
+            tl.GetLogger(texture_remapping_logger_name)->MarkTime();
+            tl.GetLogger(texture_saving_logger_name)->StartTimer();
+#endif
+
             save_name = texture_tag + "_" + GetNumberFixedLength(t, 6) + ".jpg";
 
             output_tex.save_jpeg(save_name.c_str(), jpg_quality);
+
+#if TSVD_TIME_LOGGING
+            tl.GetLogger(texture_saving_logger_name)->MarkTime();
+#endif
         }
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(texture_batch_time_logger_name)->MarkTime();
+        tl.GetLogger(total_time_logger_name)->MarkTime();
+        tl.PrintLogger(texture_batch_time_logger_name, "Texture batch time (" + std::to_string(svd_group) + " to " + std::to_string(target_frame) + "): ");
+        tl.PrintEmptyLine();
+        tl.PrintTotalAndAverageAndGreatestTime(important_blocks_logger_name, "Total time", "Average time", "Greatest time", " of Gathering Important Blocks: ");
+        tl.PrintEmptyLine();
+        tl.PrintLogger(patch_creation_texturing_logger_name, "Patch extraction time: ");
+        tl.PrintEmptyLine();
+#endif
     }
 
     sfb.CloseReadBuffer();
@@ -657,17 +977,54 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
 
     std::cout << "Re-writing block locations..." << std::endl;
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_textures_time_logger_name)->StartTimer();
+#endif
+
     sfb.SetWriterLocation(block_locations_offset);
     sfb.WriteArrayToBuffer(augmented_block_locations.data(), augmented_block_locations.size());
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_textures_time_logger_name)->MarkTime();
+#endif
+
     sfb.SetWriterToEOF();
     sfb.CloseWriteBuffer();
+
+#if TSVD_TIME_LOGGING
+    tl.PrintLoggerTotalTime(header_textures_time_logger_name, "Total time to write header: ");
+    tl.PrintEmptyLine();
+    tl.PrintLoggerTotalTime(total_time_logger_name, "Total time to operate on textures: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(texture_batch_time_logger_name, "Total time", "Average time", "Greatest time", " of Texture Batches: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_uv_creating_logger_name, "Total time", "Average time per frame", "Greatest time per frame", " of Creating UVs: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(texture_remapping_logger_name, "Total time", "Average time per frame", "Greatest time per frame", " of Texture Remapping: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(texture_saving_logger_name, "Total time", "Average time per frame", "Greatest time per frame", " of Texture Saving: ");
+    tl.PrintEmptyLine();
+    tl.PrintEmptyLine();
+    tl.PrintSolidLine(40, '=');
+#endif
 
     return true;
 }
 
 bool VV_SVD_TemporalCompressor::ReconstructMeshes(std::string final_file_name, std::string output_mesh_tag, int digit_count)
 {
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(total_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(dummy_time_logger_name)->ResetTotalTime();
+
+    tl.GetLogger(header_reconstruction_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_reconstruction_logger_name)->ResetTotalTime();
+    tl.GetLogger(patch_creation_reconstruction_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_uv_reconstruction_logger_name)->ResetTotalTime();
+    tl.GetLogger(mesh_obj_writing_logger_name)->ResetTotalTime();
+
+#endif
+
     if (!sfb.OpenReadBuffer(final_file_name))
     {
         std::cout << "PROBLEMS OPENING PCA FILE" << std::endl;
@@ -683,6 +1040,10 @@ bool VV_SVD_TemporalCompressor::ReconstructMeshes(std::string final_file_name, s
         return false;
     }
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_reconstruction_time_logger_name)->StartTimer();
+#endif
+
     size_t total_t_partitions = sad.total_frames / sad.frames_per_input_matrix + ((sad.total_frames % sad.frames_per_input_matrix) > 0);
     std::vector<size_t> svd_block_locations(total_t_partitions * sad.total_partitions);
     sfb.ReadArrayFromBuffer(svd_block_locations.data(), svd_block_locations.size());
@@ -692,25 +1053,69 @@ bool VV_SVD_TemporalCompressor::ReconstructMeshes(std::string final_file_name, s
     sfb.ReadArrayFromBuffer(sign_locations.data(), sad.total_frames);
 #endif
 
+#if TSVD_TIME_LOGGING
+    tl.GetLogger(header_reconstruction_time_logger_name)->MarkTime();
+#endif
+
     Eigen::Vector2d patch_spacing;
 
     for (size_t t = 0; t < sad.total_frames; ++t)
     {
         std::cout << "Frame " << t << "..." << std::endl;
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(total_time_logger_name)->StartTimer();
+        tl.GetLogger(mesh_reconstruction_logger_name)->StartTimer();
+#endif
+
         auto new_mesh = ExtractSingleMesh(svd_block_locations, sign_locations, t);
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_reconstruction_logger_name)->MarkTime();
+        tl.GetLogger(patch_creation_reconstruction_logger_name)->StartTimer();
+#endif
 
         auto patch_info = GetPatchInfo(svd_block_locations);
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(patch_creation_reconstruction_logger_name)->MarkTime();
+#endif
+
         std::cout << "Patch count: " << patch_info->first.size() << "/" << sad.total_partitions << std::endl;
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_uv_reconstruction_logger_name)->StartTimer();
+#endif
 
         patch_spacing = Eigen::Vector2d(1.0 / patch_info->second.x(), 1.0 / patch_info->second.y());
         CreateUVs(*new_mesh, patch_info->first, patch_spacing);
 
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_uv_reconstruction_logger_name)->MarkTime();
+        tl.GetLogger(mesh_obj_writing_logger_name)->StartTimer();
+#endif
+
         std::string save_name = output_mesh_tag + "_" + GetNumberFixedLength(t, digit_count) + ".obj";
 
         new_mesh->WriteOBJ(save_name);
+
+#if TSVD_TIME_LOGGING
+        tl.GetLogger(mesh_obj_writing_logger_name)->MarkTime();
+        tl.GetLogger(total_time_logger_name)->MarkTime();
+#endif
     }
+
+#if TSVD_TIME_LOGGING
+    tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of Decompression: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_reconstruction_logger_name, "Total time", "Average time", "Greatest time", " of Mesh Reconstruction: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(patch_creation_reconstruction_logger_name, "Total time", "Average time per frame", "Greatest time per frame", " of Patch Reconstruction: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_uv_reconstruction_logger_name, "Total time", "Average time per frame", "Greatest time per frame", " of Mesh UVs: ");
+    tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(mesh_obj_writing_logger_name, "Total time", "Average time per frame", "Greatest time per frame", " of OBJ Writing: ");
+#endif
 
     return true;
 }

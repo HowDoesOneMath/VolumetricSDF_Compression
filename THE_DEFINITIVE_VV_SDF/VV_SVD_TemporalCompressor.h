@@ -12,10 +12,16 @@
 
 #include "TextureRemapper.h"
 
+#include "TimeLogger.h"
+
 #include <string>
 
 //#define ENCODE_SIGN_DATA 1;
 #define ENCODE_SIGN_DATA 0;
+
+//#define TSVD_TIME_LOGGING 0
+#define TSVD_TIME_LOGGING 1
+
 
 class VV_SVD_TemporalCompressor
 {
@@ -69,6 +75,44 @@ public:
 	};
 
 private:
+
+#if TSVD_TIME_LOGGING
+	TimeLogger tl;
+
+	std::string total_time_logger_name = "TOTAL_TIME_LOG";
+	std::string dummy_time_logger_name = "DUMMY_TIME_LOG"; //Tabbed
+
+	std::string header_intermediary_time_logger_name		= "HEADER_INTERMEDIARY_TIME_LOG";
+	std::string mesh_reading_time_logger_name				= "MESH_READING_TIME_LOG";
+	std::string mesh_cleaning_time_logger_name				= "MESH_CLEANING_TIME_LOG";
+	std::string mesh_to_SDF_time_logger_name				= "MESH_TO_SDF_TIME_LOG";
+	std::string block_extraction_logger_name				= "BLOCK_EXTRACT_TIME_LOG";
+	std::string lz_encoding_logger_name						= "LZ_ENCODING_TIME_LOG";
+	std::string sign_encoding_logger_name					= "SIGN_ENCODING_TIME_LOG";
+
+	std::string header_TSVD_time_logger_name				= "HEADER_TSVD_TIME_LOG";
+	std::string sign_copy_time_logger_name					= "SIGN_COPY_TIME_LOG";
+	std::string batch_TSVD_time_logger_name					= "BATCH_TSVD_TIME_LOG";
+	std::string block_loading_time_logger_name				= "BLOCK_LOADING_TIME_LOG"; //Tabbed
+	std::string SVD_time_logger_name						= "SVD_TIME_LOG"; //Tabbed
+	std::string matrix_writing_time_logger_name				= "MAT_WRITE_TIME_LOG"; // Tabbed
+
+	std::string header_textures_time_logger_name			= "HEADER_TEXTURE_TIME_LOG";
+	std::string important_blocks_logger_name				= "PATCH_BLOCKS_TIME_LOG"; //Tabbed
+	std::string patch_creation_texturing_logger_name		= "UV_PATCH_TEX_TIME_LOG"; //Tabbed
+	std::string texture_batch_time_logger_name				= "TEXTURE_BATCH_TIME_LOG";
+	std::string mesh_uv_creating_logger_name				= "MESH_UV_TIME_LOG";
+	std::string texture_remapping_logger_name				= "TEXTURE_REMAP_TIME_LOG";
+	std::string texture_saving_logger_name					= "TEXTURE_SAVE_TIME_LOG";
+
+	std::string header_reconstruction_time_logger_name		= "HEADER_RECON_TIME_LOG";
+	std::string mesh_reconstruction_logger_name				= "MESH_RECON_TIME_LOG";
+	std::string patch_creation_reconstruction_logger_name	= "UV_PATCH_RECON_TIME_LOG";
+	std::string mesh_uv_reconstruction_logger_name			= "MESH_UV_RECON_TIME_LOG";
+	std::string mesh_obj_writing_logger_name				= "OBJ_WRITING_TIME_LOG";
+
+#endif
+
 	std::vector<unsigned char> block_buffer;
 
 	VV_SaveFileBuffer sfb;
@@ -113,6 +157,13 @@ private:
 	void DebugLocationsVector(std::vector<size_t>& to_debug, std::string message, size_t frequency, size_t offset);
 
 public:
+
+#if TSVD_TIME_LOGGING
+	void SetTimeLogFile(std::string time_log_name);
+
+	void CloseTimeLogFile();
+#endif
+
 	bool Initialize(GridDataStruct& gds, Eigen::Vector3i block_size, size_t frames_per_batch,
 		double patch_padding, double island_padding, double minimum_normal_similarity);
 

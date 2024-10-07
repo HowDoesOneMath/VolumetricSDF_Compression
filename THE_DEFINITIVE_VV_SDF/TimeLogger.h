@@ -41,6 +41,17 @@ public:
 			++total_stamps;
 		}
 
+		void MarkCustomTime(size_t custom_time)
+		{
+			nanosecond_count = custom_time;
+			total_nanoseconds += nanosecond_count;
+
+			bool is_greater = nanosecond_count > maximum_nanoseconds;
+			maximum_nanoseconds = maximum_nanoseconds * !is_greater + nanosecond_count * is_greater;
+
+			++total_stamps;
+		}
+
 		void SetTime(size_t new_time) {
 			nanosecond_count = new_time;
 		}
@@ -55,10 +66,8 @@ public:
 			nanosecond_count += to_add;
 			total_nanoseconds += to_add;
 
-			bool is_greater = to_add > maximum_nanoseconds;
-			maximum_nanoseconds = maximum_nanoseconds * !is_greater + to_add * is_greater;
-
-			++total_stamps;
+			bool is_greater = nanosecond_count > maximum_nanoseconds;
+			maximum_nanoseconds = maximum_nanoseconds * !is_greater + nanosecond_count * is_greater;
 		}
 
 		size_t GetTime() {

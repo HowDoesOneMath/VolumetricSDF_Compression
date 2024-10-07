@@ -1,32 +1,14 @@
 #pragma once
 
+#include "SequenceFilePathUniversal.h"
+
 #include "TestSuite.h"
 #include "VV_SVD_TemporalCompressor.h"
 
 class VV_SVD_TemporalSuite : public TestSuite
 {
 	const int digit_count = 6;
-
-	std::string input_folder = "D:/_VV_DATASETS_TRIMMED/AB-2punch";
-	//std::string input_folder = "D:/_VV_DATASETS_TRIMMED/AB-2punch";
-	//std::string input_folder = "D:/_VV_DATASETS_TRIMMED/AB-2punch";
-	std::string sequence_file_identifier = "/AB-2PUNCH";
-	//std::string sequence_file_identifier = "/AB-2PUNCH";
-	//std::string sequence_file_identifier = "/AB-2PUNCH";
-
-	std::string compressed_sequence_folder = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_CompressedSequences/_TSVD";
-	std::string reconstructed_sequence_folder = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ReconstructedSequences/_TSVD";
-
-
-	//std::string intermediary_file = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_CompressedSequences/AB_PUNCH_SVD/INTERMEDIARY_FILE.sif";
-	std::string intermediary_file = compressed_sequence_folder + sequence_file_identifier + "/INTERMEDIARY_FILE.sif";
-	//std::string final_file = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_CompressedSequences/AB_PUNCH_SVD/FINAL_FILE.tsvd";
-	std::string final_file = compressed_sequence_folder + sequence_file_identifier + "/FINAL_FILE.tsvd";
-	//std::string output_mesh_tag = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ReconstructedSequences/_TSVD/AB-2PUNCH/FRAME";
-	std::string output_mesh_tag = reconstructed_sequence_folder + sequence_file_identifier + "/FRAME";
-	//std::string output_texture_tag = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ReconstructedSequences/_TSVD/AB-2PUNCH/FRAME";
-	std::string output_texture_tag = reconstructed_sequence_folder + sequence_file_identifier + "/FRAME";
-
+	
 	const size_t grid_width_voxels = 128;
 	const double grid_width_meters = 1.6;
 	const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
@@ -51,6 +33,34 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//const size_t max_allowed_components = 5;
 	//const size_t max_allowed_components = 10;
 	const size_t max_allowed_components = SIZE_MAX;
+
+	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
+
+	//std::string sequence_file_identifier = "/AB-2PUNCH";
+	std::string sequence_file_identifier = "/SIR_FREDRICK";
+
+#if ENCODE_SIGN_DATA
+	std::string tsvd_code = "/TSVD_PLUS_SIGNS";
+#else
+	std::string tsvd_code = "/TSVD";
+#endif
+
+
+	std::string significance_identifier = "/SIGNIFICANCE_" + std::to_string((int)(significant_value_ratio * 100 + 0.5));
+	std::string grid_voxel_identifier = "/VOXELS_" + std::to_string(grid_width_voxels);
+	std::string frames_per_batch_identifier = "/BATCH_" + std::to_string(max_frames_per_svd);
+
+	std::string compressed_sequence_folder = GetCompressionPath() + tsvd_code + grid_voxel_identifier + frames_per_batch_identifier + significance_identifier;
+	std::string reconstructed_sequence_folder = GetReconstructionPath() + tsvd_code + grid_voxel_identifier + frames_per_batch_identifier + significance_identifier;
+
+	std::string intermediary_file = compressed_sequence_folder + sequence_file_identifier + "/INTERMEDIARY_FILE.sif";
+	std::string final_file = compressed_sequence_folder + sequence_file_identifier + "/FINAL_FILE.tsvd";
+	std::string output_mesh_tag = reconstructed_sequence_folder + sequence_file_identifier + "/FRAME";
+
+	std::string output_texture_tag = output_mesh_tag;
+
+
 
 	SequenceFinderDetails mesh_sf = SequenceFinderDetails("Mesh", ".obj");
 	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
