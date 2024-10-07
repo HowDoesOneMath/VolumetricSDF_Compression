@@ -499,7 +499,7 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 
 #if TSVD_TIME_LOGGING
     tl.GetLogger(header_intermediary_time_logger_name)->MarkTime();
-    std::cout << "Header time: " << tl.GetLogger(header_intermediary_time_logger_name)->GetTime() << std::endl;
+    std::cout << "Header time: " << (tl.GetLogger(header_intermediary_time_logger_name)->GetTime() * 0.000000001) << " seconds." << std::endl;
 #endif
 
     size_t current_block_location = 0;
@@ -528,6 +528,8 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
         tl.GetLogger(mesh_reading_time_logger_name)->MarkTime();
         tl.GetLogger(mesh_cleaning_time_logger_name)->StartTimer();
 #endif
+
+        mesh.ClearUnreferencedElements();
 
         mp.CreateUnionFindPartitions(mesh);
         mp.NegateInsignificantPartitions(mesh, mesh_maximum_artifact_size);
@@ -606,6 +608,7 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(total_time_logger_name)->MarkTime();
+        std::cout << "Time on this frame: " << (tl.GetLogger(total_time_logger_name)->GetTime() * 0.000000001) << " seconds." << std::endl;
 #endif
     }
 
