@@ -9,7 +9,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 {
 	const int digit_count = 6;
 	
+	//const size_t grid_width_voxels = 512;
+	//const size_t grid_width_voxels = 256;
 	const size_t grid_width_voxels = 128;
+	//const size_t grid_width_voxels = 64;
 	const double grid_width_meters = 1.6;
 	const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
 	GridDataStruct gds;
@@ -17,6 +20,8 @@ class VV_SVD_TemporalSuite : public TestSuite
 	const Eigen::Vector3i block_size = Eigen::Vector3i(8, 8, 8);
 
 	const size_t max_frames_per_svd = 256;
+	//const size_t max_frames_per_svd = 128;
+	//const size_t max_frames_per_svd = 64;
 
 	const double shell_size = 0.04;
 	const double mesh_maximum_artifact_size = 0.05;
