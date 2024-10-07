@@ -204,23 +204,18 @@ void VV_TSDF::FitUnsignedTriangle(VV_Mesh* mesh, size_t triangle_index, double b
 		std::floor(std::max(gridbound_min.z(), (double)0))
 	);
 
-	size_t grid_index;
-
-	double test_dist_sqr;
-
-	Eigen::Vector3d point;
-
-	for (size_t x = grid_min.x(); x < grid_max.x(); ++x)
+#pragma omp parallel for
+	for (int x = grid_min.x(); x < grid_max.x(); ++x)
 	{
-		for (size_t y = grid_min.y(); y < grid_max.y(); ++y)
+		for (int y = grid_min.y(); y < grid_max.y(); ++y)
 		{
-			for (size_t z = grid_min.z(); z < grid_max.z(); ++z)
+			for (int z = grid_min.z(); z < grid_max.z(); ++z)
 			{
-				grid_index = x * span_x + y * span_y + z;
+				size_t grid_index = (size_t)x * span_x + (size_t)y * span_y + (size_t)z;
 
-				point = grid_lower_bound + Eigen::Vector3d(x, y, z) * gds.unit_length;
+				Eigen::Vector3d point = grid_lower_bound + Eigen::Vector3d(x, y, z) * gds.unit_length;
 
-				test_dist_sqr = SquaredDistanceToTriangle(*p0, *p1, *p2, p01, p12, p20, point, triangle_normal);
+				double test_dist_sqr = SquaredDistanceToTriangle(*p0, *p1, *p2, p01, p12, p20, point, triangle_normal);
 
 				double_grid[grid_index] = std::min(double_grid[grid_index], test_dist_sqr);
 			}
@@ -231,48 +226,46 @@ void VV_TSDF::FitUnsignedTriangle(VV_Mesh* mesh, size_t triangle_index, double b
 double VV_TSDF::FindNearestTrianglePointOnTemporaryGrid(VV_Mesh &mesh, Eigen::Vector3i& lower_bound, Eigen::Vector3i& upper_bound, Eigen::Vector3i& center)
 {
 	double to_return = DBL_MAX;
-	double test_dist;
 
-	size_t loc;
-	size_t span;
-	size_t start;
-	size_t end;
+	std::vector<double> distances;
+	Eigen::Vector3i bound_spans = upper_bound - lower_bound;
+	distances.resize(bound_spans.x() * bound_spans.y() * bound_spans.z(), DBL_MAX);
 
-	Eigen::Vector3d *p0, *p1, *p2;
-	Eigen::Vector3d p01, p12, p20, pos, triangle_normal;
-
+#pragma omp parallel for
 	for (int x = lower_bound.x(); x < upper_bound.x(); ++x)
 	{
 		for (int y = lower_bound.y(); y < upper_bound.y(); ++y)
 		{
 			for (int z = lower_bound.z(); z < upper_bound.z(); ++z)
 			{
-				loc = z + y * span_y + x * span_x;
+				size_t array_loc = ((x - lower_bound.x()) * bound_spans.y() + (y - lower_bound.y())) * bound_spans.z() + (z - lower_bound.z());
+
+				size_t loc = (size_t)z + (size_t)y * span_y + (size_t)x * span_x;
 
 				if (mc_solver->inds[loc] == SIZE_MAX)
 				{
 					continue;
 				}
 
-				span = mc_solver->mc_data[mc_solver->inds[loc]].triangle_count;
+				size_t span = mc_solver->mc_data[mc_solver->inds[loc]].triangle_count;
 
 				if (span <= 0)
 				{
 					continue;
 				}
 
-				start = mc_solver->mc_data[mc_solver->inds[loc]].triangle_indices_start;
-				end = start + span;
+				size_t start = mc_solver->mc_data[mc_solver->inds[loc]].triangle_indices_start;
+				size_t end = start + span;
 
 				for (size_t i = start; i < end; ++i)
 				{
-					p0 = &mesh.vertices.elements[mesh.vertices.indices[i][0]];
-					p1 = &mesh.vertices.elements[mesh.vertices.indices[i][1]];
-					p2 = &mesh.vertices.elements[mesh.vertices.indices[i][2]];
+					Eigen::Vector3d* p0 = &mesh.vertices.elements[mesh.vertices.indices[i][0]];
+					Eigen::Vector3d* p1 = &mesh.vertices.elements[mesh.vertices.indices[i][1]];
+					Eigen::Vector3d* p2 = &mesh.vertices.elements[mesh.vertices.indices[i][2]];
 
-					p01 = (*p0) - (*p1);
-					p12 = (*p1) - (*p2);
-					p20 = (*p2) - (*p0);
+					Eigen::Vector3d p01 = (*p0) - (*p1);
+					Eigen::Vector3d p12 = (*p1) - (*p2);
+					Eigen::Vector3d p20 = (*p2) - (*p0);
 
 					Eigen::Vector3d triangle_normal = Eigen::Vector3d(
 						p01.y() * p20.z() - p01.z() * p20.y(),
@@ -285,17 +278,21 @@ double VV_TSDF::FindNearestTrianglePointOnTemporaryGrid(VV_Mesh &mesh, Eigen::Ve
 						continue;
 					}
 
-					pos = Eigen::Vector3d(center.x(), center.y(), center.z()) * gds.unit_length + grid_lower_bound;
+					Eigen::Vector3d pos = Eigen::Vector3d(center.x(), center.y(), center.z()) * gds.unit_length + grid_lower_bound;
 
-					test_dist = SquaredDistanceToTriangle(*p0, *p1, *p2, p01, p12, p20, pos, triangle_normal);
+					double test_dist = SquaredDistanceToTriangle(*p0, *p1, *p2, p01, p12, p20, pos, triangle_normal);
 
-					if (test_dist < to_return)
-					{
-						to_return = test_dist;
-					}
+					bool smaller = test_dist < distances[array_loc];
+					distances[array_loc] = test_dist * smaller + (1 - smaller) * distances[array_loc];
 				}
 			}
 		}
+	}
+
+	for (auto dist : distances)
+	{
+		bool smaller = dist < to_return;
+		to_return = dist * smaller + (1 - smaller) * to_return;
 	}
 
 	return sqrt(to_return);
