@@ -951,16 +951,16 @@ std::shared_ptr<std::vector<std::vector<size_t>>> VV_TSDF::ExtractTriangleGroups
 	size_t blocks_y = gds.dim_y / block_size.y();
 	size_t blocks_z = gds.dim_z / block_size.z();
 
-//#pragma omp parallel for
-	for (int x = 0; x < gds.dim_x; x += block_size.x())
+#pragma omp parallel for
+	for (int x = 0; x < blocks_x; ++x)
 	{
-		for (int y = 0; y < gds.dim_y; y += block_size.y())
+		for (int y = 0; y < blocks_y; ++y)
 		{
-			for (int z = 0; z < gds.dim_z; z += block_size.z())//, ++current_triangle_block)
+			for (int z = 0; z < blocks_z; ++z)//, ++current_triangle_block)
 			{
 				size_t current_triangle_block = ((size_t)x * blocks_y + (size_t)y) * blocks_z + (size_t)z;
 
-				Eigen::Vector3i block_start = Eigen::Vector3i(x, y, z);
+				Eigen::Vector3i block_start = Eigen::Vector3i(x, y, z).cwiseProduct(block_size);
 				Eigen::Vector3i block_end = block_start + block_size;
 
 				auto new_groups = ExtractTriangleGroupsFromBlock(block_start, block_end);
