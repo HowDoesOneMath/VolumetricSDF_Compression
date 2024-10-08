@@ -262,6 +262,8 @@ void VV_SVD_TemporalCompressor::EncodeImportantBlocks(size_t start_t, size_t end
 
     for (size_t t = start_t; t < end_t; ++t)
     {
+        std::cout << "encoding blocks of Frame " << t << "... " << std::endl;
+
 #if TSVD_TIME_LOGGING
         tl.GetLogger(important_blocks_logger_name)->StartTimer();
 #endif
@@ -278,6 +280,7 @@ void VV_SVD_TemporalCompressor::EncodeImportantBlocks(size_t start_t, size_t end
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(important_blocks_logger_name)->MarkTime();
+        std::cout << "Time spent: " << (tl.GetLogger(important_blocks_logger_name)->GetTime() * 0.000000001) << " seconds." << std::endl;
 #endif
     }
 }

@@ -57,4 +57,5 @@ void MeshToSDF_Suite::ConvertSequence()
 
 void MeshToSDF_Suite::run(int argc, char** argv)
 {
+	ConvertSequence();
 }
