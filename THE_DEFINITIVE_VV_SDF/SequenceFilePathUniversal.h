@@ -26,3 +26,8 @@ inline std::string GetDatasetsPath()
 {
 	return GetWorkingDataPath() + "/_VV_DATASETS_TRIMMED";
 }
+
+inline std::string GetSDF_MeshDatasetsPath()
+{
+	return GetWorkingDataPath() + "/_VV_DATASETS_TRIMMED_SDF";
+}

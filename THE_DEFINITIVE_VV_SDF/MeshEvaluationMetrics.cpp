@@ -1,53 +1,18 @@
 #include "MeshEvaluationMetrics.h"
 
-std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPoint(VV_Mesh &v1, VV_Mesh &v2, 
-    std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
+std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPoint(std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
 {
     auto to_return = std::make_pair<double, double>(0, 0);
-
-    Eigen::Vector3i* tri;
-    Eigen::Vector3d* p0;
-    Eigen::Vector3d* p1;
-    Eigen::Vector3d* p2;
-
-    Eigen::Vector3d loc1;
-    Eigen::Vector3d loc2;
-
-    double test_dist_sqr;
-
-    double min_dist_sqr;
 
     double max_dist_sqr = -DBL_MAX;
 
     for (size_t i = 0; i < pv1.size(); ++i)
     {
-        tri = &(v1.vertices.indices[pv1[i].triangle]);
-
-        p0 = &(v1.vertices.elements[tri->x()]);
-        p1 = &(v1.vertices.elements[tri->y()]);
-        p2 = &(v1.vertices.elements[tri->z()]);
-
-        loc1 =
-            *p0 * pv1[i].barycentric_coords.x() +
-            *p1 * pv1[i].barycentric_coords.y() +
-            *p2 * pv1[i].barycentric_coords.z();
-
-        min_dist_sqr = DBL_MAX;
+        double min_dist_sqr = DBL_MAX;
 
         for (size_t j = 0; j < pv2.size(); ++j)
         {
-            tri = &(v2.vertices.indices[pv2[i].triangle]);
-
-            p0 = &(v2.vertices.elements[tri->x()]);
-            p1 = &(v2.vertices.elements[tri->y()]);
-            p2 = &(v2.vertices.elements[tri->z()]);
-
-            loc2 =
-                *p0 * pv2[i].barycentric_coords.x() +
-                *p1 * pv2[i].barycentric_coords.y() +
-                *p2 * pv2[i].barycentric_coords.z();
-
-            test_dist_sqr = (loc1 - loc2).squaredNorm();
+            double test_dist_sqr = (pv1[i].position - pv2[j].position).squaredNorm();
 
             if (test_dist_sqr < min_dist_sqr)
             {
@@ -60,7 +25,60 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPoint(VV_Mesh &v1,
             max_dist_sqr = min_dist_sqr;
         }
 
-        to_return.second += sqrt(min_dist_sqr);
+        to_return.second += min_dist_sqr;
+    }
+
+    to_return.second /= pv1.size();
+
+    to_return.first = max_dist_sqr;
+
+    return to_return;
+}
+
+std::pair<double, double> MeshEvaluationMetrics::GetPointToPointMetric(std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
+{
+    auto to_return = std::make_pair<double, double>(0, 0);
+
+    auto v1_to_v2 = OneWayPointToPoint(pv1, pv2);
+    auto v2_to_v1 = OneWayPointToPoint(pv2, pv1);
+
+    to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
+
+    return to_return;
+}
+
+std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPlane(std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
+{
+    auto to_return = std::make_pair<double, double>(0, 0);
+
+    double max_dist_sqr = -DBL_MAX;
+
+    for (size_t i = 0; i < pv1.size(); ++i)
+    {
+        size_t min_index = SIZE_MAX;
+        double min_dist_sqr = DBL_MAX;
+
+        for (size_t j = 0; j < pv2.size(); ++j)
+        {
+            double test_dist_sqr = (pv1[i].position - pv2[j].position).squaredNorm();
+
+            if (test_dist_sqr < min_dist_sqr)
+            {
+                min_dist_sqr = test_dist_sqr;
+                min_index = j;
+            }
+        }
+
+        if (min_dist_sqr > max_dist_sqr)
+        {
+            max_dist_sqr = min_dist_sqr;
+        }
+
+        double norm_dist_sqr = (pv1[i].position - pv2[min_index].position).dot(pv2[min_index].normal);
+        norm_dist_sqr *= norm_dist_sqr;
+
+        to_return.second += norm_dist_sqr;
     }
 
     to_return.second /= pv1.size();
@@ -70,13 +88,65 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPoint(VV_Mesh &v1,
     return to_return;
 }
 
-std::pair<double, double> MeshEvaluationMetrics::GetPointToPointMetric(VV_Mesh& v1, VV_Mesh& v2,
-    std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
+std::pair<double, double> MeshEvaluationMetrics::GetPointToPlaneMetric(std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
 {
     auto to_return = std::make_pair<double, double>(0, 0);
 
-    auto v1_to_v2 = OneWayPointToPoint(v1, v2, pv1, pv2);
-    auto v2_to_v1 = OneWayPointToPoint(v2, v1, pv2, pv1);
+    auto v1_to_v2 = OneWayPointToPlane(pv1, pv2);
+    auto v2_to_v1 = OneWayPointToPlane(pv2, pv1);
+
+    to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
+
+    return to_return;
+}
+
+std::pair<double, double> MeshEvaluationMetrics::OneWayHausdorffChamfer(std::vector<PointCloudGenerator::PCG_Point>& point_cloud, VV_Mesh& mesh)
+{
+    auto to_return = std::make_pair<double, double>(0, 0);
+
+    auto cgal_mesh = vcm.GenerateCGAL_MeshFromAttribute(mesh.vertices);
+    auto index_remap = vcm.CGAL_To_VV_IndexMap(*cgal_mesh, mesh.vertices);
+    vcm.CleanMeshCGAL(*cgal_mesh);
+    auto aabb_tree = vcm.CreateAABB(*cgal_mesh);
+
+    double max_dist = -DBL_MAX;
+
+    for (size_t i = 0; i < point_cloud.size(); ++i)
+    {
+        size_t tri_index = SIZE_MAX;
+        Eigen::Vector3d barycentric_coords;
+
+        vcm.FindClosestPointCGAL(*cgal_mesh, *aabb_tree, point_cloud[i].position, tri_index, barycentric_coords);
+
+        Eigen::Vector3d point =
+            barycentric_coords.x() * mesh.vertices.elements[mesh.vertices.indices[tri_index].x()] +
+            barycentric_coords.y() * mesh.vertices.elements[mesh.vertices.indices[tri_index].y()] +
+            barycentric_coords.z() * mesh.vertices.elements[mesh.vertices.indices[tri_index].z()];
+
+        double dist = (point - point_cloud[i].position).norm();
+
+        if (dist > max_dist)
+        {
+            max_dist = dist;
+        }
+
+        to_return.second += dist;
+    }
+
+    to_return.second /= point_cloud.size();
+
+    to_return.first = max_dist;
+
+    return to_return;
+}
+
+std::pair<double, double> MeshEvaluationMetrics::GetHausdorffChamferDistanceMetric(VV_Mesh& v1, VV_Mesh& v2, std::vector<PointCloudGenerator::PCG_Point>& pv1, std::vector<PointCloudGenerator::PCG_Point>& pv2)
+{
+    auto to_return = std::make_pair<double, double>(0, 0);
+
+    auto v1_to_v2 = OneWayHausdorffChamfer(pv1, v2);
+    auto v2_to_v1 = OneWayHausdorffChamfer(pv2, v1);
 
     to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
     to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
