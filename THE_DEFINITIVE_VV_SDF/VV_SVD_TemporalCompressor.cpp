@@ -777,6 +777,8 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
         tl.PrintTotalAndAverageAndGreatestTime(matrix_writing_time_logger_name, "Total time", "Average time", "Greatest time", " of UDV^T Writing: ");
         tl.PrintEmptyLine();
         tl.PrintEmptyLine();
+
+        std::cout << "Time taken for batch: " << (tl.GetLogger(batch_TSVD_time_logger_name)->GetTime() * 0.000000001) << " seconds." << std::endl;
 #endif
     }
 
