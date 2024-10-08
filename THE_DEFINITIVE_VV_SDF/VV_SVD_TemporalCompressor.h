@@ -150,7 +150,7 @@ private:
 	void EncodeImportantBlocks(size_t start_t, size_t end_t, std::vector<size_t>& block_locations, std::vector<size_t>& sign_locations);
 
 	std::shared_ptr<std::pair<std::vector<std::pair<size_t, Eigen::Vector2i>>, Eigen::Vector2i>> GetPatchInfo(
-		std::vector<size_t>& block_locations);
+		std::vector<size_t>& block_locations, size_t start_ind, size_t end_ind);
 
 	void CreateUVs(VV_Mesh& target_mesh, std::vector<std::pair<size_t, Eigen::Vector2i>>& patch_locations, Eigen::Vector2d patch_spacing);
 

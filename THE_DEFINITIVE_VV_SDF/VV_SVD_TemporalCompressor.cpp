@@ -286,13 +286,13 @@ void VV_SVD_TemporalCompressor::EncodeImportantBlocks(size_t start_t, size_t end
 }
 
 std::shared_ptr<std::pair<std::vector<std::pair<size_t, Eigen::Vector2i>>, Eigen::Vector2i>> VV_SVD_TemporalCompressor::GetPatchInfo(
-    std::vector<size_t>& block_locations)
+    std::vector<size_t>& block_locations, size_t start_ind, size_t end_ind)
 {
     auto to_return = std::make_shared<std::pair<std::vector<std::pair<size_t, Eigen::Vector2i>>, Eigen::Vector2i>>();
     std::pair<size_t, Eigen::Vector2i> to_add;
 
     size_t total_important_blocks = 0;
-    for (size_t i = 0; i < block_locations.size(); ++i)
+    for (size_t i = start_ind; i < end_ind; ++i)
     {
         total_important_blocks += ((block_locations[i] & important_geometry_flag) > 0);
     }
@@ -305,11 +305,11 @@ std::shared_ptr<std::pair<std::vector<std::pair<size_t, Eigen::Vector2i>>, Eigen
     size_t w = 0;
     size_t h = 0;
 
-    for (size_t i = 0; i < block_locations.size(); ++i)
+    for (size_t i = start_ind; i < end_ind; ++i)
     {
         if ((block_locations[i] & important_geometry_flag) > 0)
         {
-            to_add.first = i;
+            to_add.first = i - start_ind;
             to_add.second.x() = w;
             to_add.second.y() = h;
             to_return->first.push_back(to_add);
@@ -890,8 +890,9 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
     size_t total_important_blocks;
     size_t target_frame;
 
+    size_t batch_block_sections_index = 0;
 
-    for (size_t svd_group = 0; svd_group < sad.total_frames; svd_group += sad.frames_per_input_matrix)
+    for (size_t svd_group = 0; svd_group < sad.total_frames; svd_group += sad.frames_per_input_matrix, batch_block_sections_index += sad.total_partitions)
     {
 #if TSVD_TIME_LOGGING
         tl.GetLogger(total_time_logger_name)->StartTimer();
@@ -910,7 +911,7 @@ bool VV_SVD_TemporalCompressor::AugmentFinalFileWithTextureData(std::string root
         tl.GetLogger(patch_creation_texturing_logger_name)->StartTimer();
 #endif
 
-        auto patch_info = GetPatchInfo(augmented_block_locations);
+        auto patch_info = GetPatchInfo(augmented_block_locations, batch_block_sections_index, batch_block_sections_index + sad.total_partitions);
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(patch_creation_texturing_logger_name)->MarkTime();

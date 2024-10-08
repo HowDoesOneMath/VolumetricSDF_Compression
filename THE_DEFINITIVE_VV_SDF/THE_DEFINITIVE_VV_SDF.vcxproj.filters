@@ -255,6 +255,9 @@
     <ClCompile Include="TimeLogger.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MeshToSDF_Suite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VV_Mesh.h">
@@ -547,6 +550,9 @@
     </ClInclude>
     <ClInclude Include="SequenceFilePathUniversal.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshToSDF_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

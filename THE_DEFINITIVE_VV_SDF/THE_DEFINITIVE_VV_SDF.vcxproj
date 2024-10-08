@@ -147,6 +147,7 @@
     <ClCompile Include="DisplacementWaveletSuite.cpp" />
     <ClCompile Include="MeshEvaluationMetrics.cpp" />
     <ClCompile Include="MeshToPointCloudSuite.cpp" />
+    <ClCompile Include="MeshToSDF_Suite.cpp" />
     <ClCompile Include="PerfectJPEG_Suite.cpp" />
     <ClCompile Include="PointCloudGenerator.cpp" />
     <ClCompile Include="PushPullSuite.cpp" />
@@ -228,6 +229,7 @@
     <ClInclude Include="DisplacementWaveletSuite.h" />
     <ClInclude Include="MeshEvaluationMetrics.h" />
     <ClInclude Include="MeshToPointCloudSuite.h" />
+    <ClInclude Include="MeshToSDF_Suite.h" />
     <ClInclude Include="PerfectJPEG_Suite.h" />
     <ClInclude Include="PointCloudGenerator.h" />
     <ClInclude Include="PushPullSuite.h" />
