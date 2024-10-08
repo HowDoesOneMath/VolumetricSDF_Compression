@@ -1071,9 +1071,13 @@ bool VV_SVD_TemporalCompressor::ReconstructMeshes(std::string final_file_name, s
 
     Eigen::Vector2d patch_spacing;
 
+    size_t batch;
+
     for (size_t t = 0; t < sad.total_frames; ++t)
     {
         std::cout << "Frame " << t << "..." << std::endl;
+
+        batch = t / sad.frames_per_input_matrix;
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(total_time_logger_name)->StartTimer();
@@ -1087,7 +1091,7 @@ bool VV_SVD_TemporalCompressor::ReconstructMeshes(std::string final_file_name, s
         tl.GetLogger(patch_creation_reconstruction_logger_name)->StartTimer();
 #endif
 
-        auto patch_info = GetPatchInfo(svd_block_locations);
+        auto patch_info = GetPatchInfo(svd_block_locations, batch * sad.total_partitions, (batch + 1) * sad.total_partitions);
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(patch_creation_reconstruction_logger_name)->MarkTime();
