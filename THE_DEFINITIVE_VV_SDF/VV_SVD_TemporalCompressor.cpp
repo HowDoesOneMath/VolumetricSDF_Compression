@@ -512,11 +512,12 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 
     for (size_t t = 0; t < sad.total_frames; ++t)
     {
+        std::cout << "Frame " << t << "..." << std::endl;
+
 #if TSVD_TIME_LOGGING
         tl.GetLogger(total_time_logger_name)->StartTimer();
+        tl.GetLogger(mesh_reading_time_logger_name)->StartTimer();
 #endif
-
-        std::cout << "Frame " << t << "..." << std::endl;
 
         if (!mesh.ReadOBJ(sf.files[mesh_sf.key][t]))
         {

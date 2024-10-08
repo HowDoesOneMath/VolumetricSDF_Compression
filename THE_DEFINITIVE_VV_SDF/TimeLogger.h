@@ -56,6 +56,10 @@ public:
 			nanosecond_count = new_time;
 		}
 
+		void SetTotalTime(size_t new_time) {
+			total_nanoseconds = new_time;
+		}
+
 		void ResetTotalTime() {
 			total_nanoseconds = 0;
 			maximum_nanoseconds = 0;
@@ -64,10 +68,6 @@ public:
 
 		void AddTime(size_t to_add) {
 			nanosecond_count += to_add;
-			total_nanoseconds += to_add;
-
-			bool is_greater = nanosecond_count > maximum_nanoseconds;
-			maximum_nanoseconds = maximum_nanoseconds * !is_greater + nanosecond_count * is_greater;
 		}
 
 		size_t GetTime() {
