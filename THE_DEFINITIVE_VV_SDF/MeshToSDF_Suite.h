@@ -35,7 +35,10 @@ class MeshToSDF_Suite : public TestSuite
 	//const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
 	const Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 
-	const double shell_size = 0.04;
+	//const double shell_size = 0.04;
+	//const double shell_size = 0.02;
+	const double shell_size = 0.01;
+	//const double shell_size = 0.005;
 	const double mesh_maximum_artifact_size = 0.05;
 
 	GridDataStruct gds;

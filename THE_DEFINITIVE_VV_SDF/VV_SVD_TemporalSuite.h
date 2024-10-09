@@ -25,7 +25,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//const size_t max_frames_per_svd = 128;
 	//const size_t max_frames_per_svd = 64;
 
-	const double shell_size = 0.04;
+	//const double shell_size = 0.04;
+	//const double shell_size = 0.02;
+	const double shell_size = 0.01;
+	//const double shell_size = 0.005;
 	const double mesh_maximum_artifact_size = 0.05;
 
 	const double minimum_normal_similarity = 0.5;
