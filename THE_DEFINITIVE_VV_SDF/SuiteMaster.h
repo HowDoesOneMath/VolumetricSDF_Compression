@@ -18,6 +18,7 @@
 #include "LZ_Compression_Suite.h"
 #include "MC_TestSuite.h"
 #include "MeshToPointCloudSuite.h"
+#include "MeshToSDF_Suite.h"
 #include "MortonOrderSuite.h"
 #include "PCA_Suite.h"
 #include "PerfectJPEG_Suite.h"
@@ -72,6 +73,7 @@ public:
         //suite = new LZ_Compression_Suite();
         //suite = new MC_TestSuite();
         //suite = new MeshToPointCloudSuite();
+        suite = new MeshToSDF_Suite();
         //suite = new MortonOrderSuite();
         //suite = new PCA_Suite();
         //suite = new PerfectJPEG_Suite();
@@ -98,7 +100,7 @@ public:
         //suite = new VSMC_TestSuite(); // <- Current VSMC Compression
         //suite = new VV_Mesh_Suite();
         //suite = new VV_SDF_PCA_CompressionSuite();
-        suite = new VV_SVD_TemporalSuite(); // <- Current SVD Compression
+        //suite = new VV_SVD_TemporalSuite(); // <- Current SVD Compression
         //suite = new WaveletTransformSuite();
         //suite = new WavelibSuite();
         //suite = new XOR_Mask_Suite();

@@ -2,9 +2,13 @@
 
 void MeshToSDF_Suite::ConvertSequence()
 {
+	std::filesystem::create_directories(output_folder);
+
 	gds.dim_x = grid_width_voxels;
 	gds.dim_y = 2 * grid_width_voxels;
 	gds.dim_z = grid_width_voxels;
+
+	gds.unit_length = grid_width_meters / grid_width_voxels;
 
 	gds.center_x = center.x();
 	gds.center_y = center.y();
@@ -35,11 +39,15 @@ void MeshToSDF_Suite::ConvertSequence()
 		mp.NegateInsignificantPartitions(mesh, mesh_maximum_artifact_size);
 		mesh.ClearNegativeTriangles();
 
+		std::cout << "Tris: " << mesh.vertices.indices.size() << std::endl;
+
 		if (!sdf.CastMeshUnsignedDistance(&mesh, shell_size))
 		{
 			std::cout << "Problem creating shell of mesh " << std::to_string(i) << ": '" << sf.files[mesh_sf.key][i] << "'!" << std::endl;
 			return;
 		}
+
+		//sdf.PrintCrossSectionOfQuantizedGrid(64);
 
 		auto shell_mesh = sdf.ExtractMeshQuantized();
 

@@ -468,6 +468,8 @@ void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buff
 					continue;
 				}
 
+				to_recalculate[grid_loc] = true;
+
 				++interior_count;
 			}
 
@@ -503,13 +505,13 @@ void VV_TSDF::S_TraversalFillTemporaryGrid(VV_Mesh& mesh, int reach, double buff
 					lower_bound.z() = std::max(0, center.z() - reach);
 
 					Eigen::Vector3i upper_bound;
-					upper_bound.x() = std::min((int)gds.dim_x - 1, center.x() + reach);
-					upper_bound.y() = std::min((int)gds.dim_y - 1, center.y() + reach);
-					upper_bound.z() = std::min((int)gds.dim_z - 1, center.z() + reach);
+					upper_bound.x() = std::min((int)gds.dim_x, center.x() + reach);
+					upper_bound.y() = std::min((int)gds.dim_y, center.y() + reach);
+					upper_bound.z() = std::min((int)gds.dim_z, center.z() + reach);
 
 					//Calculate nearest point on shell
 					double nearest = FindNearestTrianglePointOnTemporaryGrid(mesh, lower_bound, upper_bound, center);
-					double_grid[grid_loc] = std::max(buffer_distance - nearest, -gds.unit_length);
+					double_grid[calc_loc] = std::max(buffer_distance - nearest, -gds.unit_length);
 				}
 			}
 		}
