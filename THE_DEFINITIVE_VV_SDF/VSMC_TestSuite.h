@@ -105,8 +105,8 @@ class VSMC_TestSuite : public TestSuite
 	VV_CGAL_Marshaller<CGAL::Simple_cartesian<double>::Point_3, Eigen::Vector3d> vcm;
 
 
-	//size_t end_frame = SIZE_MAX;
-	size_t end_frame = 3;
+	size_t end_frame = SIZE_MAX;
+	//size_t end_frame = 3;
 	size_t beginning_frame = 0;
 
 	double gutter_size = 1.1;
