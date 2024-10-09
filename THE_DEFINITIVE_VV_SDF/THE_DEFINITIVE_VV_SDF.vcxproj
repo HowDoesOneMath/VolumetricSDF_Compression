@@ -138,6 +138,8 @@
     <ClCompile Include="AbstractAttribute.cpp" />
     <ClCompile Include="ArtifactCullingSuite.cpp" />
     <ClCompile Include="AttributeMapSuite.cpp" />
+    <ClCompile Include="BadFileParser.cpp" />
+    <ClCompile Include="BadFileParsingSuite.cpp" />
     <ClCompile Include="BarycentricInterpolationSuite.cpp" />
     <ClCompile Include="CGAL_Marshalling_Suite.cpp" />
     <ClCompile Include="CGAL_RepairSuite.cpp" />
@@ -219,6 +221,8 @@
   <ItemGroup>
     <ClInclude Include="AbstractAttribute.h" />
     <ClInclude Include="ArtifactCullingSuite.h" />
+    <ClInclude Include="BadFileParser.h" />
+    <ClInclude Include="BadFileParsingSuite.h" />
     <ClInclude Include="BarycentricInterpolationSuite.h" />
     <ClInclude Include="BasicGeometry.h" />
     <ClInclude Include="CGAL_Marshalling_Suite.h" />

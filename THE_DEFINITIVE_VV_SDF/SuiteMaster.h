@@ -6,6 +6,7 @@
 
 #include "ArtifactCullingSuite.h"
 #include "AttributeMapSuite.h"
+#include "BadFileParsingSuite.h"
 #include "BarycentricInterpolationSuite.h"
 #include "CGAL_Marshalling_Suite.h"
 #include "CGAL_RepairSuite.h"
@@ -61,6 +62,7 @@ public:
 
         //suite = new ArtifactCullingSuite();
         //suite = new AttributeMapSuite();
+        suite = new BadFileParsingSuite();
         //suite = new BarycentricInterpolationSuite();
         //suite = new CGAL_Marshalling_Suite();
         //suite = new CGAL_RepairSuite();
@@ -100,7 +102,7 @@ public:
         //suite = new VSMC_TestSuite(); // <- Current VSMC Compression
         //suite = new VV_Mesh_Suite();
         //suite = new VV_SDF_PCA_CompressionSuite();
-        suite = new VV_SVD_TemporalSuite(); // <- Current SVD Compression
+        //suite = new VV_SVD_TemporalSuite(); // <- Current SVD Compression
         //suite = new WaveletTransformSuite();
         //suite = new WavelibSuite();
         //suite = new XOR_Mask_Suite();

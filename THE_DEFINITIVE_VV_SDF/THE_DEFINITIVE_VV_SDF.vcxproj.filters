@@ -258,6 +258,12 @@
     <ClCompile Include="MeshToSDF_Suite.cpp">
       <Filter>Source Files\TestSuites</Filter>
     </ClCompile>
+    <ClCompile Include="BadFileParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BadFileParsingSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VV_Mesh.h">
@@ -552,6 +558,12 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="MeshToSDF_Suite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="BadFileParser.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BadFileParsingSuite.h">
       <Filter>Source Files\TestSuites</Filter>
     </ClInclude>
   </ItemGroup>
