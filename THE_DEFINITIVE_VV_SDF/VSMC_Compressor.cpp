@@ -37,12 +37,14 @@ void VSMC_Compressor::SetTimeLogFile(std::string time_log_name)
     tl.CreateNewLogger(cull_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(normals_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(draco_compression_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(buffer_writing_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(draco_decompression_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(remap_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(subdiv_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(displacement_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(wavelet_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(image_saving_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(buffer_reading_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(obj_saving_time_logger_name, new TimeLogger::IndependentLogger(""));
 
 }
@@ -63,6 +65,11 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     VV_Mesh& input_mesh, cimg_library::CImg<unsigned char>& input_texture, VV_SaveFileBuffer& sfb)
 #endif
 {
+#if USE_DOUBLE_DISPLACEMENTS
+    auto to_return = std::make_shared<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<double>>>();
+#else
+    auto to_return = std::make_shared<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<unsigned char>>>();
+#endif
 
 #if VSMC_TIME_LOGGING
     tl.GetLogger(cleaning_time_logger_name)->StartTimer();
@@ -77,12 +84,6 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
 
     //double irreg_thresh = 3.0;
     //input_mesh.DebugIrregularities(irreg_thresh);
-
-#if USE_DOUBLE_DISPLACEMENTS
-    auto to_return = std::make_shared<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<double>>>();
-#else
-    auto to_return = std::make_shared<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<unsigned char>>>();
-#endif
 
     //std::cout << "Creating CGAL Marshall..." << std::endl;
 
@@ -215,11 +216,13 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
 
 #if VSMC_TIME_LOGGING
     tl.GetLogger(draco_compression_time_logger_name)->MarkTime();
+    tl.GetLogger(buffer_writing_time_logger_name)->StartTimer();
 #endif
 
     sfb.WriteVectorToBuffer(compression_buffer);
 
 #if VSMC_TIME_LOGGING
+    tl.GetLogger(buffer_writing_time_logger_name)->MarkTime();
     tl.GetLogger(draco_decompression_time_logger_name)->StartTimer();
 #endif
     
@@ -323,10 +326,16 @@ std::shared_ptr<VV_Mesh> VSMC_Compressor::DecompressIntra(size_t frame, std::vec
     auto to_return = std::make_shared<VV_Mesh>();
 
     std::vector<char> draco_data;
+
+#if VSMC_TIME_LOGGING
+    tl.GetLogger(buffer_reading_time_logger_name)->StartTimer();
+#endif
+
     sfb.SetReaderLocation(file_locs[frame]);
     sfb.ReadVectorFromBuffer(draco_data);
 
 #if VSMC_TIME_LOGGING
+    tl.GetLogger(buffer_reading_time_logger_name)->MarkTime();
     tl.GetLogger(draco_decompression_time_logger_name)->StartTimer();
 #endif
 
@@ -441,6 +450,7 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
     tl.GetLogger(cull_time_logger_name)->ResetTotalTime();
     tl.GetLogger(normals_time_logger_name)->ResetTotalTime();
     tl.GetLogger(draco_compression_time_logger_name)->ResetTotalTime();
+    tl.GetLogger(buffer_writing_time_logger_name)->ResetTotalTime();
     tl.GetLogger(draco_decompression_time_logger_name)->ResetTotalTime();
     tl.GetLogger(remap_time_logger_name)->ResetTotalTime();
     tl.GetLogger(subdiv_time_logger_name)->ResetTotalTime();
@@ -551,6 +561,8 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
     tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(draco_compression_time_logger_name, "Total time", "Average time", "Greatest time", " Compressing w/Draco: ");
     tl.PrintEmptyLine();
+    tl.PrintTotalAndAverageAndGreatestTime(buffer_writing_time_logger_name, "Total time", "Average time", "Greatest time", " Buffer Writing: ");
+    tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(draco_decompression_time_logger_name, "Total time", "Average time", "Greatest time", " Decompressing w/Draco: ");
     tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(remap_time_logger_name, "Total time", "Average time", "Greatest time", " Remapping Texture: ");
@@ -598,6 +610,7 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
 #if VSMC_TIME_LOGGING
     tl.GetLogger(total_time_logger_name)->ResetTotalTime();
 
+    tl.GetLogger(buffer_reading_time_logger_name)->ResetTotalTime();
     tl.GetLogger(draco_decompression_time_logger_name)->ResetTotalTime();
     tl.GetLogger(subdiv_time_logger_name)->ResetTotalTime();
     tl.GetLogger(displacement_time_logger_name)->ResetTotalTime();
@@ -656,6 +669,8 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
     tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of decompression: ");
     tl.PrintEmptyLine();
 
+    tl.PrintTotalAndAverageAndGreatestTime(buffer_reading_time_logger_name, "Total time", "Average time", "Greatest time", " for Buffer Reading: ");
+    tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(draco_decompression_time_logger_name, "Total time", "Average time", "Greatest time", " for Draco Decompression: ");
     tl.PrintEmptyLine();
     tl.PrintTotalAndAverageAndGreatestTime(subdiv_time_logger_name, "Total time", "Average time", "Greatest time", " for Subdivision: ");

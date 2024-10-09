@@ -100,12 +100,14 @@ class VSMC_Compressor
 	std::string cull_time_logger_name					= "CULL_TIME_LOG";
 	std::string normals_time_logger_name				= "NORMALS_TIME_LOG";
 	std::string draco_compression_time_logger_name		= "DRACO_COMPRESS_TIME_LOG";
+	std::string buffer_writing_time_logger_name			= "BUFFER_WRITING_TIME_LOG";
 	std::string draco_decompression_time_logger_name	= "DRACO_DECOMPRESS_TIME_LOG";
 	std::string remap_time_logger_name					= "REMAP_TIME_LOG";
 	std::string subdiv_time_logger_name					= "SUBDIV_TIME_LOG";
 	std::string displacement_time_logger_name			= "DISPLACE_TIME_LOG";
 	std::string wavelet_time_logger_name				= "WAVELET_TIME_LOG";
 	std::string image_saving_time_logger_name			= "IMAGE_SAVING_TIME_LOG";
+	std::string buffer_reading_time_logger_name			= "BUFFER_READING_TIME_LOG";
 	std::string obj_saving_time_logger_name				= "OBJ_SAVING_TIME_LOG";
 #endif
 
