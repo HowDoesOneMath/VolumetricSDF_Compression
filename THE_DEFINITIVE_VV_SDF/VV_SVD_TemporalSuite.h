@@ -44,10 +44,22 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//const size_t max_allowed_components = 10;
 	const size_t max_allowed_components = SIZE_MAX;
 
+	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
 	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
+	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	//std::string input_folder = GetDatasetsPath() + "/Basketball";
+	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	//std::string input_folder = GetDatasetsPath() + "/LEVI";
 	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
 
+	//std::string sequence_file_identifier = "/NON_VV_DATASET";
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
+	//std::string sequence_file_identifier = "/AB-DODGE";
+	//std::string sequence_file_identifier = "/AB-DEATH";
+	//std::string sequence_file_identifier = "/BASKETBALL";
+	//std::string sequence_file_identifier = "/RAFA";
+	//std::string sequence_file_identifier = "/LEVI";
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
 
 #if ENCODE_SIGN_DATA
