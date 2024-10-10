@@ -29,7 +29,10 @@ void VSMC_Compressor::SetTimeLogFile(std::string time_log_name)
     tl.StartLogging(time_log_name);
 
     tl.CreateNewLogger(total_time_logger_name, new TimeLogger::IndependentLogger(""));
-    tl.CreateNewLogger(frame_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+    //tl.CreateNewLogger(frame_time_logger_name, new TimeLogger::IndependentLogger("\t"));
+
+    tl.CreateNewLogger(input_file_reading_time_logger_name, new TimeLogger::IndependentLogger(""));
+    tl.CreateNewLogger(displacement_reading_time_logger_name, new TimeLogger::IndependentLogger(""));
 
     tl.CreateNewLogger(cleaning_time_logger_name, new TimeLogger::IndependentLogger(""));
     tl.CreateNewLogger(uvs_time_logger_name, new TimeLogger::IndependentLogger(""));
@@ -444,6 +447,8 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 #if VSMC_TIME_LOGGING
     tl.GetLogger(total_time_logger_name)->ResetTotalTime();
 
+    tl.GetLogger(input_file_reading_time_logger_name)->ResetTotalTime();
+
     tl.GetLogger(cleaning_time_logger_name)->ResetTotalTime();
     tl.GetLogger(uvs_time_logger_name)->ResetTotalTime();
     tl.GetLogger(decimation_time_logger_name)->ResetTotalTime();
@@ -475,9 +480,8 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
         std::cout << "\tDEBUG frame " << i << " (" << relative_ind << ") \"" << sf.files[mesh_sf.key][i] << "\"..." << std::endl;
 
 #if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->ResetTotalTime();
         tl.GetLogger(total_time_logger_name)->StartTimer();
-        tl.GetLogger(frame_time_logger_name)->StartTimer();
+        tl.GetLogger(input_file_reading_time_logger_name)->StartTimer();
 #endif
 
         if (!to_compress_mesh.ReadOBJ(sf.files[mesh_sf.key][i]))
@@ -489,24 +493,14 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
         to_compress_texture.assign(sf.files[texture_sf.key][i].c_str());
 
 #if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to read files (FRAME " + std::to_string(i) + "): ");
+        tl.GetLogger(input_file_reading_time_logger_name)->MarkTime();
 #endif
 
         file_locs[relative_ind] = sfb.GetWriterLocation();
 
         std::cout << "Doing Compression..." << std::endl;
 
-#if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->StartTimer();
-#endif
-
         auto imgs = CompressIntra(to_compress_mesh, to_compress_texture, sfb);
-
-#if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to compress (including file writing): ");
-#endif
 
         if (imgs->first.width() == 0)
         {
@@ -517,7 +511,6 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
         std::cout << "Saving tex... " << std::endl;
 
 #if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->StartTimer();
         tl.GetLogger(image_saving_time_logger_name)->StartTimer();
 #endif
 
@@ -528,11 +521,7 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 
 #if VSMC_TIME_LOGGING
         tl.GetLogger(image_saving_time_logger_name)->MarkTime();
-        tl.GetLogger(frame_time_logger_name)->MarkTime();
         tl.GetLogger(total_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to save displacement/albedo textures: ");
-        tl.PrintLoggerTotalTime(frame_time_logger_name, "Total time to save frame: ");
-        tl.PrintEmptyLine();
 
         std::cout << "Frame Time: " << (tl.GetLogger(total_time_logger_name)->GetTime() * 0.000000001) << " seconds" << std::endl;
 #endif
@@ -547,6 +536,9 @@ bool VSMC_Compressor::CompressSequence(std::string root_folder, SequenceFinderDe
 #if VSMC_TIME_LOGGING
 
     tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of compression: ");
+    tl.PrintEmptyLine();
+
+    tl.PrintTotalAndAverageAndGreatestTime(input_file_reading_time_logger_name, "Total time", "Average time", "Greatest time", " Reading Input: ");
     tl.PrintEmptyLine();
 
     tl.PrintTotalAndAverageAndGreatestTime(cleaning_time_logger_name, "Total time", "Average time", "Greatest time", " Cleaning Mesh: ");
@@ -610,6 +602,8 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
 #if VSMC_TIME_LOGGING
     tl.GetLogger(total_time_logger_name)->ResetTotalTime();
 
+    tl.GetLogger(displacement_reading_time_logger_name)->ResetTotalTime();
+
     tl.GetLogger(buffer_reading_time_logger_name)->ResetTotalTime();
     tl.GetLogger(draco_decompression_time_logger_name)->ResetTotalTime();
     tl.GetLogger(subdiv_time_logger_name)->ResetTotalTime();
@@ -629,25 +623,19 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
         std::cout << "Decompressing frame " << i << "..." << std::endl;
 
 #if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->ResetTotalTime();
         tl.GetLogger(total_time_logger_name)->StartTimer();
-        tl.GetLogger(frame_time_logger_name)->StartTimer();
+        tl.GetLogger(displacement_reading_time_logger_name)->StartTimer();
 #endif
 
         displacement_tex.assign(sf.files[displacement_texture_sf.key][i].c_str());
 
 #if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to read displacements: ");
-        tl.GetLogger(frame_time_logger_name)->StartTimer();
+        tl.GetLogger(displacement_reading_time_logger_name)->MarkTime();
 #endif
 
         auto new_mesh = DecompressIntra(i, file_locs, expected_subdiv_count, displacement_tex, expected_block_size, sfb);
 
 #if VSMC_TIME_LOGGING
-        tl.GetLogger(frame_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to decompress frame " + std::to_string(i) + ": ");
-        tl.GetLogger(frame_time_logger_name)->StartTimer();
         tl.GetLogger(obj_saving_time_logger_name)->StartTimer();
 #endif
 
@@ -657,16 +645,15 @@ bool VSMC_Compressor::DecompressSequence(std::string input_file_name, std::strin
 
 #if VSMC_TIME_LOGGING
         tl.GetLogger(obj_saving_time_logger_name)->MarkTime();
-        tl.GetLogger(frame_time_logger_name)->MarkTime();
         tl.GetLogger(total_time_logger_name)->MarkTime();
-        tl.PrintLogger(frame_time_logger_name, "Time to write obj: ");
-        tl.PrintLoggerTotalTime(frame_time_logger_name, "Total time to decompress frame: ");
-        tl.PrintEmptyLine();
 #endif
     }
 
 #if VSMC_TIME_LOGGING
     tl.PrintTotalAndAverageAndGreatestTime(total_time_logger_name, "Total time", "Average time", "Greatest time", " of decompression: ");
+    tl.PrintEmptyLine();
+
+    tl.PrintTotalAndAverageAndGreatestTime(displacement_reading_time_logger_name, "Total time", "Average time", "Greatest time", " for Reading Displacements: ");
     tl.PrintEmptyLine();
 
     tl.PrintTotalAndAverageAndGreatestTime(buffer_reading_time_logger_name, "Total time", "Average time", "Greatest time", " for Buffer Reading: ");

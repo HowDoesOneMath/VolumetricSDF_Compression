@@ -92,7 +92,10 @@ class VSMC_Compressor
 	TimeLogger tl;
 
 	std::string total_time_logger_name = "TOTAL_TIME_LOG";
-	std::string frame_time_logger_name = "FRAME_TIME_LOG";
+	//std::string frame_time_logger_name = "FRAME_TIME_LOG";
+
+	std::string input_file_reading_time_logger_name		= "READ_INPUT_TIME_LOG";
+	std::string displacement_reading_time_logger_name	= "DISP_READING_TIME_LOG";
 
 	std::string cleaning_time_logger_name				= "CLEAN_TIME_LOG";
 	std::string uvs_time_logger_name					= "UV_TIME_LOG";
