@@ -667,6 +667,72 @@ std::pair<Eigen::Vector3d, Eigen::Vector3d> VV_Mesh::GetBoundingBox()
 	return to_return;
 }
 
+void VV_Mesh::JoinOverlappingVertices(double overlapping_threshold)
+{
+	double overlapping_theshold_sqr = overlapping_threshold * overlapping_threshold;
+
+	std::vector<size_t> redirects;
+	redirects.resize(vertices.elements.size());
+
+	for (size_t i = 0; i < vertices.elements.size(); ++i)
+	{
+		redirects[i] = i;
+	}
+
+	//NOT PARALLELIZABLE
+	for (size_t i = 0; i < vertices.elements.size(); ++i)
+	{
+		for (size_t j = 0; j < i; ++j)
+		{
+			if ((vertices.elements[i] - vertices.elements[j]).squaredNorm() <= overlapping_theshold_sqr)
+			{
+				redirects[i] = j;
+
+				break;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < vertices.indices.size(); ++i)
+	{
+		vertices.indices[i][0] = redirects[vertices.indices[i][0]];
+		vertices.indices[i][1] = redirects[vertices.indices[i][1]];
+		vertices.indices[i][2] = redirects[vertices.indices[i][2]];
+	}
+}
+
+void VV_Mesh::JoinOverlappingVertices()
+{
+	std::vector<size_t> redirects;
+	redirects.resize(vertices.elements.size());
+
+	for (size_t i = 0; i < vertices.elements.size(); ++i)
+	{
+		redirects[i] = i;
+	}
+
+	//NOT PARALLELIZABLE
+	for (size_t i = 0; i < vertices.elements.size(); ++i)
+	{
+		for (size_t j = 0; j < i; ++j)
+		{
+			if (vertices.elements[i] == vertices.elements[j])
+			{
+				redirects[i] = j;
+
+				break;
+			}
+		}
+	}
+
+	for (size_t i = 0; i < vertices.indices.size(); ++i)
+	{
+		vertices.indices[i][0] = redirects[vertices.indices[i][0]];
+		vertices.indices[i][1] = redirects[vertices.indices[i][1]];
+		vertices.indices[i][2] = redirects[vertices.indices[i][2]];
+	}
+}
+
 void VV_Mesh::WriteVertices(std::ofstream& savefile)
 {
 	int v_count = vertices.elements.size();

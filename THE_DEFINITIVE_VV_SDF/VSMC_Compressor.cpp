@@ -80,6 +80,10 @@ std::shared_ptr<std::pair<cimg_library::CImg<unsigned char>, cimg_library::CImg<
     tl.GetLogger(cleaning_time_logger_name)->StartTimer();
 #endif
 
+#if ENABLE_VERTEX_JOINING
+    input_mesh.JoinOverlappingVertices();
+#endif
+
     input_mesh.ClearUnreferencedElements();
 
     mp.CreateUnionFindPartitions(input_mesh);

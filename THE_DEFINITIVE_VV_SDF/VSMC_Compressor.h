@@ -24,6 +24,9 @@
 //#define VSMC_TIME_LOGGING 0
 #define VSMC_TIME_LOGGING 1
 
+#define ENABLE_VERTEX_JOINING 0
+//#define ENABLE_VERTEX_JOINING 1
+
 class VSMC_Compressor
 {
 	std::shared_ptr<VV_Mesh> last_intra;

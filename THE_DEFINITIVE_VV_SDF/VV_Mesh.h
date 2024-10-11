@@ -101,6 +101,10 @@ public:
 
 	std::pair<Eigen::Vector3d, Eigen::Vector3d> GetBoundingBox();
 
+	void JoinOverlappingVertices(double overlapping_threshold);
+
+	void JoinOverlappingVertices();
+
 private:
 	template<typename T>
 	void AddDracoAttribute(std::shared_ptr<draco::Mesh> mesh, draco::GeometryAttribute::Type type, VV_Mesh_Attribute<T> &attribute);
