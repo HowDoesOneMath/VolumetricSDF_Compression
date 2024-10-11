@@ -117,7 +117,7 @@ void VSMC_TestSuite::CompressSequence(std::string root_folder, std::string save_
 
 	vsmc_comp.InitializeCompressor(decimation_ratio, atlas_size, atlas_size, gutter_size, subdiv_loops, 
 		displacement_texture_size, displacement_block_size, push_pull_kernel_size, push_pull_kernel_scale,
-		displacement_limit, draco_compression_level);
+		draco_compression_level, displacement_limit);
 
 #if VSMC_TIME_LOGGING
 	vsmc_comp.SetTimeLogFile(time_log_path);
