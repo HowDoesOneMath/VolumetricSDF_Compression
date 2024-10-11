@@ -29,10 +29,6 @@ class VSMC_TestSuite : public TestSuite
 	std::string output_texture_name = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ArbitraryTestMeshes/AB-Punch_0000001_VSMC_TEX.png";
 	std::string output_displacement_name = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ArbitraryTestMeshes/AB-Punch_0000001_VSMC_DISP.png";
 
-	//size_t atlas_size = 1024;
-	//size_t atlas_size = 2048;
-	size_t atlas_size = 4096;
-
 	//size_t displacement_texture_size = 128;
 	//size_t displacement_texture_size = 256;
 	size_t displacement_texture_size = 512;
@@ -57,22 +53,63 @@ class VSMC_TestSuite : public TestSuite
 	double decimation_ratio = 1.0 / decim_int;
 
 	// For use with GarlandHeckbert_triangle_policies - see VV_CGAL_Marshaller
-	//std::string sequence_file_identifier = "/NON_VV_DATASET";
-	//std::string test_sequence = GetDatasetsPath() + "/_NON_VV_DATASET";
-	//std::string sequence_file_identifier = "/AB-2PUNCH";
-	//std::string test_sequence = GetDatasetsPath() + "/AB-2punch";
-	//std::string sequence_file_identifier = "/AB-DODGE";
-	//std::string test_sequence = GetDatasetsPath() + "/AB-dodgeLeft";
-	//std::string sequence_file_identifier = "/AB-DEATH";
-	//std::string test_sequence = GetDatasetsPath() + "/AB-death";
-	//std::string sequence_file_identifier = "/BASKETBALL";
-	//std::string test_sequence = GetDatasetsPath() + "/Basketball";
-	//std::string sequence_file_identifier = "/RAFA";
-	//std::string test_sequence = GetDatasetsPath() + "/RAFA";
-	//std::string sequence_file_identifier = "/LEVI";
-	//std::string test_sequence = GetDatasetsPath() + "/LEVI";
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
-	std::string test_sequence = GetDatasetsPath() + "/SIR_FREDRICK";
+	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
+	
+	const size_t atlas_size = 4096;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/LEVI";
+	//std::string input_folder = GetDatasetsPath() + "/LEVI";
+	//
+	//const size_t atlas_size = 4096;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/RAFA";
+	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	//
+	//const size_t atlas_size = 4096;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/BASKETBALL";
+	//std::string input_folder = GetDatasetsPath() + "/Basketball";
+	//
+	//const size_t atlas_size = 2048;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/AB-DEATH";
+	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	//
+	//const size_t atlas_size = 2048;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/AB-DODGE";
+	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
+	//
+	//const size_t atlas_size = 2048;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/AB-2PUNCH";
+	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	//
+	//const size_t atlas_size = 2048;
+
+	//--------------------------------------------------------------------------------------------------------------
+
+	//std::string sequence_file_identifier = "/NON_VV_DATASET";
+	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
+	//
+	//const size_t atlas_size = 1024;
+
 
 
 	std::string draco_level = "/DRACO_COMPRESSION_" + std::to_string(draco_compression_level);

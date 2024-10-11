@@ -62,7 +62,7 @@ public:
 
         //suite = new ArtifactCullingSuite();
         //suite = new AttributeMapSuite();
-        suite = new BadFileParsingSuite();
+        //suite = new BadFileParsingSuite();
         //suite = new BarycentricInterpolationSuite();
         //suite = new CGAL_Marshalling_Suite();
         //suite = new CGAL_RepairSuite();
@@ -75,7 +75,7 @@ public:
         //suite = new LZ_Compression_Suite();
         //suite = new MC_TestSuite();
         //suite = new MeshToPointCloudSuite();
-        //suite = new MeshToSDF_Suite();
+        suite = new MeshToSDF_Suite();
         //suite = new MortonOrderSuite();
         //suite = new PCA_Suite();
         //suite = new PerfectJPEG_Suite();

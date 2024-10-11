@@ -147,5 +147,5 @@ void VSMC_TestSuite::run(int argc, char** argv)
 
 	//CompressSingularMesh();
 
-	CompressSequence(test_sequence, compress_file_output);
+	CompressSequence(input_folder, compress_file_output);
 }
