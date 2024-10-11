@@ -33,8 +33,23 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	const double minimum_normal_similarity = 0.5;
 
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/NON_VV_DATASET";
 	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	//const size_t grid_width_voxels = 64;
+	//double shell_size = 0.02;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.01;
+	////const size_t grid_width_voxels = 256;
+	////double shell_size = 0.008;
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
 	//std::string sequence_file_identifier = "/AB-DODGE";

@@ -29,6 +29,10 @@ class VSMC_TestSuite : public TestSuite
 	std::string output_texture_name = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ArbitraryTestMeshes/AB-Punch_0000001_VSMC_TEX.png";
 	std::string output_displacement_name = "D:/VsprojectsOnD/_VV_PROJ/THE_DEFINITIVE_VV_SDF/THE_DEFINITIVE_VV_SDF/_MeshInterop/_ArbitraryTestMeshes/AB-Punch_0000001_VSMC_DISP.png";
 
+	SequenceFinder sf;
+	SequenceFinderDetails mesh_sf = SequenceFinderDetails("Mesh", ".obj");
+	SequenceFinderDetails displacement_sf = SequenceFinderDetails("Displacement", ".jpg");
+
 	//size_t displacement_texture_size = 128;
 	//size_t displacement_texture_size = 256;
 	size_t displacement_texture_size = 512;
@@ -58,6 +62,8 @@ class VSMC_TestSuite : public TestSuite
 
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
 	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
+
+	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	
 	const size_t atlas_size = 4096;
 
@@ -65,6 +71,8 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/LEVI";
 	//std::string input_folder = GetDatasetsPath() + "/LEVI";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 4096;
 
@@ -72,6 +80,9 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/RAFA";
 	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	// 
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 4096;
 
@@ -79,6 +90,8 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/BASKETBALL";
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".png");
 	//
 	//const size_t atlas_size = 2048;
 
@@ -86,6 +99,8 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 2048;
 
@@ -93,6 +108,8 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 2048;
 
@@ -100,6 +117,8 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 2048;
 
@@ -107,6 +126,8 @@ class VSMC_TestSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/NON_VV_DATASET";
 	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 1024;
 
@@ -134,10 +155,6 @@ class VSMC_TestSuite : public TestSuite
 	RandomWrapper rw;
 
 	VV_SaveFileBuffer sfb;
-	SequenceFinder sf;
-	SequenceFinderDetails mesh_sf = SequenceFinderDetails("Mesh", ".obj");
-	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
-	SequenceFinderDetails displacement_sf = SequenceFinderDetails("Displacement", ".jpg");
 
 	VV_CGAL_Marshaller<CGAL::Simple_cartesian<double>::Point_3, Eigen::Vector3d> vcm;
 
