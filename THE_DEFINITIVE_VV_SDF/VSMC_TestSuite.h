@@ -67,6 +67,8 @@ class VSMC_TestSuite : public TestSuite
 	
 	const size_t atlas_size = 4096;
 
+	double displacement_limit = 0.2;
+
 	//--------------------------------------------------------------------------------------------------------------
 
 	//std::string sequence_file_identifier = "/LEVI";
@@ -75,6 +77,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 4096;
+	//
+	//double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -85,6 +89,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 4096;
+	//
+	//double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -94,6 +100,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".png");
 	//
 	//const size_t atlas_size = 2048;
+	//
+	//double displacement_limit = 200.0;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -103,6 +111,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 2048;
+	//
+	//double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -112,6 +122,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 2048;
+	//
+	//double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -121,6 +133,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 2048;
+	//
+	//double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -130,6 +144,8 @@ class VSMC_TestSuite : public TestSuite
 	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//const size_t atlas_size = 1024;
+	//
+	//double displacement_limit = 0.2;
 
 
 

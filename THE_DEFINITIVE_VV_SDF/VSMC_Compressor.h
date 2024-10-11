@@ -125,7 +125,7 @@ public:
 
 	void InitializeCompressor(double decimation_ratio, size_t output_attribute_width, size_t output_attribute_height, double gutter_amount, 
 		int subdiv_count, size_t displacement_map_width, size_t displacement_block_size, int push_pull_kernel_size, double push_pull_kernel_scale,
-		int draco_compression_speed, unsigned int jpg_quality = 100U);
+		int draco_compression_speed, double displacement_limit, unsigned int jpg_quality = 100U);
 
 #if VSMC_TIME_LOGGING
 	void SetTimeLogFile(std::string time_log_name);

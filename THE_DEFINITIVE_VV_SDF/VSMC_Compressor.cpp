@@ -2,7 +2,7 @@
 
 void VSMC_Compressor::InitializeCompressor(double decimation_ratio, size_t output_attribute_width, size_t output_attribute_height, double gutter_amount, 
     int subdiv_count, size_t displacement_map_width, size_t displacement_block_size, int push_pull_kernel_size, double push_pull_kernel_scale,
-    int draco_compression_speed, unsigned int jpg_quality)
+    int draco_compression_speed, double displacement_limit, unsigned int jpg_quality)
 {
     dec_ratio = decimation_ratio;
     width = output_attribute_width;
@@ -19,6 +19,8 @@ void VSMC_Compressor::InitializeCompressor(double decimation_ratio, size_t outpu
     dc = new DracoCompressor(quantization_options, enc_speed, dec_speed);
 
     jpg_q = jpg_quality;
+
+    overly_displaced_threshold = displacement_limit;
 
     initialized = true;
 }
