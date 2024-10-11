@@ -651,6 +651,22 @@ void VV_Mesh::FindClosestPointAmongList(std::vector<size_t> &to_check, Eigen::Ve
 	GetBarycentricCoordinatesOfTriangle(barycentric_input, *p0, *p1, *p2, barycentric_coords);
 }
 
+std::pair<Eigen::Vector3d, Eigen::Vector3d> VV_Mesh::GetBoundingBox()
+{
+	std::pair<Eigen::Vector3d, Eigen::Vector3d> to_return;
+
+	to_return.first = Eigen::Vector3d::Ones() * DBL_MAX;
+	to_return.second = -to_return.first;
+
+	for (size_t i = 0; i < vertices.elements.size(); ++i)
+	{
+		to_return.first = to_return.first.cwiseMin(vertices.elements[i]);
+		to_return.second = to_return.second.cwiseMax(vertices.elements[i]);
+	}
+
+	return to_return;
+}
+
 void VV_Mesh::WriteVertices(std::ofstream& savefile)
 {
 	int v_count = vertices.elements.size();

@@ -9,14 +9,14 @@ class VV_SVD_TemporalSuite : public TestSuite
 {
 	const int digit_count = 6;
 	
-	//const size_t grid_width_voxels = 512;
-	//const size_t grid_width_voxels = 256;
-	const size_t grid_width_voxels = 128;
-	//const size_t grid_width_voxels = 64;
-	//const double grid_width_meters = 1.6;
-	const double grid_width_meters = 1.1;
-	//const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
-	const Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
+	////const size_t grid_width_voxels = 512;
+	////const size_t grid_width_voxels = 256;
+	//const size_t grid_width_voxels = 128;
+	////const size_t grid_width_voxels = 64;
+	////const double grid_width_meters = 1.6;
+	//const double grid_width_meters = 1.1;
+	////const Eigen::Vector3d center = Eigen::Vector3d(0, 0, 0);
+	//const Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	GridDataStruct gds;
 
 	const Eigen::Vector3i block_size = Eigen::Vector3i(8, 8, 8);
@@ -27,7 +27,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//const double shell_size = 0.04;
 	//const double shell_size = 0.02;
-	const double shell_size = 0.01;
+	//const double shell_size = 0.01;
 	//const double shell_size = 0.005;
 	const double mesh_maximum_artifact_size = 0.05;
 
@@ -41,14 +41,69 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/BASKETBALL";
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
+	//
+	//const size_t tex_size = 2048;
+	//
+	//
+	
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/RAFA";
 	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	// 
+	//const size_t tex_size = 4096;
+	// 
+	//Eigen::Vector3d center = Eigen::Vector3d(0.2, 1, 0);
+	//const double grid_width_meters = 1.6;
+	//
+	//const size_t grid_width_voxels = 64;
+	//double shell_size = 0.022;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.011;
+	////const size_t grid_width_voxels = 256;
+	////double shell_size = 0.006; 
+	
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/LEVI";
 	//std::string input_folder = GetDatasetsPath() + "/LEVI";
+	// 
+	//const size_t tex_size = 4096;
+	// 
+	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
+	//const double grid_width_meters = 1.8;
+	//
+	//const size_t grid_width_voxels = 64;
+	//double shell_size = 0.025;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.013;
+	////const size_t grid_width_voxels = 256;
+	////double shell_size = 0.007; 
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
 	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
+
+	const size_t tex_size = 4096;
+
+	Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
+	const double grid_width_meters = 1.2;
+
+	const size_t grid_width_voxels = 64;
+	double shell_size = 0.02;
+	//const size_t grid_width_voxels = 128;
+	//double shell_size = 0.01;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.009; 
+	
+	//--------------------------------------------------------------------------------------------------------------
+
 
 	//const double significant_value_ratio = 1.00;
 	//const double significant_value_ratio = 0.99;
@@ -93,9 +148,6 @@ class VV_SVD_TemporalSuite : public TestSuite
 	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 
 	const int jpg_quality = 100;
-	const size_t tex_size = 4096;
-	//const size_t tex_size = 2048;
-	//const size_t tex_size = 1024;
 
 	const double patch_padding = 0.05;
 	const double island_padding = 0.001;

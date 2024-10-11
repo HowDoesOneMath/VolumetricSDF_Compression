@@ -99,6 +99,8 @@ public:
 	void FindClosestPointAmongList(std::vector<size_t> &to_check, Eigen::Vector3d point,size_t &out_triangle_index, Eigen::Vector3d &barycentric_coords);
 	//void FindClosestPointCGAL(Eigen::Vector3d point, size_t& out_triangle_index, Eigen::Vector3d& barycentric_coords);
 
+	std::pair<Eigen::Vector3d, Eigen::Vector3d> GetBoundingBox();
+
 private:
 	template<typename T>
 	void AddDracoAttribute(std::shared_ptr<draco::Mesh> mesh, draco::GeometryAttribute::Type type, VV_Mesh_Attribute<T> &attribute);
