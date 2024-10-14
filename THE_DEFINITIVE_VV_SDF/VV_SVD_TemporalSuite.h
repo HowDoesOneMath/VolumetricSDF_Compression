@@ -56,16 +56,22 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
-	
+
 	//--------------------------------------------------------------------------------------------------------------
 
 	//std::string sequence_file_identifier = "/BASKETBALL";
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
-	//
+	// 
 	//const size_t tex_size = 2048;
+	// 
+	//Eigen::Vector3d center = Eigen::Vector3d(270, 460, 220);
+	//const double grid_width_meters = 2100;
 	//
-	//
-	
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 56;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 56; 
+
 	//--------------------------------------------------------------------------------------------------------------
 
 	std::string sequence_file_identifier = "/RAFA";
@@ -82,7 +88,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//double shell_size = 0.011;
 	//const size_t grid_width_voxels = 256;
 	//double shell_size = 0.006; 
-	
+
 	//--------------------------------------------------------------------------------------------------------------
 
 	//std::string sequence_file_identifier = "/LEVI";
@@ -116,7 +122,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	////double shell_size = 0.01;
 	////const size_t grid_width_voxels = 256;
 	////double shell_size = 0.009; 
-	
+
 	//--------------------------------------------------------------------------------------------------------------
 
 
