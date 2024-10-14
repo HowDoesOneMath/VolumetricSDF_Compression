@@ -68,20 +68,20 @@ class VV_SVD_TemporalSuite : public TestSuite
 	
 	//--------------------------------------------------------------------------------------------------------------
 
-	//std::string sequence_file_identifier = "/RAFA";
-	//std::string input_folder = GetDatasetsPath() + "/RAFA";
-	// 
-	//const size_t tex_size = 4096;
-	// 
-	//Eigen::Vector3d center = Eigen::Vector3d(0.2, 1, 0);
-	//const double grid_width_meters = 1.6;
-	//
-	//const size_t grid_width_voxels = 64;
-	//double shell_size = 0.022;
-	////const size_t grid_width_voxels = 128;
-	////double shell_size = 0.011;
-	////const size_t grid_width_voxels = 256;
-	////double shell_size = 0.006; 
+	std::string sequence_file_identifier = "/RAFA";
+	std::string input_folder = GetDatasetsPath() + "/RAFA";
+	 
+	const size_t tex_size = 4096;
+	 
+	Eigen::Vector3d center = Eigen::Vector3d(0.2, 1, 0);
+	const double grid_width_meters = 1.6;
+	
+	const size_t grid_width_voxels = 64;
+	double shell_size = 0.022;
+	//const size_t grid_width_voxels = 128;
+	//double shell_size = 0.011;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.006; 
 	
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -102,20 +102,20 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//--------------------------------------------------------------------------------------------------------------
 
-	std::string sequence_file_identifier = "/SIR_FREDRICK";
-	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
-
-	const size_t tex_size = 4096;
-
-	Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
-	const double grid_width_meters = 1.2;
-
-	const size_t grid_width_voxels = 64;
-	double shell_size = 0.02;
-	//const size_t grid_width_voxels = 128;
-	//double shell_size = 0.01;
-	//const size_t grid_width_voxels = 256;
-	//double shell_size = 0.009; 
+	//std::string sequence_file_identifier = "/SIR_FREDRICK";
+	//std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
+	//
+	//const size_t tex_size = 4096;
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
+	//const double grid_width_meters = 1.2;
+	//
+	//const size_t grid_width_voxels = 64;
+	//double shell_size = 0.02;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.01;
+	////const size_t grid_width_voxels = 256;
+	////double shell_size = 0.009; 
 	
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -180,6 +180,8 @@ class VV_SVD_TemporalSuite : public TestSuite
 	void TestSingleIntermediary();
 
 	void TestFromPreExistingIntermediary();
+
+	void TestFromPreExistingIntermediaryWithoutTexturing();
 public:
 
 	void run(int argc, char** argv);

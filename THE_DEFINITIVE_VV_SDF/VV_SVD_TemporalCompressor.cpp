@@ -249,6 +249,7 @@ std::shared_ptr<VV_Mesh> VV_SVD_TemporalCompressor::ExtractSingleMesh(std::vecto
 
     UseSigns(compressed_signs);
 #endif
+
     auto to_return = sdf.ExtractMeshQuantized();
 
     return to_return;
@@ -295,6 +296,11 @@ std::shared_ptr<std::pair<std::vector<std::pair<size_t, Eigen::Vector2i>>, Eigen
     for (size_t i = start_ind; i < end_ind; ++i)
     {
         total_important_blocks += ((block_locations[i] & important_geometry_flag) > 0);
+    }
+
+    if (total_important_blocks == 0)
+    {
+        return to_return;
     }
 
     double amnt_sqrt = ceil(sqrt((double)total_important_blocks));
@@ -556,6 +562,11 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
             return false;
         }
 
+        //if (t == 0)
+        //{
+        //    sdf.PrintCrossSectionOfQuantizedGrid(60);
+        //}
+
 #if TSVD_TIME_LOGGING
         tl.GetLogger(mesh_to_SDF_time_logger_name)->MarkTime();
         std::cout << "Time converting mesh to SDF: " << (tl.GetLogger(mesh_to_SDF_time_logger_name)->GetTime() * 0.000000001) << " seconds." << std::endl;
@@ -733,6 +744,7 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
     size_t target_frame;
 
     size_t current_svd_block = 0;
+
     for (size_t t = 0; t < sad.total_frames; t += sad.frames_per_input_matrix)
     {
         target_frame = std::min(t + sad.frames_per_input_matrix, sad.total_frames);
@@ -1103,8 +1115,11 @@ bool VV_SVD_TemporalCompressor::ReconstructMeshes(std::string final_file_name, s
         tl.GetLogger(mesh_uv_reconstruction_logger_name)->StartTimer();
 #endif
 
-        patch_spacing = Eigen::Vector2d(1.0 / patch_info->second.x(), 1.0 / patch_info->second.y());
-        CreateUVs(*new_mesh, patch_info->first, patch_spacing);
+        if (patch_info->first.size() > 0)
+        {
+            patch_spacing = Eigen::Vector2d(1.0 / patch_info->second.x(), 1.0 / patch_info->second.y());
+            CreateUVs(*new_mesh, patch_info->first, patch_spacing);
+        }
 
 #if TSVD_TIME_LOGGING
         tl.GetLogger(mesh_uv_reconstruction_logger_name)->MarkTime();

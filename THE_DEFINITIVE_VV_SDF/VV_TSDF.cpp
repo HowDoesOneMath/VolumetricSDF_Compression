@@ -1249,15 +1249,17 @@ void VV_TSDF::PerformSmoothingOverUnquantizedBlock(size_t x, size_t y, size_t z,
 
 void VV_TSDF::ExtractBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len_y, size_t len_z, unsigned char* presized_block_array)
 {
-	size_t grid_loc;
-	size_t array_loc = 0;
-
-	for (size_t loc_x = 0, p_x = x * span_x;  loc_x < len_x; ++loc_x, p_x += span_x)
+#pragma omp parallel for
+	for (int loc_x = 0; loc_x < len_x; ++loc_x)
 	{
-		for (size_t loc_y = 0, p_y = y * span_y; loc_y < len_y; ++loc_y, p_y += span_y, array_loc += len_z)
+		size_t p_x = (x + (size_t)loc_x) * span_x;
+
+		for (int loc_y = 0; loc_y < len_y; ++loc_y)
 		{
+			size_t p_y = (y + (size_t)loc_y) * span_y;
+
 			size_t grid_loc = p_x + p_y + z;
-			size_t array_loc = (loc_x * len_y + loc_y) * len_z;
+			size_t array_loc = ((size_t)loc_x * len_y + (size_t)loc_y) * len_z;
 
 			memcpy(&(presized_block_array[array_loc]), &(quantized_grid[grid_loc]), len_z);
 		}
@@ -1266,12 +1268,6 @@ void VV_TSDF::ExtractBlock(size_t x, size_t y, size_t z, size_t len_x, size_t le
 
 void VV_TSDF::InsertBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len_y, size_t len_z, Eigen::MatrixXd& mat, double average)
 {
-	//size_t grid_loc;
-	//size_t array_loc = 0;
-
-	//size_t r = 0;
-	//size_t c = 0;
-
 #pragma omp parallel for
 	for (int loc_x = 0; loc_x < len_x; ++loc_x)
 	{
@@ -1283,20 +1279,13 @@ void VV_TSDF::InsertBlock(size_t x, size_t y, size_t z, size_t len_x, size_t len
 
 			for (int loc_z = 0; loc_z < len_z; ++loc_z)
 			{
-				size_t grid_loc = p_x + p_y + z;
-				//size_t array_loc = (loc_x * len_y + loc_y) * len_z + loc_z;
+				size_t grid_loc = p_x + p_y + z + (size_t)loc_z;
+				size_t array_loc = (((size_t)loc_x * len_y + (size_t)loc_y) * len_z + (size_t)loc_z);
 
-				size_t r = (((size_t)loc_x * len_y + (size_t)loc_y) * len_z + (size_t)loc_z);
-				size_t c = r % mat.rows();
-				r = r / mat.rows();
+				size_t c = array_loc % mat.rows();
+				size_t r = array_loc / mat.rows();
 
 				quantized_grid[grid_loc] = std::clamp(mat(r, c) + average, (double)min_c, (double)max_c) + 0.1;
-
-
-				//++r;
-				//
-				//c += (r >= mat.rows());
-				//r -= r * (r >= mat.rows());
 			}
 		}
 	}
