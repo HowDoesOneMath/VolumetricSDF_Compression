@@ -41,6 +41,9 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.4;
 	//
+	//const size_t tex_size = 1024;
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	//  
 	//const size_t grid_width_voxels = 64;
 	//double shell_size = 0.02;
 	////const size_t grid_width_voxels = 128;
@@ -63,6 +66,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
 	// 
 	//const size_t tex_size = 2048;
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(270, 460, 220);
 	//const double grid_width_meters = 2100;
@@ -78,6 +82,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	std::string input_folder = GetDatasetsPath() + "/RAFA";
 	 
 	const size_t tex_size = 4096;
+	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	 
 	Eigen::Vector3d center = Eigen::Vector3d(0.2, 1, 0);
 	const double grid_width_meters = 1.6;
@@ -95,6 +100,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/LEVI";
 	// 
 	//const size_t tex_size = 4096;
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.8;
@@ -112,6 +118,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
 	//
 	//const size_t tex_size = 4096;
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.2;
@@ -166,7 +173,6 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 
 	SequenceFinderDetails mesh_sf = SequenceFinderDetails("Mesh", ".obj");
-	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 
 	const int jpg_quality = 100;
 
