@@ -66,7 +66,7 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
 	// 
 	//const size_t tex_size = 2048;
-	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".png");
 	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(270, 460, 220);
 	//const double grid_width_meters = 2100;
