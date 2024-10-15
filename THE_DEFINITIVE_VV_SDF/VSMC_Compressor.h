@@ -146,6 +146,14 @@ private:
 #endif
 
 #if USE_DOUBLE_DISPLACEMENTS
+	std::shared_ptr<cimg_library::CImg<double>> CompressIntraWithoutTexturing(
+		VV_Mesh& input_mesh, VV_SaveFileBuffer& sfb);
+#else
+	std::shared_ptr<cimg_library::CImg<unsigned char>> CompressIntraWithoutTexturing(
+		VV_Mesh& input_mesh, VV_SaveFileBuffer& sfb);
+#endif
+
+#if USE_DOUBLE_DISPLACEMENTS
 	std::shared_ptr<VV_Mesh> DecompressIntra(size_t frame, std::vector<size_t>& file_locs, int subdiv_count,
 		cimg_library::CImg<double> displacements, size_t block_size, VV_SaveFileBuffer& sfb);
 #else
@@ -156,6 +164,9 @@ private:
 public:
 	bool CompressSequence(std::string root_folder, SequenceFinderDetails mesh_sf, SequenceFinderDetails texture_sf, std::string output_file_name,
 		std::string output_texture_tag, std::string displacement_texture_tag, size_t starting_frame = 0, size_t ending_frame = SIZE_MAX, size_t digits_per_number = 6);
+
+	bool CompressSequenceWithoutTexturing(std::string root_folder, SequenceFinderDetails mesh_sf, std::string output_file_name,
+		std::string displacement_texture_tag, size_t starting_frame = 0, size_t ending_frame = SIZE_MAX, size_t digits_per_number = 6);
 
 	bool DecompressSequence(std::string input_file_name, std::string displacements_folder, SequenceFinderDetails displacement_texture_sf, 
 		std::string output_mesh_tag, size_t digits_per_number = 6);

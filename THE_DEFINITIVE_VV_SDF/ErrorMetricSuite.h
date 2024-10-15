@@ -12,6 +12,8 @@
 #include <string>
 #include <fstream>
 
+#include <chrono>
+
 class ErrorMetricSuite : public TestSuite
 {
 	class ErrorMetricSet
@@ -39,20 +41,24 @@ class ErrorMetricSuite : public TestSuite
 	double epsilon_scalar = 0.00001;
 	Eigen::Vector3d epsilon_vector = epsilon_scalar * Eigen::Vector3d::Ones();
 
-	MeshEvaluationMetrics mem;
 	std::ofstream to_write;
 
 	std::vector<ErrorMetricSet> em_set = {
-		ErrorMetricSet(GetReconstructionPath() + "/VSMC/SIR_FREDRICK_STATS.txt", GetDatasetsPath() + "/SIR_FREDRICK", {
-				GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/SIR_FREDRICK",
-				GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/SIR_FREDRICK",
-				GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/SIR_FREDRICK",
-				GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM40LOOP3/SIR_FREDRICK",
-				GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM64LOOP3/SIR_FREDRICK",
+		//ErrorMetricSet(GetReconstructionPath() + "/VSMC/SIR_FREDRICK_STATS.txt", GetDatasetsPath() + "/SIR_FREDRICK", {
+		//		GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/SIR_FREDRICK",
+		//		GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/SIR_FREDRICK",
+		//		GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/SIR_FREDRICK",
+		//		GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM40LOOP3/SIR_FREDRICK",
+		//		GetReconstructionPath() + "/VSMC/DRACO_COMPRESSION_0/DECIM64LOOP3/SIR_FREDRICK",
+		//	}
+		//),
+
+		ErrorMetricSet(GetSDF_MeshDatasetsPath() + "/SIR_FREDRICK_STATS.txt", GetDatasetsPath() + "/SIR_FREDRICK", {
+				GetSDF_MeshDatasetsPath() + "/VOXELS_256/SIR_FREDRICK",
+				GetSDF_MeshDatasetsPath() + "/VOXELS_128/SIR_FREDRICK",
+				GetSDF_MeshDatasetsPath() + "/VOXELS_64/SIR_FREDRICK",
 			}
 		),
-
-
 	};
 
 	size_t point_cloud_density;

@@ -141,11 +141,43 @@ void VSMC_TestSuite::CompressSequence(std::string root_folder, std::string save_
 #endif
 }
 
+void VSMC_TestSuite::CompressSequenceWithoutTexturing(std::string root_folder, std::string save_name)
+{
+	std::filesystem::create_directories(compressed_sequence_folder);
+	std::filesystem::create_directories(reconstructed_sequence_folder);
+
+	vsmc_comp.InitializeCompressor(decimation_ratio, atlas_size, atlas_size, gutter_size, subdiv_loops,
+		displacement_texture_size, displacement_block_size, push_pull_kernel_size, push_pull_kernel_scale,
+		draco_compression_level, displacement_limit);
+
+#if VSMC_TIME_LOGGING
+	vsmc_comp.SetTimeLogFile(time_log_path);
+#endif
+
+	//if (!vsmc_comp.CompressSequence(root_folder, mesh_sf, texture_sf, save_name, texture_tag, displacement_tag))
+	if (!vsmc_comp.CompressSequenceWithoutTexturing(root_folder, mesh_sf, save_name, displacement_tag, beginning_frame, end_frame))
+	{
+		std::cout << "Compression failed!" << std::endl;
+		return;
+	}
+
+	if (!vsmc_comp.DecompressSequence(save_name, compressed_sequence_folder, displacement_sf, reconstructed_mesh_tag))
+	{
+		std::cout << "Decompression failed!" << std::endl;
+		return;
+	}
+
+#if VSMC_TIME_LOGGING
+	vsmc_comp.CloseTimeLogFile();
+#endif
+}
+
 void VSMC_TestSuite::run(int argc, char** argv)
 {
 	//TestGetAdjacencies();
 
 	//CompressSingularMesh();
 
-	CompressSequence(input_folder, compress_file_output);
+	//CompressSequence(input_folder, compress_file_output);
+	CompressSequenceWithoutTexturing(input_folder, compress_file_output);
 }

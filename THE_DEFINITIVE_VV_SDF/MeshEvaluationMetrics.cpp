@@ -71,20 +71,20 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayPointToPlane(std::vector<
             }
         }
 
-        if (min_dist_sqr > max_dist_sqr)
-        {
-            max_dist_sqr = min_dist_sqr;
-        }
-
-        double norm_dist_sqr = (pv1[i].position - pv2[min_index].position).dot(pv2[min_index].normal);
+        double norm_dist_sqr = abs((pv1[i].position - pv2[min_index].position).dot(pv2[min_index].normal));
         norm_dist_sqr *= norm_dist_sqr;
+
+        if (norm_dist_sqr > max_dist_sqr)
+        {
+            max_dist_sqr = norm_dist_sqr;
+        }
 
         to_return.second += norm_dist_sqr;
     }
 
     to_return.second /= pv1.size();
 
-    to_return.first = sqrt(max_dist_sqr);
+    to_return.first = max_dist_sqr;
 
     return to_return;
 }

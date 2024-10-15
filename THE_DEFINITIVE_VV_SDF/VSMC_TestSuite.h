@@ -46,13 +46,13 @@ class VSMC_TestSuite : public TestSuite
 	//int decim_int = 4;
 	//int subdiv_loops = 1;
 	//int decim_int = 10;
-	//int subdiv_loops = 2;
-	//int decim_int = 16;
+	int subdiv_loops = 2;
+	int decim_int = 16;
 	//int subdiv_loops = 2;
 	//int decim_int = 40;
 	//int subdiv_loops = 3;
-	int decim_int = 64;
-	int subdiv_loops = 3;
+	//int decim_int = 64;
+	//int subdiv_loops = 3;
 
 	double decimation_ratio = 1.0 / decim_int;
 
@@ -60,14 +60,14 @@ class VSMC_TestSuite : public TestSuite
 
 	//--------------------------------------------------------------------------------------------------------------
 
-	std::string sequence_file_identifier = "/SIR_FREDRICK";
-	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
-
-	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
-	
-	const size_t atlas_size = 4096;
-
-	double displacement_limit = 0.2;
+	//std::string sequence_file_identifier = "/SIR_FREDRICK";
+	//std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
+	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	//
+	//const size_t atlas_size = 4096;
+	//
+	//double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -105,14 +105,14 @@ class VSMC_TestSuite : public TestSuite
 
 	//--------------------------------------------------------------------------------------------------------------
 
-	//std::string sequence_file_identifier = "/AB-DEATH";
-	//std::string input_folder = GetDatasetsPath() + "/AB-death";
-	// 
-	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
-	//
-	//const size_t atlas_size = 2048;
-	//
-	//double displacement_limit = 0.2;
+	std::string sequence_file_identifier = "/AB-DEATH";
+	std::string input_folder = GetDatasetsPath() + "/AB-death";
+	 
+	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	
+	const size_t atlas_size = 2048;
+	
+	double displacement_limit = 0.2;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -199,6 +199,8 @@ class VSMC_TestSuite : public TestSuite
 	void TestGetAdjacencies();
 
 	void CompressSequence(std::string root_folder, std::string save_name);
+
+	void CompressSequenceWithoutTexturing(std::string root_folder, std::string save_name);
 public:
 	void run(int argc, char** argv);
 };
