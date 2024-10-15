@@ -264,6 +264,9 @@
     <ClCompile Include="BadFileParsingSuite.cpp">
       <Filter>Source Files\TestSuites</Filter>
     </ClCompile>
+    <ClCompile Include="ErrorMetricSuite.cpp">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="VV_Mesh.h">
@@ -564,6 +567,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="BadFileParsingSuite.h">
+      <Filter>Source Files\TestSuites</Filter>
+    </ClInclude>
+    <ClInclude Include="ErrorMetricSuite.h">
       <Filter>Source Files\TestSuites</Filter>
     </ClInclude>
   </ItemGroup>

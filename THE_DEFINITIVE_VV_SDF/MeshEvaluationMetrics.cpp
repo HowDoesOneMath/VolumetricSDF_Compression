@@ -42,7 +42,8 @@ std::pair<double, double> MeshEvaluationMetrics::GetPointToPointMetric(std::vect
     auto v1_to_v2 = OneWayPointToPoint(pv1, pv2);
     auto v2_to_v1 = OneWayPointToPoint(pv2, pv1);
 
-    to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    //to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    to_return.second = v1_to_v2.second * 0.5 + v2_to_v1.second * 0.5;
     to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
 
     return to_return;
@@ -95,7 +96,8 @@ std::pair<double, double> MeshEvaluationMetrics::GetPointToPlaneMetric(std::vect
     auto v1_to_v2 = OneWayPointToPlane(pv1, pv2);
     auto v2_to_v1 = OneWayPointToPlane(pv2, pv1);
 
-    to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    //to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    to_return.second = v1_to_v2.second * 0.5 + v2_to_v1.second * 0.5;
     to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
 
     return to_return;
@@ -148,7 +150,8 @@ std::pair<double, double> MeshEvaluationMetrics::GetHausdorffChamferDistanceMetr
     auto v1_to_v2 = OneWayHausdorffChamfer(pv1, v2);
     auto v2_to_v1 = OneWayHausdorffChamfer(pv2, v1);
 
-    to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    //to_return.second = (v1_to_v2.second * pv1.size() + v2_to_v1.second * pv2.size()) / (pv1.size() + pv2.size());
+    to_return.second = v1_to_v2.second * 0.5 + v2_to_v1.second * 0.5;
     to_return.first = std::max(v1_to_v2.first, v2_to_v1.first);
 
     return to_return;

@@ -147,6 +147,7 @@
     <ClCompile Include="ConvexHullCreator.cpp" />
     <ClCompile Include="ConvexHullSuite.cpp" />
     <ClCompile Include="DisplacementWaveletSuite.cpp" />
+    <ClCompile Include="ErrorMetricSuite.cpp" />
     <ClCompile Include="MeshEvaluationMetrics.cpp" />
     <ClCompile Include="MeshToPointCloudSuite.cpp" />
     <ClCompile Include="MeshToSDF_Suite.cpp" />
@@ -231,6 +232,7 @@
     <ClInclude Include="ConvexHullCreator.h" />
     <ClInclude Include="ConvexHullSuite.h" />
     <ClInclude Include="DisplacementWaveletSuite.h" />
+    <ClInclude Include="ErrorMetricSuite.h" />
     <ClInclude Include="MeshEvaluationMetrics.h" />
     <ClInclude Include="MeshToPointCloudSuite.h" />
     <ClInclude Include="MeshToSDF_Suite.h" />
