@@ -171,7 +171,7 @@ public:
 		double shell_buffer, double mesh_maximum_artifact_size);
 
 	bool SaveFinalFile(std::string intermediary_file_name, std::string final_file_name, 
-		double significant_value_ratio, size_t max_allowed_components);
+		double significant_value_ratio, size_t max_allowed_components, size_t replacement_batch_size = 0);
 
 	bool AugmentFinalFileWithTextureData(std::string root_folder, SequenceFinderDetails mesh_sf, SequenceFinderDetails texture_sf,
 		std::string final_file_name, std::string texture_tag, int digit_count, Eigen::Vector2i texture_dims,

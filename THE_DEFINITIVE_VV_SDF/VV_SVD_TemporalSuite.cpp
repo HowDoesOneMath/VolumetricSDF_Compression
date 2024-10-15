@@ -189,7 +189,7 @@ void VV_SVD_TemporalSuite::TestFromPreExistingIntermediaryWithoutTexturing()
 
 	std::cout << "Saving final file..." << std::endl;
 
-	if (!vv_svd_tc.SaveFinalFile(intermediary_file, final_file, significant_value_ratio, max_allowed_components))
+	if (!vv_svd_tc.SaveFinalFile(intermediary_file, final_file, significant_value_ratio, max_allowed_components, max_frames_per_svd))
 	{
 		std::cout << "PROBLEM CREATING FINAL FILE!" << std::endl;
 		return;
@@ -212,9 +212,9 @@ void VV_SVD_TemporalSuite::run(int argc, char** argv)
 {
 	//TestSingleSequence();
 
-	TestSingleIntermediary();
+	//TestSingleIntermediary();
 
-	//TestFromPreExistingIntermediary();
+	TestFromPreExistingIntermediary();
 	
 	//TestFromPreExistingIntermediaryWithoutTexturing();
 }

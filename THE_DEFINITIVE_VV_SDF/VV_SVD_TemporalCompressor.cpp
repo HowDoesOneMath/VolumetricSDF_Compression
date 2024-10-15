@@ -681,7 +681,7 @@ bool VV_SVD_TemporalCompressor::SaveIntermediaryFile(std::string root_folder, st
 }
 
 bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name, std::string final_file_name, 
-    double significant_value_ratio, size_t max_allowed_components)
+    double significant_value_ratio, size_t max_allowed_components, size_t replacement_batch_size)
 {
 #if TSVD_TIME_LOGGING
     tl.GetLogger(total_time_logger_name)->ResetTotalTime();
@@ -705,6 +705,10 @@ bool VV_SVD_TemporalCompressor::SaveFinalFile(std::string intermediary_file_name
     }
 
     sad.ReadFromBuffer(sfb);
+    if (replacement_batch_size > 0)
+    {
+        sad.frames_per_input_matrix = replacement_batch_size;
+    }
     sad.WriteToBuffer(sfb);
 
     sdf.ClearGrid();
