@@ -41,24 +41,57 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.4;
 	//
-	//const size_t tex_size = 1024;
-	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
-	//  
-	//const size_t grid_width_voxels = 64;
-	//double shell_size = 0.02;
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.02;
 	////const size_t grid_width_voxels = 128;
 	////double shell_size = 0.01;
-	////const size_t grid_width_voxels = 256;
-	////double shell_size = 0.008;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.008; 
 
 	//--------------------------------------------------------------------------------------------------------------
 
-	//std::string sequence_file_identifier = "/AB-2PUNCH";
-	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	std::string sequence_file_identifier = "/AB-2PUNCH";
+	std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	
+	Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
+	const double grid_width_meters = 1.4;
+	
+	//const size_t grid_width_voxels = 64;
+	//double shell_size = 0.02;
+	//const size_t grid_width_voxels = 128;
+	//double shell_size = 0.02;
+	const size_t grid_width_voxels = 256;
+	double shell_size = 0.024; 
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.02;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.022;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.022;
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0.05, -0.5, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.027;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.027;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.027;
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +99,6 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
 	// 
 	//const size_t tex_size = 2048;
-	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".png");
 	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(270, 460, 220);
 	//const double grid_width_meters = 2100;
@@ -78,21 +110,20 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//--------------------------------------------------------------------------------------------------------------
 
-	std::string sequence_file_identifier = "/RAFA";
-	std::string input_folder = GetDatasetsPath() + "/RAFA";
-	 
-	const size_t tex_size = 4096;
-	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
-	 
-	Eigen::Vector3d center = Eigen::Vector3d(0.2, 1, 0);
-	const double grid_width_meters = 1.6;
-	
-	const size_t grid_width_voxels = 64;
-	double shell_size = 0.022;
-	//const size_t grid_width_voxels = 128;
-	//double shell_size = 0.011;
-	//const size_t grid_width_voxels = 256;
-	//double shell_size = 0.006; 
+	//std::string sequence_file_identifier = "/RAFA";
+	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	// 
+	//const size_t tex_size = 4096;
+	// 
+	//Eigen::Vector3d center = Eigen::Vector3d(0.2, 1, 0);
+	//const double grid_width_meters = 1.6;
+	//
+	//const size_t grid_width_voxels = 64;
+	//double shell_size = 0.022;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.011;
+	////const size_t grid_width_voxels = 256;
+	////double shell_size = 0.006; 
 
 	//--------------------------------------------------------------------------------------------------------------
 
@@ -100,7 +131,6 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/LEVI";
 	// 
 	//const size_t tex_size = 4096;
-	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.8;
@@ -118,7 +148,6 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
 	//
 	//const size_t tex_size = 4096;
-	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	//
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.2;

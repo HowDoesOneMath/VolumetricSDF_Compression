@@ -33,27 +33,63 @@ class MeshToSDF_Suite : public TestSuite
 
 	//--------------------------------------------------------------------------------------------------------------
 
-	std::string sequence_file_identifier = "/NON_VV_DATASET";
-	std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
-	
-	Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
-	const double grid_width_meters = 1.4;
-	
-	//const size_t grid_width_voxels = 64;
-	//double shell_size = 0.02;
-	//const size_t grid_width_voxels = 128;
-	//double shell_size = 0.01;
-	const size_t grid_width_voxels = 256;
-	double shell_size = 0.008; 
+	//std::string sequence_file_identifier = "/NON_VV_DATASET";
+	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.02;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.01;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.008; 
 
 	//--------------------------------------------------------------------------------------------------------------
 
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.02;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.02;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.024; 
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.02;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.022;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.022;
+
+	//--------------------------------------------------------------------------------------------------------------
+
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	//
+	//Eigen::Vector3d center = Eigen::Vector3d(0.05, -0.5, 0);
+	//const double grid_width_meters = 1.4;
+	//
+	////const size_t grid_width_voxels = 64;
+	////double shell_size = 0.027;
+	////const size_t grid_width_voxels = 128;
+	////double shell_size = 0.027;
+	//const size_t grid_width_voxels = 256;
+	//double shell_size = 0.027;
 
 	//--------------------------------------------------------------------------------------------------------------
 
