@@ -94,8 +94,8 @@ void ErrorMetricSuite::RunAllSets()
 
 				hausdorff_distances[k] = hc_pair.first;
 				chamfer_distances[k] = hc_pair.second;
-				point2point_distances[k] = point2point.first;
-				point2plane_distances[k] = point2plane.first;
+				point2point_distances[k] = point2point.second;
+				point2plane_distances[k] = point2plane.second;
 			}
 
 			for (size_t k = 0; k < file_count; ++k)
