@@ -37,6 +37,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/NON_VV_DATASET";
 	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
+	// 
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	// 
+	//const size_t tex_size = 1024;
 	//
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.4;
@@ -52,6 +56,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	std::string sequence_file_identifier = "/AB-2PUNCH";
 	std::string input_folder = GetDatasetsPath() + "/AB-2punch";
+
+	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+
+	const size_t tex_size = 2048;
 	
 	Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
 	const double grid_width_meters = 1.4;
@@ -68,6 +76,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
 	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	// 
+	//const size_t tex_size = 2048;
+	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
 	//const double grid_width_meters = 1.4;
 	//
@@ -83,6 +95,10 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
 	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	// 
+	//const size_t tex_size = 2048;
+	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0.05, -0.5, 0);
 	//const double grid_width_meters = 1.4;
 	//
@@ -97,6 +113,8 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/BASKETBALL";
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
+	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".png");
 	// 
 	//const size_t tex_size = 2048;
 	// 
@@ -112,6 +130,8 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/RAFA";
 	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	// 
 	//const size_t tex_size = 4096;
 	// 
@@ -129,6 +149,8 @@ class VV_SVD_TemporalSuite : public TestSuite
 
 	//std::string sequence_file_identifier = "/LEVI";
 	//std::string input_folder = GetDatasetsPath() + "/LEVI";
+	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	// 
 	//const size_t tex_size = 4096;
 	// 
@@ -147,6 +169,8 @@ class VV_SVD_TemporalSuite : public TestSuite
 	//std::string sequence_file_identifier = "/SIR_FREDRICK";
 	//std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
 	//
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
+	// 
 	//const size_t tex_size = 4096;
 	//
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);

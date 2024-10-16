@@ -36,6 +36,8 @@ class MeshToSDF_Suite : public TestSuite
 	//std::string sequence_file_identifier = "/NON_VV_DATASET";
 	//std::string input_folder = GetDatasetsPath() + "/_NON_VV_DATASET";
 	//
+	//const size_t tex_size = 1024;
+	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0, 1, 0);
 	//const double grid_width_meters = 1.4;
 	//
@@ -50,7 +52,9 @@ class MeshToSDF_Suite : public TestSuite
 
 	std::string sequence_file_identifier = "/AB-2PUNCH";
 	std::string input_folder = GetDatasetsPath() + "/AB-2punch";
-	
+
+	const size_t tex_size = 2048;
+
 	Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
 	const double grid_width_meters = 1.4;
 	
@@ -66,6 +70,8 @@ class MeshToSDF_Suite : public TestSuite
 	//std::string sequence_file_identifier = "/AB-DODGE";
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
 	//
+	//const size_t tex_size = 2048;
+	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0, -0.5, 0);
 	//const double grid_width_meters = 1.4;
 	//
@@ -81,6 +87,8 @@ class MeshToSDF_Suite : public TestSuite
 	//std::string sequence_file_identifier = "/AB-DEATH";
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
 	//
+	//const size_t tex_size = 2048;
+	// 
 	//Eigen::Vector3d center = Eigen::Vector3d(0.05, -0.5, 0);
 	//const double grid_width_meters = 1.4;
 	//
