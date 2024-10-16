@@ -120,6 +120,7 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayHausdorffChamfer(std::vec
         Eigen::Vector3d barycentric_coords;
 
         vcm.FindClosestPointCGAL(*cgal_mesh, *aabb_tree, point_cloud[i].position, tri_index, barycentric_coords);
+        tri_index = (*index_remap)[tri_index];
 
         Eigen::Vector3d point =
             barycentric_coords.x() * mesh.vertices.elements[mesh.vertices.indices[tri_index].x()] +
