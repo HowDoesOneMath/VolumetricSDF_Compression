@@ -57,16 +57,31 @@ class DracoSuite : public TestSuite
 
 
 	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
-	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
-
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
+	
+	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
+	//std::string sequence_file_identifier = "/AB-DODGE";
+	
+	//std::string input_folder = GetDatasetsPath() + "/AB-death";
+	//std::string sequence_file_identifier = "/AB-DEATH";
+	
+	//std::string input_folder = GetDatasetsPath() + "/Basketball";
+	//std::string sequence_file_identifier = "/BASKETBALL";
+	
+	//std::string input_folder = GetDatasetsPath() + "/RAFA";
+	//std::string sequence_file_identifier = "/RAFA";
+	
+	//std::string input_folder = GetDatasetsPath() + "/LEVI";
+	//std::string sequence_file_identifier = "/LEVI";
+
+	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
 
 
-	std::string draco_code = "/DRACO";
+	std::string draco_code = "/_DRACO";
 
 
-	std::string draco_compression_level = "/COMPRESSION_LEVEL_" + std::to_string(universal_draco_speed);
+	std::string draco_compression_level = "/COMPRESSION_SPEED_" + std::to_string(universal_draco_speed);
 	std::string draco_quant_levels = "/QUANT_" + std::to_string(position_quant_level) + "_" + std::to_string(uv_quant_level) + "_" + std::to_string(normal_quant_level);
 
 
