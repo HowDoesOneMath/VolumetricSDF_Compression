@@ -49,8 +49,8 @@ class DracoSuite : public TestSuite
 		std::make_pair(draco::GeometryAttribute::Type::NORMAL, normal_quant_level)
 	};
 
-	//int universal_draco_speed = 10;
-	int universal_draco_speed = 7;
+	int universal_draco_speed = 10;
+	//int universal_draco_speed = 7;
 	//int universal_draco_speed = 0;
 	int enc_speed = universal_draco_speed;
 	int dec_speed = universal_draco_speed;
@@ -58,24 +58,31 @@ class DracoSuite : public TestSuite
 
 	//std::string input_folder = GetDatasetsPath() + "/AB-2punch";
 	//std::string sequence_file_identifier = "/AB-2PUNCH";
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	
 	//std::string input_folder = GetDatasetsPath() + "/AB-dodgeLeft";
 	//std::string sequence_file_identifier = "/AB-DODGE";
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	
 	//std::string input_folder = GetDatasetsPath() + "/AB-death";
 	//std::string sequence_file_identifier = "/AB-DEATH";
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	
 	//std::string input_folder = GetDatasetsPath() + "/Basketball";
 	//std::string sequence_file_identifier = "/BASKETBALL";
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".png");
 	
 	//std::string input_folder = GetDatasetsPath() + "/RAFA";
 	//std::string sequence_file_identifier = "/RAFA";
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	
 	//std::string input_folder = GetDatasetsPath() + "/LEVI";
 	//std::string sequence_file_identifier = "/LEVI";
+	//SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 
 	std::string input_folder = GetDatasetsPath() + "/SIR_FREDRICK";
 	std::string sequence_file_identifier = "/SIR_FREDRICK";
+	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 
 
 	std::string draco_code = "/_DRACO";
@@ -100,7 +107,6 @@ class DracoSuite : public TestSuite
 	DracoCompressor dc = DracoCompressor(quantization_options, enc_speed, dec_speed);
 
 	SequenceFinderDetails mesh_sf = SequenceFinderDetails("Mesh", ".obj");
-	SequenceFinderDetails texture_sf = SequenceFinderDetails("Texture", ".jpg");
 	SequenceFinder sf;
 
 	bool MassCompress(std::string input_folder, std::string output_file, std::string readfile_tag, int compression_level);
