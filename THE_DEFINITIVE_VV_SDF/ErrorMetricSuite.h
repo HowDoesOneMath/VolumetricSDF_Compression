@@ -190,10 +190,79 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/SIR_FREDRICK_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/SIR_FREDRICK", {
+		ErrorMetricSet(GetReconstructionPath() + "/SIR_FREDRICK_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/SIR_FREDRICK", {
 				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/SIR_FREDRICK",
-				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/SIR_FREDRICK",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/SIR_FREDRICK_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/SIR_FREDRICK", {
 				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/SIR_FREDRICK",
+			}
+		),
+
+		//DOES NOT EXIST
+		//ErrorMetricSet(GetReconstructionPath() + "/BASKETBALL_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/BASKETBALL", {
+		//		GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/BASKETBALL",
+		//	}
+		//),
+
+		ErrorMetricSet(GetReconstructionPath() + "/BASKETBALL_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/BASKETBALL", {
+				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/BASKETBALL",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/RAFA_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/RAFA", {
+				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/RAFA",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/RAFA_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/RAFA", {
+				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/RAFA",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/LEVI_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/LEVI", {
+				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/LEVI",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/LEVI_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/LEVI", {
+			GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/LEVI",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/AB-2PUNCH_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/AB-2PUNCH", {
+				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/AB-2PUNCH",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/AB-2PUNCH_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/AB-2PUNCH", {
+				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/AB-2PUNCH",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/AB-DODGE_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/AB-DODGE", {
+				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/AB-DODGE",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/AB-DODGE_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/AB-DODGE", {
+				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/AB-DODGE",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/AB-DEATH_STATS_COMPARE_SDF_64.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_64/AB-DEATH", {
+				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/AB-DEATH",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/AB-DEATH_STATS_COMPARE_SDF_256.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_256/AB-DEATH", {
+				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/AB-DEATH",
+			}
+		),
+
+		ErrorMetricSet(GetReconstructionPath() + "/SIR_FREDRICK_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/SIR_FREDRICK", {
+				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/SIR_FREDRICK",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/SIR_FREDRICK",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/SIR_FREDRICK",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/SIR_FREDRICK",
@@ -203,9 +272,8 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/BASKETBALL_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/BASKETBALL", {
+		ErrorMetricSet(GetReconstructionPath() + "/BASKETBALL_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/BASKETBALL", {
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/BASKETBALL",
-				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/BASKETBALL",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/BASKETBALL",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/BASKETBALL",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/BASKETBALL",
@@ -215,10 +283,8 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/RAFA_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/RAFA", {
-				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/RAFA",
+		ErrorMetricSet(GetReconstructionPath() + "/RAFA_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/RAFA", {
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/RAFA",
-				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/RAFA",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/RAFA",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/RAFA",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/RAFA",
@@ -228,10 +294,8 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/LEVI_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/LEVI", {
-				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/LEVI",
+		ErrorMetricSet(GetReconstructionPath() + "/LEVI_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/LEVI", {
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/LEVI",
-				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/LEVI",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/LEVI",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/LEVI",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/LEVI",
@@ -241,10 +305,8 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/AB-2PUNCH_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/AB-2PUNCH", {
-				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/AB-2PUNCH",
+		ErrorMetricSet(GetReconstructionPath() + "/AB-2PUNCH_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/AB-2PUNCH", {
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/AB-2PUNCH",
-				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/AB-2PUNCH",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/AB-2PUNCH",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/AB-2PUNCH",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/AB-2PUNCH",
@@ -254,10 +316,8 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/AB-DODGE_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/AB-DODGE", {
-				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/AB-DODGE",
+		ErrorMetricSet(GetReconstructionPath() + "/AB-DODGE_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/AB-DODGE", {
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/AB-DODGE",
-				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/AB-DODGE",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/AB-DODGE",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/AB-DODGE",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/AB-DODGE",
@@ -267,10 +327,8 @@ class ErrorMetricSuite : public TestSuite
 			}
 		),
 
-		ErrorMetricSet(GetReconstructionPath() + "/AB-DEATH_STATS_COMPARE_SDF.txt", GetSDF_MeshDatasetsPath() + "/AB-DEATH", {
-				GetReconstructionPath() + "/TSVD/VOXELS_64/BATCH_256/SIGNIFICANCE_90/AB-DEATH",
+		ErrorMetricSet(GetReconstructionPath() + "/AB-DEATH_STATS_COMPARE_SDF_128.txt", GetSDF_MeshDatasetsPath() + "/VOXELS_128/AB-DEATH", {
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_90/AB-DEATH",
-				GetReconstructionPath() + "/TSVD/VOXELS_256/BATCH_256/SIGNIFICANCE_90/AB-DEATH",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_128/SIGNIFICANCE_90/AB-DEATH",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_64/SIGNIFICANCE_90/AB-DEATH",
 				GetReconstructionPath() + "/TSVD/VOXELS_128/BATCH_256/SIGNIFICANCE_99/AB-DEATH",
