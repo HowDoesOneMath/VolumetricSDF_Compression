@@ -45,9 +45,9 @@ class ErrorMetricSuite : public TestSuite
 
 	std::vector<ErrorMetricSet> em_set = {
 		ErrorMetricSet(GetReconstructionPath() + "/SIR_FREDRICK_STATS.txt", GetDatasetsPath() + "/SIR_FREDRICK", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/SIR_FREDRICK",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/SIR_FREDRICK",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/SIR_FREDRICK",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/SIR_FREDRICK",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/SIR_FREDRICK",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/SIR_FREDRICK",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/SIR_FREDRICK",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/SIR_FREDRICK",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/SIR_FREDRICK",
@@ -66,9 +66,9 @@ class ErrorMetricSuite : public TestSuite
 		),
 
 		ErrorMetricSet(GetReconstructionPath() + "/BASKETBALL_STATS.txt", GetDatasetsPath() + "/Basketball", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/BASKETBALL",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/BASKETBALL",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/BASKETBALL",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/BASKETBALL",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/BASKETBALL",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/BASKETBALL",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/BASKETBALL",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/BASKETBALL",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/BASKETBALL",
@@ -86,9 +86,9 @@ class ErrorMetricSuite : public TestSuite
 		),
 
 		ErrorMetricSet(GetReconstructionPath() + "/RAFA_STATS.txt", GetDatasetsPath() + "/RAFA", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/RAFA",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/RAFA",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/RAFA",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/RAFA",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/RAFA",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/RAFA",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/RAFA",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/RAFA",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/RAFA",
@@ -107,9 +107,9 @@ class ErrorMetricSuite : public TestSuite
 		),
 
 		ErrorMetricSet(GetReconstructionPath() + "/LEVI_STATS.txt", GetDatasetsPath() + "/LEVI", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/LEVI",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/LEVI",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/LEVI",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/LEVI",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/LEVI",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/LEVI",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/LEVI",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/LEVI",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/LEVI",
@@ -128,9 +128,9 @@ class ErrorMetricSuite : public TestSuite
 		),
 
 		ErrorMetricSet(GetReconstructionPath() + "/AB-2PUNCH_STATS.txt", GetDatasetsPath() + "/AB-2punch", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/AB-2PUNCH",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/AB-2PUNCH",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/AB-2PUNCH",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/AB-2PUNCH",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/AB-2PUNCH",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/AB-2PUNCH",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/AB-2PUNCH",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/AB-2PUNCH",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/AB-2PUNCH",
@@ -149,9 +149,9 @@ class ErrorMetricSuite : public TestSuite
 		),
 
 		ErrorMetricSet(GetReconstructionPath() + "/AB-DODGE_STATS.txt", GetDatasetsPath() + "/AB-dodgeLeft", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/AB-DODGE",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/AB-DODGE",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/AB-DODGE",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/AB-DODGE",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/AB-DODGE",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/AB-DODGE",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/AB-DODGE",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/AB-DODGE",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/AB-DODGE",
@@ -170,9 +170,9 @@ class ErrorMetricSuite : public TestSuite
 		),
 
 		ErrorMetricSet(GetReconstructionPath() + "/AB-DEATH_STATS.txt", GetDatasetsPath() + "/AB-death", {
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/AB-DEATH",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/AB-DEATH",
-				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/AB-DEATH",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_0/QUANT_11_10_8/AB-DEATH",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_7/QUANT_11_10_8/AB-DEATH",
+				GetReconstructionPath() + "/_DRACO/DRACO_COMPRESSION_10/QUANT_11_10_8/AB-DEATH",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM4LOOP1/AB-DEATH",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM10LOOP2/AB-DEATH",
 				GetReconstructionPath() + "/_VSMC/DRACO_COMPRESSION_0/DECIM16LOOP2/AB-DEATH",
