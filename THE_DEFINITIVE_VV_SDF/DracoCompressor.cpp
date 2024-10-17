@@ -215,7 +215,7 @@ bool DracoCompressor::CompressSequence(std::string root_folder, std::string comp
 
 		to_copy.assign(sf.files[texture_sf.key][i].c_str());
 		std::string new_tex_name = texture_name + "_" + GetNumberFixedLength(i, 6) + ".jpg";
-		to_copy.save_jpeg(texture_name.c_str(), jpg_quality);
+		to_copy.save_jpeg(new_tex_name.c_str(), jpg_quality);
 
 #if DRACO_TIME_LOGGING
 		tl.GetLogger(texture_copying_logger_name)->MarkTime();
