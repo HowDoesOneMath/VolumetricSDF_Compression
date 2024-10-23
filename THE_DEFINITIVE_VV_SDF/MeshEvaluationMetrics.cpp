@@ -127,7 +127,7 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayHausdorffChamfer(std::vec
             barycentric_coords.y() * mesh.vertices.elements[mesh.vertices.indices[tri_index].y()] +
             barycentric_coords.z() * mesh.vertices.elements[mesh.vertices.indices[tri_index].z()];
 
-        double dist = (point - point_cloud[i].position).norm();
+        double dist = sqrt(std::max((point - point_cloud[i].position).squaredNorm(), 0.0));
 
         if (dist > max_dist)
         {
