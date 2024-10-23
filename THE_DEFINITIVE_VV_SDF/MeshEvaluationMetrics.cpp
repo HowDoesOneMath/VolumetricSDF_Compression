@@ -114,6 +114,8 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayHausdorffChamfer(std::vec
 
     double max_dist = -DBL_MAX;
 
+    size_t to_divide_by = point_cloud.size();
+
     for (size_t i = 0; i < point_cloud.size(); ++i)
     {
         size_t tri_index = SIZE_MAX;
@@ -122,18 +124,28 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayHausdorffChamfer(std::vec
         vcm.FindClosestPointCGAL(*cgal_mesh, *aabb_tree, point_cloud[i].position, tri_index, barycentric_coords);
         tri_index = (*index_remap)[tri_index];
 
-        if (barycentric_coords.x() != barycentric_coords.x())
+        if (
+            (barycentric_coords.x() != barycentric_coords.x()) || 
+            (barycentric_coords.y() != barycentric_coords.y()) || 
+            (barycentric_coords.z() != barycentric_coords.z())
+            )
         {
-            barycentric_coords.x() = 0;
+            --to_divide_by;
+            continue;
         }
-        if (barycentric_coords.y() != barycentric_coords.y())
-        {
-            barycentric_coords.y() = 0;
-        }
-        if (barycentric_coords.z() != barycentric_coords.z())
-        {
-            barycentric_coords.z() = 0;
-        }
+
+        //if (barycentric_coords.x() != barycentric_coords.x())
+        //{
+        //    barycentric_coords.x() = 0;
+        //}
+        //if (barycentric_coords.y() != barycentric_coords.y())
+        //{
+        //    barycentric_coords.y() = 0;
+        //}
+        //if (barycentric_coords.z() != barycentric_coords.z())
+        //{
+        //    barycentric_coords.z() = 0;
+        //}
 
         Eigen::Vector3d point =
             barycentric_coords.x() * mesh.vertices.elements[mesh.vertices.indices[tri_index].x()] +
@@ -150,7 +162,7 @@ std::pair<double, double> MeshEvaluationMetrics::OneWayHausdorffChamfer(std::vec
         to_return.second += dist;
     }
 
-    to_return.second /= point_cloud.size();
+    to_return.second /= to_divide_by;
 
     to_return.first = max_dist;
 
